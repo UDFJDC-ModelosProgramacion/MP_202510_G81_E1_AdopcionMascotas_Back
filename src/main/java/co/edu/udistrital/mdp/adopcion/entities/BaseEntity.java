@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.ZZZ.entities;
+package co.edu.udistrital.mdp.adopcion.entities;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

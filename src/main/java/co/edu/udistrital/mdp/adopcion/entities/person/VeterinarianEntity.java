@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.adopcion.entities.person;
 
 import java.util.List;
 
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -20,5 +21,8 @@ public class VeterinarianEntity extends PersonEntity {
 
     @OneToMany(mappedBy = "disponibilities")
     private List<DisponibilityEntity> disponibilities;
+
+    @OneToMany(mappedBy = "followUps")
+    private List<AdoptionFollowUpEntity> followUps;
     
 }

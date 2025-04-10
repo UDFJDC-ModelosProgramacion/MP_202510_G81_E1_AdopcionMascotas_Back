@@ -9,6 +9,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Data
 @MappedSuperclass
 public class MedicalEventEntity extends EventEntity {
+    
     @PodamExclude
     @ManyToOne
     VeterinarianEntity veterinarian;

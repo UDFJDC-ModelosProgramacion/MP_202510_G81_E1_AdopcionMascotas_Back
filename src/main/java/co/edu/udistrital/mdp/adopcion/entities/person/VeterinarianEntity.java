@@ -21,13 +21,13 @@ public class VeterinarianEntity extends PersonEntity {
     private Speciality speciality;
 
     @PodamExclude
-    @OneToMany(mappedBy = "medicalEvents")
+    @OneToMany(mappedBy = "veterinarian")
     private List<MedicalEventEntity> medicalEvents;
 
-    @OneToMany(mappedBy = "disponibilities")
+    @OneToMany(mappedBy = "veterinarian")
     private List<DisponibilityEntity> disponibilities;
 
-    @OneToMany(mappedBy = "followUps")
+    @OneToMany(mappedBy = "veterinarian")
     private List<AdoptionFollowUpEntity> followUps;
 
     @PodamExclude

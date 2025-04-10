@@ -1,13 +1,14 @@
 package co.edu.udistrital.mdp.adopcion.entities.person;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -34,7 +35,10 @@ public class VeterinarianEntity extends PersonEntity {
     private  AdoptionEntity adoption;
 
     @PodamExclude
-    @ManyToOne
-	private  AdoptionTestEntity adoptionTest;
-    
+    @OneToMany(mappedBy="veterinarian")
+    private List<AdoptionApplicationEntity> adoptionApplications = new ArrayList<>();
+
+    @PodamExclude
+    @OneToMany(mappedBy="veterinarian")
+    private List<AdoptionTestEntity> adoptionTests = new ArrayList<>();
 }

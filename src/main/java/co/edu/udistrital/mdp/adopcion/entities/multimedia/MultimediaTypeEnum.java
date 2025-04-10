@@ -1,6 +1,6 @@
 package co.edu.udistrital.mdp.adopcion.entities.multimedia;
 
-public enum MultimediaType {
+public enum MultimediaTypeEnum {
     IMAGE,
     VIDEO,
     AUDIO,

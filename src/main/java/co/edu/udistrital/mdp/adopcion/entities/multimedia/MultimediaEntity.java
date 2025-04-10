@@ -7,5 +7,5 @@ import lombok.Data;
 public class MultimediaEntity {
     String url;
     String description;
-    MultimediaType MultimediaType;
+    MultimediaTypeEnum Type;
 }

@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.yaml.snakeyaml.events.Event;
 
 import co.edu.udistrital.mdp.adopcion.entities.BaseEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.EventEntity;
@@ -33,13 +32,13 @@ private GenderEnum gender;
 private OwnerEntity owner;
 private String behaviorProfile;
 
-@PodamExclude
-@OneToMany(mappedBy="pet")
+    @PodamExclude
+    @OneToMany(mappedBy="pet")
     private List<OwnerEntity> owners = new ArrayList<>();
 
-@PodamExclude
-@OneToMany(mappedBy = "pet")
-    private List<AdoptionAplicationEntity> adoptionAplications = new ArrayList<>();
+    @PodamExclude
+    @OneToMany(mappedBy = "pet")
+    private List<AdoptionApplicationEntity> adoptionAplications = new ArrayList<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "pet")

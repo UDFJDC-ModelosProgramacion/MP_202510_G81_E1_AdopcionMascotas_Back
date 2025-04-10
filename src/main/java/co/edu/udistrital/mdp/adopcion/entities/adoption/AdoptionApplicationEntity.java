@@ -16,6 +16,12 @@ import uk.co.jemos.podam.common.PodamExclude;
 @MappedSuperclass
 
 public class AdoptionApplicationEntity extends EventEntity{
+    Date applicationDate;
+    Date applicationEnd;
+    String observations;
+    ApplicationStatusEnum typeApplicationStatus;
+    ApplicationResultEnum typeResult;
+    
     @PodamExclude
     @ManyToOne
 	private OwnerEntity owner;
@@ -27,13 +33,5 @@ public class AdoptionApplicationEntity extends EventEntity{
     @PodamExclude
     @OneToOne
     private AdoptionEntity adoption;
-
-    Date applicationDate;
-    Date applicationEnd;
-    String observations;
-    ApplicationStatusEnum typeApplicationStatus;
-    ApplicationResultEnum typeResult;
-
-
 
 }

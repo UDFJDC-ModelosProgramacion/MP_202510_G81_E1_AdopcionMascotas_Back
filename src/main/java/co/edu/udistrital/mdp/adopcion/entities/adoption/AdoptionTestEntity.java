@@ -12,16 +12,16 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Data
 @MappedSuperclass
 public class AdoptionTestEntity extends AdoptionEntity {
-    @PodamExclude
-    @ManyToOne
-	private OwnerEntity owner;
-
-    @PodamExclude
-    @ManyToOne
-	private VeterinarianEntity veterinarian;
-    
     private String description;
     private Date testEnd;
     private String testObservations;
     private TestResultEnum typeTest;
+
+    @PodamExclude
+    @ManyToOne
+	private OwnerEntity owner;
+
+    @ManyToOne
+	private VeterinarianEntity veterinarian;
+    
 }

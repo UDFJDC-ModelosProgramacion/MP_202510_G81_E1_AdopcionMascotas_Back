@@ -23,7 +23,4 @@ public class DewormingEntity extends MedicalEventEntity {
     @PodamExclude
     @ManyToOne
 	private VaccineCardEntity vaccineCard;
-
-    
-
 }

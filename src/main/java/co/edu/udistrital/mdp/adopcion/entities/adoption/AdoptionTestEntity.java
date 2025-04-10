@@ -4,13 +4,13 @@ import java.sql.Date;
 
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
-@MappedSuperclass
+@Entity
 public class AdoptionTestEntity extends AdoptionEntity {
     private String description;
     private Date testEnd;

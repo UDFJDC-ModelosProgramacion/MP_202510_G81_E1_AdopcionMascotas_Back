@@ -17,6 +17,9 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 
 public class OwnerEntity extends PersonEntity {
+    private HouseTypeEnum houseType;
+    private String address;
+
     @PodamExclude
     @OneToMany(mappedBy="owner")
 	private List<AdoptionEntity> adoption = new ArrayList<>();
@@ -28,7 +31,4 @@ public class OwnerEntity extends PersonEntity {
     @PodamExclude
     @OneToMany(mappedBy="owner")
     private List<AdoptionApplicationEntity> adoptionApplications = new ArrayList<>();
-
-    private HouseTypeEnum houseType;
-    private String address;
 }

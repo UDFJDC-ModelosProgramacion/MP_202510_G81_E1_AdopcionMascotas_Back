@@ -1,9 +1,10 @@
 package co.edu.udistrital.mdp.adopcion.entities.person;
 
-import java.util.ArrayList;
 
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -12,11 +13,14 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 
 public class OwnerEntity extends PersonEntity {
+    @PodamExclude
+    @ManyToOne
+	private  AdoptionEntity adoption;
+
+    @PodamExclude
+    @ManyToOne
+	private  AdoptionTestEntity adoptionTest;
 
     private HouseTypeEnum houseType;
     private String address;
-
-    
-
-
 }

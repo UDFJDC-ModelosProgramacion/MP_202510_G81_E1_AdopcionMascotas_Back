@@ -8,9 +8,11 @@ import org.yaml.snakeyaml.events.Event;
 
 import co.edu.udistrital.mdp.adopcion.entities.BaseEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.EventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
+import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -30,7 +32,6 @@ private SizeEnum size;
 private GenderEnum gender;
 private OwnerEntity owner;
 private String behaviorProfile;
-private VaccineCardEntity vaccineCard;
 
 @PodamExclude
 @OneToMany(mappedBy="pet")
@@ -40,11 +41,19 @@ private VaccineCardEntity vaccineCard;
 @OneToMany(mappedBy = "pet")
     private List<AdoptionAplicationEntity> adoptionAplications = new ArrayList<>();
 
-@PodamExclude 
-@OneToMany(mappedBy = "pet")
+    @PodamExclude
+    @OneToMany(mappedBy = "pet")
     private List<EventEntity> events = new ArrayList<>();
 
-@PodamExclude
-@OneToOne(mappedBy = "pet")
-    private Mult;
+    @PodamExclude
+    @OneToOne(mappedBy = "pet")
+    private MultimediaEntity multimedia;
+
+    @PodamExclude
+    @OneToOne(mappedBy = "pet")
+    private AdoptionEntity adoption;
+
+    @PodamExclude
+    @OneToOne
+    private VaccineCardEntity vaccineCard;
 }

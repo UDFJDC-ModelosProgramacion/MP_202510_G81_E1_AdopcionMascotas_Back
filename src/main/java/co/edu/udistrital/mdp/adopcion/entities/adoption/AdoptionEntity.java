@@ -13,6 +13,10 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Data
 @MappedSuperclass
 public class AdoptionEntity extends EventEntity{
+    private String description;
+    private String observations;
+    private AdoptionStatusEnum type;
+    
     @PodamExclude
     @ManyToOne
 	private  OwnerEntity owner;
@@ -28,9 +32,4 @@ public class AdoptionEntity extends EventEntity{
     @PodamExclude
     @OneToOne(mappedBy = "adoption")
     private AdoptionApplicationEntity adoptionApplication;
-
-    private String description;
-    private String observations;
-    private AdoptionStatusEnum type;
-    
 }

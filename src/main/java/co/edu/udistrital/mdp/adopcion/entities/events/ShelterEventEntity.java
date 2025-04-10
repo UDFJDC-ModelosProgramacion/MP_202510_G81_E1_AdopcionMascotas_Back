@@ -10,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 public class ShelterEventEntity extends EventEntity {
     String name;
+    
     @PodamExclude
     @ManyToOne
     ShelterEntity shelter;

@@ -9,13 +9,13 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class VaccineEntity extends BaseEntity {
+public abstract class VaccineEntity extends BaseEntity {
+    @PodamExclude
+    @ManyToOne
+	private  VaccineCardEntity vaccineCard;
+
     private String name;
     private String brandName;
     private Date nextDate;
     private Double dosis;
-
-    @PodamExclude
-    @ManyToOne
-	private  VaccineCardEntity vaccineCard;
 }

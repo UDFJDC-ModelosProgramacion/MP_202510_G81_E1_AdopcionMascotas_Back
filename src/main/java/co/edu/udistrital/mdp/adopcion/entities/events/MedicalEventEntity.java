@@ -12,5 +12,5 @@ public class MedicalEventEntity extends EventEntity {
     
     @PodamExclude
     @ManyToOne
-    VeterinarianEntity veterinarian;
+    private VeterinarianEntity veterinarian;
 }

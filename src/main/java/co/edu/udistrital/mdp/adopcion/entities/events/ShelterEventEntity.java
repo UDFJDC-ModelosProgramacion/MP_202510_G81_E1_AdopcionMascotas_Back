@@ -13,5 +13,5 @@ public class ShelterEventEntity extends EventEntity {
     
     @PodamExclude
     @ManyToOne
-    ShelterEntity shelter;
+    private ShelterEntity shelter;
 }

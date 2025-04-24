@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 @Entity
 public class MultimediaEntity {
-    String url;
-    String description;
-    MultimediaTypeEnum Type;
+    private String url;
+    private String description;
+    private MultimediaTypeEnum multimediaType;
 }

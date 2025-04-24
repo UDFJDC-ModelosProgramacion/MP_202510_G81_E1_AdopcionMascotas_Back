@@ -11,11 +11,11 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Data
 @Entity
 public class DisponibilityEntity {
-    DayOfWeek day;
-    LocalTime startHour;
-    LocalTime endHour;
+    private DayOfWeek day;
+    private LocalTime startHour;
+    private LocalTime endHour;
 
     @PodamExclude
     @ManyToOne
-    VeterinarianEntity veterinarian;
+    private VeterinarianEntity veterinarian;
 }

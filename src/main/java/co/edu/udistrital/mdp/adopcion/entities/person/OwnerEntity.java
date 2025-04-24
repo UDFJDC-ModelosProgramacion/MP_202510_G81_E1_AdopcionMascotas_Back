@@ -24,7 +24,7 @@ public class OwnerEntity extends PersonEntity {
 
     @PodamExclude
     @OneToMany(mappedBy="owner")
-	private List<AdoptionEntity> adoption = new ArrayList<>();
+	private List<AdoptionEntity> adoptions = new ArrayList<>();
 
     @PodamExclude
     @OneToMany(mappedBy="owner")

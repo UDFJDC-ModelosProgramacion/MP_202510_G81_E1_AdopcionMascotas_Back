@@ -11,7 +11,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class DisponibilityEntity extends BaseEntity {
+public class AvailabilityEntity extends BaseEntity {
     private DayOfWeek day;
     private LocalTime startHour;
     private LocalTime endHour;

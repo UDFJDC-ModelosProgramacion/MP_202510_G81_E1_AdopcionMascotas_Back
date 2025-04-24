@@ -11,6 +11,6 @@ import uk.co.jemos.podam.common.PodamExclude;
 @MappedSuperclass
 public abstract class EventEntity extends BaseEntity {
     @PodamExclude
-    Date date;
-    String description;
+    private Date date;
+    private String description;
 }

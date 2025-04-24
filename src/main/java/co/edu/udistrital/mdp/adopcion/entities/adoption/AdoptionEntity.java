@@ -6,16 +6,16 @@ import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 @Data
-@MappedSuperclass
+@Entity
 public class AdoptionEntity extends EventEntity{
     private String description;
     private String observations;
-    private AdoptionStatusEnum type;
+    private AdoptionStatusEnum adoptionStatus;
     
     @PodamExclude
     @ManyToOne
@@ -30,6 +30,6 @@ public class AdoptionEntity extends EventEntity{
     private PetEntity pet;
 
     @PodamExclude
-    @OneToOne(mappedBy = "adoption")
+    @OneToOne
     private AdoptionApplicationEntity adoptionApplication;
 }

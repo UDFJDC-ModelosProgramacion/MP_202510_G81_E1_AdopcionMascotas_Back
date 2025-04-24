@@ -39,7 +39,7 @@ private String behaviorProfile;
 
     @PodamExclude
     @OneToMany(mappedBy = "pet")
-    private List<AdoptionApplicationEntity> adoptionAplications = new ArrayList<>();
+    private final List<AdoptionApplicationEntity> adoptionApplications = new ArrayList<>();
 
     //List events
     @PodamExclude
@@ -63,4 +63,7 @@ private String behaviorProfile;
     @PodamExclude
     @OneToOne
     private VaccineCardEntity vaccineCard;
+    public List<AdoptionApplicationEntity> getAdoptionApplications() {
+        return adoptionApplications;
+    }
 }

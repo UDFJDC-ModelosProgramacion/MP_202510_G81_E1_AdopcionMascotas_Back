@@ -15,7 +15,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class AdoptionApplicationEntity extends EventEntity {
+public class AdoptionAplicationEntity extends EventEntity {
     private Date applicationDate;
     private Date applicationEnd;
     private String observations;

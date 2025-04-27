@@ -14,8 +14,8 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Data
 @Entity
 public class VaccineCardEntity extends MedicalEventEntity {
-    private Date LastVacineDate;
-    private Date LastDewormingDate;
+    private Date lastVacineDate;
+    private Date lastDewormingDate;
 
     @PodamExclude
     @OneToMany(mappedBy="vaccineCard")

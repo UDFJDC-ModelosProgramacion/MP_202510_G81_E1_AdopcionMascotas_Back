@@ -31,5 +31,5 @@ public class AdoptionEntity extends EventEntity{
 
     @PodamExclude
     @OneToOne
-    private AdoptionApplicationEntity adoptionApplication;
+    private AdoptionAplicationEntity adoptionApplication;
 }

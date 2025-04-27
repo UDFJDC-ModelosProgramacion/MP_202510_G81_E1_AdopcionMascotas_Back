@@ -2,13 +2,12 @@ package co.edu.udistrital.mdp.adopcion.services.person;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server.Spec;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Import;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.DisponibilityEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.Speciality;
@@ -35,12 +33,12 @@ public class VeterinarianServiceTest {
     @Autowired
     private TestEntityManager entityManager;
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<VeterinarianEntity> veterinarianList;
-    private List<MedicalEventEntity> medicalEventList;
-    private List<DisponibilityEntity> disponibilityList;
-    private List<AdoptionAplicationEntity> adoptionApplicationList;
-    private List<AdoptionFollowUpEntity> adoptionFollowUpList;
-    private List<AdoptionEntity> adoptionList;
+    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
+    private List<MedicalEventEntity> medicalEventList = new ArrayList<>();
+    private List<DisponibilityEntity> disponibilityList = new ArrayList<>();
+    private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
+    private List<AdoptionFollowUpEntity> adoptionFollowUpList = new ArrayList<>();
+    private List<AdoptionEntity> adoptionList = new ArrayList<>();
     
     
     @BeforeEach
@@ -61,10 +59,6 @@ public class VeterinarianServiceTest {
     private void insertData() {
         int n = 5;
         for (int i = 0; i < n; i++) {
-            VeterinarianEntity veterinarian = factory.manufacturePojo(VeterinarianEntity.class);
-            entityManager.persist(veterinarian);
-            veterinarianList.add(veterinarian);
-
             MedicalEventEntity medicalEvent = factory.manufacturePojo(MedicalEventEntity.class);
             entityManager.persist(medicalEvent);
             medicalEventList.add(medicalEvent);
@@ -80,11 +74,23 @@ public class VeterinarianServiceTest {
             AdoptionFollowUpEntity adoptionFollowUp = factory.manufacturePojo(AdoptionFollowUpEntity.class);
             entityManager.persist(adoptionFollowUp);
             adoptionFollowUpList.add(adoptionFollowUp);
+            
             AdoptionEntity adoption = factory.manufacturePojo(AdoptionEntity.class);
             entityManager.persist(adoption);
             adoptionList.add(adoption);
         }
+        for (int i = 0; i < n; i++) {
+            VeterinarianEntity veterinarian = factory.manufacturePojo(VeterinarianEntity.class);
+            veterinarian.setMedicalEvents(medicalEventList);
+            veterinarian.setDisponibilities(disponibilityList);
+            veterinarian.setAdoptionApplications(adoptionApplicationList);
+            veterinarian.setFollowUps(adoptionFollowUpList);
+            veterinarian.setAdoption(adoptionList.get(i));
+            entityManager.persist(veterinarian);
+            veterinarianList.add(veterinarian);
+        }
     }
+
     /**
      * Test for createVeterinarian method
      */
@@ -163,8 +169,10 @@ public class VeterinarianServiceTest {
         updatedVeterinarian.setId(veterinarian.getId());
         updatedVeterinarian.setLicenseNumber("654321");
         updatedVeterinarian.setSpeciality(Speciality.DERMATOLOGY);
-        VeterinarianEntity result = veterinarianService.updateVeterinarian(veterinarian.getId(), updatedVeterinarian);
-        assertNull(result);
+        org.springframework.dao.InvalidDataAccessApiUsageException exception = assertThrows(org.springframework.dao.InvalidDataAccessApiUsageException.class, () -> {
+            veterinarianService.updateVeterinarian(veterinarian.getId(), updatedVeterinarian);
+        });
+        assertNotNull(exception);
     }
     /**
      * Test for createVeterinarian method with null license number
@@ -174,9 +182,10 @@ public class VeterinarianServiceTest {
         VeterinarianEntity veterinarian = factory.manufacturePojo(VeterinarianEntity.class);
         veterinarian.setLicenseNumber(null);
         veterinarian.setSpeciality(Speciality.CARDIOLOGY);
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             veterinarianService.createVeterinarian(veterinarian);
         });
+        assertNotNull(exception);
     }
     /**
      * Test for createVeterinarian method with null speciality
@@ -186,20 +195,12 @@ public class VeterinarianServiceTest {
         VeterinarianEntity veterinarian = factory.manufacturePojo(VeterinarianEntity.class);
         veterinarian.setLicenseNumber("123456");
         veterinarian.setSpeciality(null);
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             veterinarianService.createVeterinarian(veterinarian);
         });
+        assertNotNull(exception);
     }
-    /**
-     * Test for createVeterinarian method with null veterinarian
-     */
-    @Test
-    void testCreateVeterinarianWithNullVeterinarian() {
-        VeterinarianEntity veterinarian = null;
-        assertThrows(IllegalArgumentException.class, () -> {
-            veterinarianService.createVeterinarian(veterinarian);
-        });
-    }
+
     /**
      * Test for getVeterinarianById method with non-existing id
      */

@@ -3,13 +3,13 @@ package co.edu.udistrital.mdp.adopcion.services.events;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -61,7 +61,7 @@ public class MedicalEventService {
         }
     }
 
-
+    @Transactional
     public void deleteMedicalEvent(Long id) {
         medicalEventRepository.deleteById(id);
     }

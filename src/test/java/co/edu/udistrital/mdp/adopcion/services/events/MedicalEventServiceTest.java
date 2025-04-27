@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.adopcion.services.events;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,13 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
+
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import jakarta.transaction.Transactional;
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
+
 
 @DataJpaTest
 @Transactional
@@ -30,11 +33,11 @@ public class MedicalEventServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<MedicalEventEntity> medicalEventList;
-    private List<VeterinarianEntity> veterinarianList;
-    private List<PetEntity> petList;
-    private List<Date> dateList;
-    private List<String> descriptionList;
+    private List<MedicalEventEntity> medicalEventList = new ArrayList<>();
+    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
+    private List<PetEntity> petList = new ArrayList<>();
+    private List<Date> dateList = new ArrayList<>();
+    private List<String> descriptionList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -43,9 +46,9 @@ public class MedicalEventServiceTest {
     }
 
     private void clearData() {
-        entityManager.getEntityManager().createQuery("delete from MedicalEventEntity");
-        entityManager.getEntityManager().createQuery("delete from PetEntity");
-        entityManager.getEntityManager().createQuery("delete from VeterinarianEntity");
+        entityManager.getEntityManager().createQuery("delete from MedicalEventEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from PetEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from VeterinarianEntity").executeUpdate();
     }
 
     private void insertData() {
@@ -54,20 +57,18 @@ public class MedicalEventServiceTest {
             VeterinarianEntity veterinarian = factory.manufacturePojo(VeterinarianEntity.class);
             entityManager.persist(veterinarian);
             veterinarianList.add(veterinarian);
-
+    
             PetEntity pet = factory.manufacturePojo(PetEntity.class);
             entityManager.persist(pet);
             petList.add(pet);
-
+    
             Date date = factory.manufacturePojo(Date.class);
-            entityManager.persist(date);
             dateList.add(date);
-
+    
             String description = factory.manufacturePojo(String.class);
-            entityManager.persist(description);
             descriptionList.add(description);
         }
-
+    
         for (int i = 0; i < n; i++) {
             MedicalEventEntity medicalEvent = factory.manufacturePojo(MedicalEventEntity.class);
             medicalEvent.setVeterinarian(veterinarianList.get(i));
@@ -89,10 +90,11 @@ public class MedicalEventServiceTest {
         medicalEvent.setPet(petList.get(0));
         medicalEvent.setDate(dateList.get(0));
         medicalEvent.setDescription(descriptionList.get(0));
-        
+
         MedicalEventEntity createdMedicalEvent = medicalEventService.createMedicalEvent(medicalEvent);
         assertNotNull(createdMedicalEvent);
-        MedicalEventEntity foundMedicalEvent = entityManager.find(MedicalEventEntity.class, createdMedicalEvent.getId());
+        MedicalEventEntity foundMedicalEvent = entityManager.find(MedicalEventEntity.class,
+                createdMedicalEvent.getId());
         assertEquals(medicalEvent.getVeterinarian().getId(), foundMedicalEvent.getVeterinarian().getId());
         assertEquals(medicalEvent.getPet().getId(), foundMedicalEvent.getPet().getId());
         assertEquals(medicalEvent.getDate(), foundMedicalEvent.getDate());
@@ -107,9 +109,10 @@ public class MedicalEventServiceTest {
         medicalEvent.setDate(dateList.get(0));
         medicalEvent.setDescription(descriptionList.get(0));
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             medicalEventService.createMedicalEvent(medicalEvent);
         });
+        assertNotNull(exception.getMessage());
     }
 
     @Test
@@ -120,13 +123,14 @@ public class MedicalEventServiceTest {
         medicalEvent.setDate(dateList.get(0));
         medicalEvent.setDescription(descriptionList.get(0));
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             medicalEventService.createMedicalEvent(medicalEvent);
         });
+        assertNotNull(exception.getMessage());
     }
 
     @Test
-    void testCreateMedicalEventWithValidParams(){
+    void testCreateMedicalEventWithValidParams() {
         MedicalEventEntity medicalEvent = factory.manufacturePojo(MedicalEventEntity.class);
         medicalEvent.setVeterinarian(veterinarianList.get(0));
         medicalEvent.setPet(petList.get(0));
@@ -139,5 +143,77 @@ public class MedicalEventServiceTest {
         assertEquals(medicalEvent.getPet().getId(), createdMedicalEvent.getPet().getId());
         assertEquals(medicalEvent.getDate(), createdMedicalEvent.getDate());
         assertEquals(medicalEvent.getDescription(), createdMedicalEvent.getDescription());
+    }
+
+    /**
+     * Test for getAllMedicalEvents method
+     */
+    @Test
+    void testGetAllMedicalEvents() {
+        List<MedicalEventEntity> foundMedicalEvents = medicalEventService.getAllMedicalEvents();
+        assertNotNull(foundMedicalEvents);
+        assertEquals(medicalEventList.size(), foundMedicalEvents.size());
+        for (int i = 0; i < medicalEventList.size(); i++) {
+            assertEquals(medicalEventList.get(i).getId(), foundMedicalEvents.get(i).getId());
+        }
+    }
+
+    /**
+     * Test for getMedicalEventById method
+     */
+    @Test
+    void testGetMedicalEventById() {
+        MedicalEventEntity medicalEvent = medicalEventList.get(0);
+        MedicalEventEntity foundMedicalEvent = medicalEventService.getMedicalEventById(medicalEvent.getId());
+        assertNotNull(foundMedicalEvent);
+        assertEquals(medicalEvent.getId(), foundMedicalEvent.getId());
+        assertEquals(medicalEvent.getVeterinarian().getId(), foundMedicalEvent.getVeterinarian().getId());
+        assertEquals(medicalEvent.getPet().getId(), foundMedicalEvent.getPet().getId());
+        assertEquals(medicalEvent.getDate(), foundMedicalEvent.getDate());
+        assertEquals(medicalEvent.getDescription(), foundMedicalEvent.getDescription());
+    }
+
+    /**
+     * Test for getMedicalEventById method with non-existing ID
+     */
+    @Test
+    void testGetMedicalEventByIdWithNonExistingId() {
+        MedicalEventEntity foundMedicalEvent = medicalEventService.getMedicalEventById(999L);
+        assertNull(foundMedicalEvent);
+    }
+
+    /**
+     * Test for updateMedicalEvent method
+     */
+    @Test
+    void testUpdateMedicalEvent() {
+        MedicalEventEntity medicalEvent = medicalEventList.get(0);
+        MedicalEventEntity updatedMedicalEvent = factory.manufacturePojo(MedicalEventEntity.class);
+        updatedMedicalEvent.setVeterinarian(veterinarianList.get(1));
+        updatedMedicalEvent.setPet(petList.get(1));
+        updatedMedicalEvent.setDate(dateList.get(1));
+        updatedMedicalEvent.setDescription(descriptionList.get(1));
+
+        MedicalEventEntity result = medicalEventService.updateMedicalEvent(medicalEvent.getId(), updatedMedicalEvent);
+        assertNotNull(result);
+        assertEquals(updatedMedicalEvent.getVeterinarian().getId(), result.getVeterinarian().getId());
+        assertEquals(updatedMedicalEvent.getPet().getId(), result.getPet().getId());
+        assertEquals(updatedMedicalEvent.getDate(), result.getDate());
+        assertEquals(updatedMedicalEvent.getDescription(), result.getDescription());
+    }
+
+    /**
+     * Test for updateMedicalEvent method with non-existing ID
+     */
+    @Test
+    void testUpdateMedicalEventWithNonExistingId() {
+        MedicalEventEntity medicalEvent = factory.manufacturePojo(MedicalEventEntity.class);
+        medicalEvent.setVeterinarian(veterinarianList.get(0));
+        medicalEvent.setPet(petList.get(0));
+        medicalEvent.setDate(dateList.get(0));
+        medicalEvent.setDescription(descriptionList.get(0));
+
+        MedicalEventEntity result = medicalEventService.updateMedicalEvent(999L, medicalEvent);
+        assertNull(result);
     }
 }

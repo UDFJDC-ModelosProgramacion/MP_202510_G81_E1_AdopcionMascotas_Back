@@ -51,7 +51,7 @@ public class AdoptionService {
         if (adoption.getAdoptionStatus() == null) {
             throw new IllegalArgumentException("Adoption status must not be null");
         }
-        adoptionRepository.save(adoption);
+        return adoptionRepository.save(adoption);
     }
     @Transactional
     public List<AdoptionEntity> getAllAdoptions() {

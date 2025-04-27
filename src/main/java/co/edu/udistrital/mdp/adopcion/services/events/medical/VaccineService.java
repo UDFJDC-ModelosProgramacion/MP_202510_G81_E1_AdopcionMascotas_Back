@@ -15,17 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class VaccineService {
-
-    private final ShelterEventRepository shelterEventRepository;
+    
     @Autowired
     private VaccineRepository vaccineRepository;
 
     @Autowired
     private VaccineCardRepository vaccineCardRepository;
-
-    VaccineService(ShelterEventRepository shelterEventRepository) {
-        this.shelterEventRepository = shelterEventRepository;
-    }
 
     @Transactional
     public VaccineEntity createVaccine(VaccineEntity vaccine) {
@@ -60,8 +55,8 @@ public class VaccineService {
     @Transactional
     public VaccineEntity updateVaccine(Long id){
         if (vaccineRepository.existsById(id)) {
-            vaccine.setId(id);
-            return vaccineRepository.save(vaccine);
+            VaccineEntity vaccine = vaccineRepository.findById(id).orElse(null);
+            return vaccine;
         } else {
             return null;
         }

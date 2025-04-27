@@ -59,7 +59,7 @@ public class DewormingServiceTest {
         deworming.setVaccineCard(vaccineCardList.get(0));
         DewormingEntity createdDeworming = dewormingService.createDeworming(deworming);
         assertNotNull(createdDeworming);
-        assertEquals(deworming.getName(), createdDeworming.getName());
+        assertEquals(deworming.getBrandName(), createdDeworming.getBrandName());
         assertEquals(deworming.getBrandName(), createdDeworming.getBrandName());
         assertEquals(deworming.getNextDate(), createdDeworming.getNextDate());
         assertEquals(deworming.getDosis(), createdDeworming.getDosis());
@@ -70,7 +70,14 @@ public class DewormingServiceTest {
     @Test
     void testGetAllDewormings() {
         List<DewormingEntity> dewormings = dewormingService.getAllDewormings();
+        assertNotNull(dewormings);
         assertEquals(dewormingList.size(), dewormings.size());
+        for (int i = 0; i < dewormingList.size(); i++) {
+            assertEquals(dewormingList.get(i).getId(), dewormings.get(i).getId());
+            assertEquals(dewormingList.get(i).getBrandName(), dewormings.get(i).getBrandName());
+            assertEquals(dewormingList.get(i).getNextDate(), dewormings.get(i).getNextDate());
+            assertEquals(dewormingList.get(i).getDosis(), dewormings.get(i).getDosis());
+        }
     }
     /**
      * Test for getDewormingById method
@@ -80,7 +87,7 @@ public class DewormingServiceTest {
         DewormingEntity deworming = dewormingList.get(0);
         DewormingEntity foundDeworming = dewormingService.getDewormingById(deworming.getId());
         assertNotNull(foundDeworming);
-        assertEquals(deworming.getName(), foundDeworming.getName());
+        assertEquals(deworming.getBrandName(), foundDeworming.getBrandName());
         assertEquals(deworming.getBrandName(), foundDeworming.getBrandName());
         assertEquals(deworming.getNextDate(), foundDeworming.getNextDate());
         assertEquals(deworming.getDosis(), foundDeworming.getDosis());
@@ -96,7 +103,7 @@ public class DewormingServiceTest {
         updatedDeworming.setVaccineCard(vaccineCardList.get(0));
         DewormingEntity result = dewormingService.updateDeworming(deworming.getId(), updatedDeworming);
         assertNotNull(result);
-        assertEquals(updatedDeworming.getName(), result.getName());
+        assertEquals(updatedDeworming.getBrandName(), result.getBrandName());
         assertEquals(updatedDeworming.getBrandName(), result.getBrandName());
         assertEquals(updatedDeworming.getNextDate(), result.getNextDate());
         assertEquals(updatedDeworming.getDosis(), result.getDosis());

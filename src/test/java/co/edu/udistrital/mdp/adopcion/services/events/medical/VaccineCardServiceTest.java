@@ -1,5 +1,8 @@
 package co.edu.udistrital.mdp.adopcion.services.events.medical;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,11 @@
 package co.edu.udistrital.mdp.adopcion.services.events.medical;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -95,7 +98,7 @@ public class VaccineServiceTest {
     void testUpdateVaccine() {
         VaccineEntity vaccine = vaccineList.get(0);
         vaccine.setName("Updated Name");
-        VaccineEntity updatedVaccine = vaccineService.updateVaccine(vaccine.getId(), vaccine);
+        VaccineEntity updatedVaccine = vaccineService.updateVaccine(vaccine.getId());
         assertNotNull(updatedVaccine);
         assertEquals(vaccine.getName(), updatedVaccine.getName());
     }

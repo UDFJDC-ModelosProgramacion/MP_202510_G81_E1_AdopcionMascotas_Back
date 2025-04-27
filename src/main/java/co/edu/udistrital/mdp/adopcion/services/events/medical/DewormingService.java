@@ -1,26 +1,27 @@
 package co.edu.udistrital.mdp.adopcion.services.events.medical;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.udistrital.mdp.adopcion.entities.events.medical.DewormingEntity;
 import co.edu.udistrital.mdp.adopcion.repositories.event.medical.DewormingRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+
 public class DewormingService {
     @Autowired
-    private final DewormingRepository dewormingRepository;
+    private  DewormingRepository dewormingRepository;
 
     @Autowired
-    private final VaccineCardService vaccineCardService;
+    private  VaccineCardService vaccineCardService;
 
     @Transactional
     public DewormingEntity createDeworming(DewormingEntity deworming) {
-        if (deworming.getName() == null) {
-            throw new IllegalArgumentException("Name must not be null");
-        }
         if (deworming.getBrandName() == null) {
             throw new IllegalArgumentException("Brand name must not be null");
         }

@@ -6,7 +6,7 @@ import java.util.List;
 
 
 import co.edu.udistrital.mdp.adopcion.entities.BaseEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
@@ -39,7 +39,7 @@ private String behaviorProfile;
 
     @PodamExclude
     @OneToMany(mappedBy = "pet")
-    private final List<AdoptionApplicationEntity> adoptionApplications = new ArrayList<>();
+    private final List<AdoptionAplicationEntity> adoptionApplications = new ArrayList<>();
 
     //List events
     @PodamExclude
@@ -63,7 +63,7 @@ private String behaviorProfile;
     @PodamExclude
     @OneToOne
     private VaccineCardEntity vaccineCard;
-    public List<AdoptionApplicationEntity> getAdoptionApplications() {
+    public List<AdoptionAplicationEntity> getAdoptionApplications() {
         return adoptionApplications;
     }
 }

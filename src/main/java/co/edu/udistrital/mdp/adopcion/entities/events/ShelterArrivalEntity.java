@@ -6,7 +6,6 @@ import co.edu.udistrital.mdp.adopcion.entities.pet.PetConditionEnum;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;

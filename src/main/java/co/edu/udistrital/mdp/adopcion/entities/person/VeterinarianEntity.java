@@ -8,6 +8,7 @@ import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
+import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -41,4 +42,8 @@ public class VeterinarianEntity extends PersonEntity {
     @PodamExclude
     @OneToMany(mappedBy="veterinarian")
     private List<AdoptionTestEntity> adoptionTests = new ArrayList<>();
+
+    @PodamExclude
+    @OneToMany(mappedBy="veterinarian")
+    private List<ShelterArrivalEntity> shelterArrivals = new ArrayList<>();
 }

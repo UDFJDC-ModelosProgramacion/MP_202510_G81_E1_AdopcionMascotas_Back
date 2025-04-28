@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
@@ -14,7 +15,6 @@ import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionTestReposito
 import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.DisponibilityRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

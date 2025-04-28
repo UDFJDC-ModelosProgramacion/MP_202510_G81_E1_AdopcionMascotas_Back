@@ -3,6 +3,7 @@ package co.edu.udistrital.mdp.adopcion.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.ShelterEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import jakarta.persistence.Entity;
@@ -25,4 +26,9 @@ public class ShelterEntity extends BaseEntity {
     @PodamExclude
     @OneToMany(mappedBy = "shelter")
     private List<PetEntity> pets = new ArrayList<>();
+
+    @PodamExclude
+    @OneToMany(mappedBy = "shelter")
+    private List<ShelterArrivalEntity> shelterArrivals = new ArrayList<>();
+    
 }

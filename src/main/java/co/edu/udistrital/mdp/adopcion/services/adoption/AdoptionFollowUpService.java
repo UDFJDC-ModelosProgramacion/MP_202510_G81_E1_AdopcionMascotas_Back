@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

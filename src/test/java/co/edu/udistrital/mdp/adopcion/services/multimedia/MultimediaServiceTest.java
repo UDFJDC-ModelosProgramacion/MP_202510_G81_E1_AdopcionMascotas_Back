@@ -6,14 +6,13 @@ import java.util.List;
 
 import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;

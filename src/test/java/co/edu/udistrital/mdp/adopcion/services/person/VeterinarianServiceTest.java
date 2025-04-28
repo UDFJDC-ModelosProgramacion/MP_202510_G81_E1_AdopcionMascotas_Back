@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.context.annotation.Import;
 
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
@@ -19,7 +20,7 @@ import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.DisponibilityEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.Speciality;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
-import jakarta.transaction.Transactional;
+
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 

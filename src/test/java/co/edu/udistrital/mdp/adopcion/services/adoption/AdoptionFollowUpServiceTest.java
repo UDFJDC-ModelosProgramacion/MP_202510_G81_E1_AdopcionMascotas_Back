@@ -71,7 +71,7 @@ public class AdoptionFollowUpServiceTest {
         AdoptionFollowUpEntity followUp = factory.manufacturePojo(AdoptionFollowUpEntity.class);
         VeterinarianEntity vet = veterinarianList.get(0);
         followUp.setVeterinarian(vet);
-        followUp.setFollowUpStatus(FollowUpStatusEnum.IN_PROGRESS);
+        followUp.setFollowUpStatus(FollowUpStatusEnum.SCHEDULED);
         followUp.setPetCondition(PetConditionEnum.HEALTHY);
         
         AdoptionFollowUpEntity created = adoptionFollowUpService.createFollowUp(followUp);

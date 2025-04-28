@@ -29,9 +29,9 @@ public class ShelterServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<ShelterEntity> shelterList;
-    private List<ShelterEventEntity> shelterEventList;
-    private List<PetEntity> petList;
+    private List<ShelterEntity> shelterList = new java.util.ArrayList<>();
+    private List<ShelterEventEntity> shelterEventList = new java.util.ArrayList<>();
+    private List<PetEntity> petList = new java.util.ArrayList<>();
 
 @BeforeEach
     void setUp() {
@@ -153,8 +153,9 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullName() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setName(null);
-        ShelterEntity createdShelter = shelterService.createShelter(shelter);
-        assertNull(createdShelter);
+        assertThrows(IllegalArgumentException.class, () -> {
+            shelterService.createShelter(shelter);
+        });
     }
     /**
      * Test for createShelter method with null address
@@ -163,8 +164,9 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullAddress() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setAddress(null);
-        ShelterEntity createdShelter = shelterService.createShelter(shelter);
-        assertNull(createdShelter);
+        assertThrows(IllegalArgumentException.class, () -> {
+            shelterService.createShelter(shelter);
+        });
     }
     /**
      * Test for createShelter method with null phone
@@ -173,8 +175,9 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullPhone() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setPhone(null);
-        ShelterEntity createdShelter = shelterService.createShelter(shelter);
-        assertNull(createdShelter);
+        assertThrows(IllegalArgumentException.class, () -> {
+            shelterService.createShelter(shelter);
+        });
     }
     /**
      * Test for createShelter method with null email
@@ -183,7 +186,8 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullEmail() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setEmail(null);
-        ShelterEntity createdShelter = shelterService.createShelter(shelter);
-        assertNull(createdShelter);
+        assertThrows(IllegalArgumentException.class, () -> {
+            shelterService.createShelter(shelter);
+        });
     }
 }

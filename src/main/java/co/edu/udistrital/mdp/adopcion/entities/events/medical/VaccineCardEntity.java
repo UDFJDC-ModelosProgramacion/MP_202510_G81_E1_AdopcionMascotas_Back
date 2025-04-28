@@ -21,9 +21,11 @@ public class VaccineCardEntity extends MedicalEventEntity {
     @OneToMany(mappedBy="vaccineCard")
 	private List<VaccineEntity> vaccines = new ArrayList<>();
 
+    @PodamExclude
     @OneToMany(mappedBy="vaccineCard")
 	private List<DewormingEntity> dewormings = new ArrayList<>();
 
+    @PodamExclude
     @OneToOne(mappedBy="vaccineCard")
     private PetEntity pet;
 }

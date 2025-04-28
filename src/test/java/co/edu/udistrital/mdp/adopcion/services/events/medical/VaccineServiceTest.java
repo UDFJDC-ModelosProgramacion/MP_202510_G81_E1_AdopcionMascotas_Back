@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.adopcion.services.events.medical;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +30,8 @@ public class VaccineServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<VaccineEntity> vaccineList;
-    private List<VaccineCardEntity> vaccineCardList;
+    private List<VaccineEntity> vaccineList = new ArrayList<>();
+    private List<VaccineCardEntity> vaccineCardList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {

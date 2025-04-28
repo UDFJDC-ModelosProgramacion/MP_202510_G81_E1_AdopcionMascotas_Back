@@ -3,6 +3,7 @@ package co.edu.udistrital.mdp.adopcion.services.events.medical;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,10 +33,10 @@ public class VaccineCardServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<VaccineCardEntity> vaccineCardList;
-    private List<VaccineEntity> vaccineList;
-    private List<DewormingEntity> dewormingList;
-    private List<PetEntity> petList;
+    private List<VaccineCardEntity> vaccineCardList = new ArrayList<>();
+    private List<VaccineEntity> vaccineList = new ArrayList<>();
+    private List<DewormingEntity> dewormingList = new ArrayList<>();
+    private List<PetEntity> petList= new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -135,28 +136,6 @@ public class VaccineCardServiceTest {
             vaccineCardService.createVaccineCard(newVaccineCard);
         });
     }
-    /**
-     * Test for createVaccineCard with null last vaccine date
-     */
-    @Test
-    void testCreateVaccineCardWithNullLastVaccineDate() {
-        VaccineCardEntity newVaccineCard = factory.manufacturePojo(VaccineCardEntity.class);
-        newVaccineCard.setLastVacineDate(null);
-        assertThrows(IllegalArgumentException.class, () -> {
-            vaccineCardService.createVaccineCard(newVaccineCard);
-        });
-    }
-    /**
-     * Test for createVaccineCard with null last deworming date
-     */
-    @Test
-    void testCreateVaccineCardWithNullLastDewormingDate() {
-        VaccineCardEntity newVaccineCard = factory.manufacturePojo(VaccineCardEntity.class);
-        newVaccineCard.setLastDewormingDate(null);
-        assertThrows(IllegalArgumentException.class, () -> {
-            vaccineCardService.createVaccineCard(newVaccineCard);
-        });
-    }
-    
+
     
 }

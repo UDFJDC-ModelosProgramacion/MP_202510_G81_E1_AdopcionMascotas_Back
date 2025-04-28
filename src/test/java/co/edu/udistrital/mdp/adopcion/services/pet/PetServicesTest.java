@@ -149,7 +149,7 @@ public class PetServicesTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             petService.createPet(pet);
         });
-        String expectedMessage = "La tarjeta de vacunación no debe estar vacía";
+        String expectedMessage = "The vacine card of the pet must not be empty";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -199,7 +199,7 @@ public class PetServicesTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             petService.updatePet(pet.getId(), updatedPet);
         });
-        String expectedMessage = "La tarjeta de vacunación no debe estar vacía";
+        String expectedMessage = "The vacine card of the pet must not be empty";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }

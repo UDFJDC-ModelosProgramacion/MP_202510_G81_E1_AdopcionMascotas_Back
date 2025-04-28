@@ -48,7 +48,7 @@ public class PetServices {
             throw new IllegalArgumentException("The birth date of the pet must not be empty");
         }
         if (pet.getVacineCard() == null) {
-            throw new IllegalArgumentException("La tarjeta de vacunación no debe estar vacía");
+            throw new IllegalArgumentException("The vacine card of the pet must not be empty");
         }
         pet.setOwner(null);
         
@@ -71,14 +71,11 @@ public class PetServices {
     }
     @Transactional
     public PetEntity updatePet(Long id, PetEntity pet, boolean isAdmin) {
-        // Buscar la mascota existente
         PetEntity existingPet = petRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Mascota no encontrada"));
-        
-        // Validar que no se intente modificar atributos restringidos si no es administrador
+                .orElseThrow(() -> new IllegalArgumentException("Pet not found"));
         if (!isAdmin) {
             if (pet.getBirthDate() != null && !pet.getBirthDate().equals(existingPet.getBirthDate())) {
-                throw new SecurityException("Solo un administrador puede modificar la fecha de nacimiento de la mascota");
+                throw new SecurityException("You do not have permission to change the birth date");
             }
         }
         if (pet.getName() != null && !pet.getName().trim().isEmpty()) {
@@ -94,6 +91,4 @@ public class PetServices {
         }
         return petRepository.save(existingPet);
     }
-
-    // Method removed as it was a duplicate and unused
 }

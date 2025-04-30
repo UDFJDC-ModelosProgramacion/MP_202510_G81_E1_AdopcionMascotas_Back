@@ -46,10 +46,6 @@ public class OwnerService {
             throw new IllegalArgumentException("The last name must not be empty");
         }
         
-        if (owner.getIdentificationNumber() == null || owner.getIdentificationNumber().trim().isEmpty()) {
-            throw new IllegalArgumentException("The identification number must not be empty");
-        }
-        
         if (owner.getPhoneNumber() == null || owner.getPhoneNumber().trim().isEmpty()) {
             throw new IllegalArgumentException("The phone number must not be empty");
         }
@@ -64,9 +60,6 @@ public class OwnerService {
         
         if (owner.getHouseType() == null) {
             throw new IllegalArgumentException("The house type must not be null");
-        }
-        if (ownerRepository.existsByIdentificationNumber(owner.getIdentificationNumber())) {
-            throw new IllegalArgumentException("The identification number already exists");
         }
         
         return ownerRepository.save(owner);

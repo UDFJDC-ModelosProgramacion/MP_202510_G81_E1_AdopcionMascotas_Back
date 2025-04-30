@@ -1,10 +1,12 @@
 package co.edu.udistrital.mdp.adopcion.services.person;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +15,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
-import co.edu.udistrital.mdp.adopcion.entities.person.DisponibilityEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
-import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
-import co.edu.udistrital.mdp.adopcion.entities.events.ShelterEventEntity;
-
+import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -32,18 +29,15 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(OwnerService.class)
-public class OwnerServicesTest {
+public class OwnerServiceTest {
     @Autowired
     private OwnerService ownerService;
     @Autowired
     private TestEntityManager entityManager;
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<OwnerEntity> ownerList = new ArrayList<>();
-    private List<ShelterArrivalEntity> shelterArrivalList = new ArrayList<>();
-    private List<ShelterEventEntity> shelterEventList = new ArrayList<>();
-    private List<DisponibilityEntity> disponibilityList = new ArrayList<>();
+    private List<OwnerEntity> ownerList = new ArrayList<>();   
+    private List<PetEntity> petList = new ArrayList<>();
     private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
-    private List<AdoptionFollowUpEntity> adoptionFollowUpList = new ArrayList<>();
     private List<AdoptionTestEntity> adoptionTestList = new ArrayList<>();
     private List<AdoptionEntity> adoptionList = new ArrayList<>();
 
@@ -56,6 +50,7 @@ public class OwnerServicesTest {
     }
     private void clearData() {
         entityManager.getEntityManager().createQuery("delete from OwnerEntity");
+        entityManager.getEntityManager().createQuery("delete from PetEntity");
         entityManager.getEntityManager().createQuery("delete from ShelterArrivalEntity");
         entityManager.getEntityManager().createQuery("delete from ShelterEventEntity");
         entityManager.getEntityManager().createQuery("delete from DisponibilityEntity");
@@ -68,47 +63,33 @@ public class OwnerServicesTest {
     private void insertData() {
         int n = 5;
         for (int i = 0; i < n; i++) {
-            OwnerEntity owner = factory.manufacturePojo(OwnerEntity.class);
-            entityManager.persist(owner);
-            ownerList.add(owner);
-        }
-        for (int i = 0; i < n; i++) {
-            ShelterArrivalEntity shelterArrival = factory.manufacturePojo(ShelterArrivalEntity.class);
-            entityManager.persist(shelterArrival);
-            shelterArrivalList.add(shelterArrival);
-        }
-        for (int i = 0; i < n; i++) {
-            ShelterEventEntity shelterEvent = factory.manufacturePojo(ShelterEventEntity.class);
-            entityManager.persist(shelterEvent);
-            shelterEventList.add(shelterEvent);
-        }
-        for (int i = 0; i < n; i++) {
-            DisponibilityEntity disponibility = factory.manufacturePojo(DisponibilityEntity.class);
-            entityManager.persist(disponibility);
-            disponibilityList.add(disponibility);
-        }
-        for (int i = 0; i < n; i++) {
-            AdoptionAplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
-            entityManager.persist(adoptionApplication);
-            adoptionApplicationList.add(adoptionApplication);
-        }
-        for (int i = 0; i < n; i++) {
-            AdoptionFollowUpEntity adoptionFollowUp = factory.manufacturePojo(AdoptionFollowUpEntity.class);
-            entityManager.persist(adoptionFollowUp);
-            adoptionFollowUpList.add(adoptionFollowUp);
-        }
-        for (int i = 0; i < n; i++) {
-            AdoptionTestEntity adoptionTest = factory.manufacturePojo(AdoptionTestEntity.class);
-            entityManager.persist(adoptionTest);
-            adoptionTestList.add(adoptionTest);
-        }
-        for (int i = 0; i < n; i++) {
             AdoptionEntity adoption = factory.manufacturePojo(AdoptionEntity.class);
             entityManager.persist(adoption);
             adoptionList.add(adoption);
 
-        }
+            AdoptionTestEntity adoptionTest = factory.manufacturePojo(AdoptionTestEntity.class);
+            entityManager.persist(adoptionTest);
+            adoptionTestList.add(adoptionTest);
 
+            AdoptionAplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
+            entityManager.persist(adoptionApplication);
+            adoptionApplicationList.add(adoptionApplication);
+
+            PetEntity pet = factory.manufacturePojo(PetEntity.class);
+            pet.setAdoption(adoption);
+            entityManager.persist(pet);
+            petList.add(pet);
+
+            OwnerEntity owner = factory.manufacturePojo(OwnerEntity.class);
+            entityManager.persist(owner);
+            ownerList.add(owner);
+
+            owner.getAdoptions().add(adoption);
+            owner.getAdoptionApplications().add(adoptionApplication);
+            owner.getAdoptionTests().add(adoptionTest);
+            owner.getPets().add(pet);
+            
+        }
     }
     @Test
     void testCreateOwner() {
@@ -118,9 +99,11 @@ public class OwnerServicesTest {
         OwnerEntity foundOwner = entityManager.find(OwnerEntity.class, createdOwner.getId());
         assertEquals(newOwner.getFirstName(), foundOwner.getFirstName());
         assertEquals(newOwner.getLastName(), foundOwner.getLastName());
-        assertEquals(newOwner.getIdentificationNumber(), foundOwner.getIdentificationNumber());
         assertEquals(newOwner.getPhoneNumber(), foundOwner.getPhoneNumber());
         assertEquals(newOwner.getEmail(), foundOwner.getEmail());
+        assertEquals(newOwner.getAddress(), foundOwner.getAddress());
+        assertEquals(newOwner.getHouseType(), foundOwner.getHouseType());
+        assertEquals(newOwner.getPets(), foundOwner.getPets());
     }
     @Test
     void testCreateOwnerWithNullName() {

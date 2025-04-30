@@ -1,7 +1,5 @@
 package co.edu.udistrital.mdp.adopcion.services.pet;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +10,9 @@ import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepo
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionTestRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
-import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.DisponibilityRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
-
+import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

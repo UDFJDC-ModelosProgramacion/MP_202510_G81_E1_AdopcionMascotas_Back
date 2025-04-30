@@ -1,7 +1,5 @@
 package co.edu.udistrital.mdp.adopcion.services.person;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,18 +73,6 @@ public class OwnerService {
             return null;
         }
         
-        if (owner.getIdentificationNumber() != null && 
-            !owner.getIdentificationNumber().equals(existingOwner.getIdentificationNumber())) {
-            
-            if (!isAdmin) {
-                throw new SecurityException("Only an admin can change the identification number");
-            }
-            
-            if (ownerRepository.existsByIdentificationNumber(owner.getIdentificationNumber())) {
-                throw new IllegalArgumentException("Your identification number already exists");
-            }
-        }
-        
 
         owner.setId(id);
         owner.setAdoptions(existingOwner.getAdoptions());
@@ -96,6 +82,7 @@ public class OwnerService {
         
         return ownerRepository.save(owner);
     }
+    
     @Transactional
     public void deleteOwner(Long id, boolean isAdmin) {
         if (!isAdmin) {
@@ -104,12 +91,6 @@ public class OwnerService {
         if (!ownerRepository.existsById(id)) {
             throw new IllegalArgumentException("The owner with the given ID does not exist");
         }
-        medicalEventRepository.deleteByOwnerId(id);
-        disponibilityRepository.deleteByOwnerId(id);
-        adoptionApplicationRepository.deleteByOwnerId(id);
-        adoptionFollowUpRepository.deleteByOwnerId(id);
-        adoptionRepository.deleteByOwnerId(id);
-        adoptionTestRepository.deleteByOwnerId(id);
         
         ownerRepository.deleteById(id);
     }

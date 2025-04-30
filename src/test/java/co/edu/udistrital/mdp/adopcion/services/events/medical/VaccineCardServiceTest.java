@@ -1,24 +1,22 @@
 package co.edu.udistrital.mdp.adopcion.services.events.medical;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.DewormingEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import co.edu.udistrital.mdp.adopcion.services.events.MedicalEventService;
-import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -61,13 +59,18 @@ public class VaccineCardServiceTest {
             entityManager.persist(vaccineCard);
             vaccineCardList.add(vaccineCard);
 
-            VaccineEntity vaccine = factory.manufacturePojo(VaccineEntity.class);
-            entityManager.persist(vaccine);
-            vaccineList.add(vaccine);
-
+            
             DewormingEntity deworming = factory.manufacturePojo(DewormingEntity.class);
+            deworming.setPet(pet);
             entityManager.persist(deworming);
             dewormingList.add(deworming);
+            
+            VaccineEntity vaccine = factory.manufacturePojo(VaccineEntity.class);
+            vaccineCard.setPet(pet);
+            vaccineCard.setVaccines(vaccineList);
+            vaccineCard.setDewormings(dewormingList);
+            entityManager.persist(vaccine);
+            vaccineList.add(vaccine);
         }
     }
 

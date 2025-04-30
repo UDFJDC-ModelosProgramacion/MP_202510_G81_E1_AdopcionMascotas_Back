@@ -1,21 +1,22 @@
 package co.edu.udistrital.mdp.adopcion.services.events.medical;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.DewormingEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
-import jakarta.transaction.Transactional;
+import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -31,6 +32,7 @@ public class DewormingServiceTest {
 
 
     private PodamFactory factory = new PodamFactoryImpl();
+    private List<PetEntity> petList = new ArrayList<>();
     private List<DewormingEntity> dewormingList = new ArrayList<>();
     private List<VaccineCardEntity> vaccineCardList = new ArrayList<>();
 
@@ -42,13 +44,19 @@ public class DewormingServiceTest {
 
     private void clearData() {
         entityManager.getEntityManager().createQuery("delete from DewormingEntity");
+        entityManager.getEntityManager().createQuery("delete from PetEntity");
         entityManager.getEntityManager().createQuery("delete from VaccineCardEntity");
     }
 
     private void insertData() {
         int n = 5;
         for (int i = 0; i < n; i++) {
+            PetEntity pet = factory.manufacturePojo(PetEntity.class);
+            entityManager.persist(pet);
+            petList.add(pet);
+
             DewormingEntity deworming = factory.manufacturePojo(DewormingEntity.class);
+            deworming.setPet(pet);
             entityManager.persist(deworming);
             dewormingList.add(deworming);
 

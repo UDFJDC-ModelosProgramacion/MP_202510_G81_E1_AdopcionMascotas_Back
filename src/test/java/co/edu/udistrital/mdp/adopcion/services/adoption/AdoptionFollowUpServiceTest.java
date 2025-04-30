@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
@@ -17,7 +18,6 @@ import co.edu.udistrital.mdp.adopcion.entities.pet.PetConditionEnum;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.FollowUpStatusEnum;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
-import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -33,6 +33,7 @@ public class AdoptionFollowUpServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
+    // FIXME: Lists are null
     private List<AdoptionFollowUpEntity> followUpList;
     private List<VeterinarianEntity> veterinarianList;
 

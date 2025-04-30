@@ -1,11 +1,10 @@
 package co.edu.udistrital.mdp.adopcion.services.multimedia;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 
-import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
-import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
+import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -29,6 +30,7 @@ public class MultimediaServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
+    // FIXME: List are null
     private List<MultimediaEntity> multimediaList;
     private List<PetEntity> petList;
 

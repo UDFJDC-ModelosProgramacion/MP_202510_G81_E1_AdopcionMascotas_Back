@@ -1,9 +1,11 @@
 package co.edu.udistrital.mdp.adopcion.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,6 @@ import org.springframework.context.annotation.Import;
 import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.ShelterEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import co.edu.udistrital.mdp.adopcion.services.ShelterService;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -153,9 +154,10 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullName() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setName(null);
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             shelterService.createShelter(shelter);
         });
+        assertNotNull(exception.getMessage());
     }
     /**
      * Test for createShelter method with null address
@@ -164,9 +166,10 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullAddress() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setAddress(null);
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             shelterService.createShelter(shelter);
         });
+        assertNotNull(exception.getMessage());
     }
     /**
      * Test for createShelter method with null phone
@@ -175,9 +178,10 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullPhone() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setPhone(null);
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             shelterService.createShelter(shelter);
         });
+        assertNotNull(exception.getMessage());
     }
     /**
      * Test for createShelter method with null email
@@ -186,8 +190,9 @@ public class ShelterServiceTest {
     public void testCreateShelterWithNullEmail() {
         ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
         shelter.setEmail(null);
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             shelterService.createShelter(shelter);
         });
+        assertNotNull(exception.getMessage());
     }
 }

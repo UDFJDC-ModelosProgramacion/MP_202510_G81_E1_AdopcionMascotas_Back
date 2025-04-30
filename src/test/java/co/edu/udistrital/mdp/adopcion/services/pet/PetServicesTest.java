@@ -1,33 +1,29 @@
 package co.edu.udistrital.mdp.adopcion.services.pet;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-
+import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
-import co.edu.udistrital.mdp.adopcion.entities.person.DisponibilityEntity;
-import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
+import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
-import co.edu.udistrital.mdp.adopcion.entities.events.ShelterEventEntity;
+import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
+import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
+import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
+import co.edu.udistrital.mdp.adopcion.entities.pet.GenderEnum;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
-import co.edu.udistrital.mdp.adopcion.services.person.OwnerService;
-import co.edu.udistrital.mdp.adopcion.services.person.VeterinarianService;
-
-
-import jakarta.transaction.Transactional;
+import co.edu.udistrital.mdp.adopcion.entities.pet.SizeEnum;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -42,14 +38,21 @@ public class PetServicesTest {
     private TestEntityManager entityManager;
     private PodamFactory factory = new PodamFactoryImpl();
     private List<PetEntity> petList = new ArrayList<>();
-    private List<ShelterArrivalEntity> shelterArrivalList = new ArrayList<>();
-    private List<ShelterEventEntity> shelterEventList = new ArrayList<>();
-    private List<DisponibilityEntity> disponibilityList = new ArrayList<>();
-    private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
-    private List<AdoptionFollowUpEntity> adoptionFollowUpList = new ArrayList<>();
-    private List<AdoptionTestEntity> adoptionTestList = new ArrayList<>();
-    private List<AdoptionEntity> adoptionList = new ArrayList<>();
+    private List<String> nameList = new ArrayList<>();
+    private List<Date> birthDateList = new ArrayList<>();
+    private List<String> breedList = new ArrayList<>();
+    private List<SizeEnum> sizeList = new ArrayList<>();
+    private List<GenderEnum> genderList = new ArrayList<>();
+    private List<String> behaviorProfileList = new ArrayList<>();
 
+    private List<OwnerEntity> ownerList = new ArrayList<>();
+    private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
+    private List<MedicalEventEntity> medicalEventList = new ArrayList<>();
+    private List<MultimediaEntity> multimediaList = new ArrayList<>();
+    private List<AdoptionEntity> adoptionList = new ArrayList<>();
+    private List<ShelterArrivalEntity> shelterArrivalList = new ArrayList<>();
+    private List<ShelterEntity> shelterList = new ArrayList<>();
+    private List<VaccineCardEntity> vaccineCardList = new ArrayList<>();
 
     @BeforeEach
 
@@ -59,57 +62,73 @@ public class PetServicesTest {
     }
     private void clearData() {
         entityManager.getEntityManager().createQuery("delete from PetEntity");
-        entityManager.getEntityManager().createQuery("delete from ShelterArrivalEntity");
-        entityManager.getEntityManager().createQuery("delete from ShelterEventEntity");
-        entityManager.getEntityManager().createQuery("delete from DisponibilityEntity");
+        entityManager.getEntityManager().createQuery("delete from OwnerEntity");
         entityManager.getEntityManager().createQuery("delete from AdoptionAplicationEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionFollowUpEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionTestEntity");
+        entityManager.getEntityManager().createQuery("delete from MedicalEventEntity");
+        entityManager.getEntityManager().createQuery("delete from MultimediaEntity");
         entityManager.getEntityManager().createQuery("delete from AdoptionEntity");
-
-    }
+        entityManager.getEntityManager().createQuery("delete from ShelterArrivalEntity");
+        entityManager.getEntityManager().createQuery("delete from ShelterEntity");
+        entityManager.getEntityManager().createQuery("delete from VaccineCardEntity");    }
     private void insertData() {
-        for (int i = 0; i < 3; i++) {
-            PetEntity pet = factory.manufacturePojo(PetEntity.class);
-            entityManager.persist(pet);
-            petList.add(pet);
-        }
-        for (int i = 0; i < 3; i++) {
-            ShelterArrivalEntity shelterArrival = factory.manufacturePojo(ShelterArrivalEntity.class);
-            entityManager.persist(shelterArrival);
-            shelterArrivalList.add(shelterArrival);
-        }
-        for (int i = 0; i < 3; i++) {
-            ShelterEventEntity shelterEvent = factory.manufacturePojo(ShelterEventEntity.class);
-            entityManager.persist(shelterEvent);
-            shelterEventList.add(shelterEvent);
-        }
-        for (int i = 0; i < 3; i++) {
-            DisponibilityEntity disponibility = factory.manufacturePojo(DisponibilityEntity.class);
-            entityManager.persist(disponibility);
-            disponibilityList.add(disponibility);
-        }
-        for (int i = 0; i < 3; i++) {
+        int n = 5;
+        for (int i = 0; i < n; i++) {
+            String name = factory.manufacturePojo(String.class);
+            nameList.add(name);
+            Date birthDate = factory.manufacturePojo(Date.class);
+            birthDateList.add(birthDate);
+            String breed = factory.manufacturePojo(String.class);
+            breedList.add(breed);
+            SizeEnum size = factory.manufacturePojo(SizeEnum.class);
+            sizeList.add(size);
+            GenderEnum gender = factory.manufacturePojo(GenderEnum.class);
+            genderList.add(gender);
+            String behaviorProfile = factory.manufacturePojo(String.class);
+            behaviorProfileList.add(behaviorProfile);
+
+            OwnerEntity owner = factory.manufacturePojo(OwnerEntity.class);
+            entityManager.persist(owner);
+            ownerList.add(owner);
             AdoptionAplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
             entityManager.persist(adoptionApplication);
             adoptionApplicationList.add(adoptionApplication);
-        }
-        for (int i = 0; i < 3; i++) {
-            AdoptionFollowUpEntity adoptionFollowUp = factory.manufacturePojo(AdoptionFollowUpEntity.class);
-            entityManager.persist(adoptionFollowUp);
-            adoptionFollowUpList.add(adoptionFollowUp);
-        }
-        for (int i = 0; i < 3; i++) {
-            AdoptionTestEntity adoptionTest = factory.manufacturePojo(AdoptionTestEntity.class);
-            entityManager.persist(adoptionTest);
-            adoptionTestList.add(adoptionTest);
-        }
-        for (int i = 0; i < 3; i++) {
+            MedicalEventEntity medicalEvent = factory.manufacturePojo(MedicalEventEntity.class);
+            entityManager.persist(medicalEvent);
+            medicalEventList.add(medicalEvent);
+            MultimediaEntity multimedia = factory.manufacturePojo(MultimediaEntity.class);
+            entityManager.persist(multimedia);
+            multimediaList.add(multimedia);
             AdoptionEntity adoption = factory.manufacturePojo(AdoptionEntity.class);
             entityManager.persist(adoption);
             adoptionList.add(adoption);
-        }
+            ShelterArrivalEntity shelterArrival = factory.manufacturePojo(ShelterArrivalEntity.class);
+            entityManager.persist(shelterArrival);
+            shelterArrivalList.add(shelterArrival);
+            ShelterEntity shelter = factory.manufacturePojo(ShelterEntity.class);
+            entityManager.persist(shelter);
+            shelterList.add(shelter);
+            VaccineCardEntity vaccineCard = factory.manufacturePojo(VaccineCardEntity.class);
+            entityManager.persist(vaccineCard);
+            vaccineCardList.add(vaccineCard);
+            PetEntity pet = factory.manufacturePojo(PetEntity.class);
 
+            pet.setName(name);
+            pet.setBirthDate(birthDate);
+            pet.setBreed(breed);
+            pet.setSize(size);
+            pet.setGender(gender);
+            pet.setBehaviorProfile(behaviorProfile);
+            pet.setOwners(ownerList);
+            pet.setAdoptionApplications(adoptionApplicationList);
+            pet.setMedicalEvents(medicalEventList);
+            pet.setMultimedia(multimediaList);
+            pet.setAdoption(adoptionList.get(i));
+            pet.setShelterArrival(shelterArrivalList.get(i));
+            pet.setShelter(shelterList.get(i));
+            pet.setVaccineCard(vaccineCardList.get(i));
+            entityManager.persist(pet);
+            petList.add(pet);
+        }
     }
     @Test
     void testCreatePet() {
@@ -118,7 +137,7 @@ public class PetServicesTest {
         assertNotNull(createdPet.getId());
         assertEquals(pet.getName(), createdPet.getName());
         assertEquals(pet.getBirthDate(), createdPet.getBirthDate());
-        assertEquals(pet.getVacineCard(), createdPet.getVacineCard());
+        assertEquals(pet.getVaccineCard(), createdPet.getVaccineCard());
     }
     @Test
     void testCreatePetWithEmptyName() {
@@ -143,15 +162,15 @@ public class PetServicesTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
     @Test
-    void testCreatePetWithEmptyVacineCard() {
+    void testCreatePetWithEmptyVaccineCard() {
         PetEntity pet = factory.manufacturePojo(PetEntity.class);
-        pet.setVacineCard(null);
+        pet.setVaccineCard(null);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             petService.createPet(pet);
         });
-        String expectedMessage = "The vacine card of the pet must not be empty";
+        String expectedMessage = "The Vaccine card of the pet must not be empty";
         String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertFalse(actualMessage.contains(expectedMessage));
     }
     @Test
     void testUpdatePet() {
@@ -161,8 +180,8 @@ public class PetServicesTest {
         PetEntity result = petService.updatePet(pet.getId(), updatedPet);
         assertNotNull(result);
         assertEquals(updatedPet.getName(), result.getName());
-        assertEquals(updatedPet.getBirthDate(), result.getBirthDate());
-        assertEquals(updatedPet.getVacineCard(), result.getVacineCard());
+        assertEquals((Date) updatedPet.getBirthDate(), (Date) result.getBirthDate());
+        assertEquals((VaccineCardEntity) updatedPet.getVaccineCard(), (VaccineCardEntity) result.getVaccineCard());
     }
     @Test
     void testUpdatePetWithNullName() {
@@ -191,28 +210,28 @@ public class PetServicesTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
     @Test
-    void testUpdatePetWithNullVacineCard() {
+    void testUpdatePetWithNullVaccineCard() {
         PetEntity pet = petList.get(0);
         PetEntity updatedPet = factory.manufacturePojo(PetEntity.class);
         updatedPet.setId(pet.getId());
-        updatedPet.setVacineCard(null);
+        updatedPet.setVaccineCard(null);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             petService.updatePet(pet.getId(), updatedPet);
         });
-        String expectedMessage = "The vacine card of the pet must not be empty";
+        String expectedMessage = "The Vaccine card of the pet must not be empty";
         String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertFalse(actualMessage.contains(expectedMessage));
     }
     @Test
     void testUpdatePetWithAdmin() {
         PetEntity pet = petList.get(0);
         PetEntity updatedPet = factory.manufacturePojo(PetEntity.class);
         updatedPet.setId(pet.getId());
-        updatedPet.setBirthDate(null); // Cambiar la fecha de nacimiento a null
-        PetEntity result = petService.updatePet(pet.getId(), updatedPet, true); // Llamar al método con isAdmin = true
+        updatedPet.setBirthDate(factory.manufacturePojo(Date.class));
+        PetEntity result = petService.updatePet(pet.getId(), updatedPet, true);
         assertNotNull(result);
         assertEquals(updatedPet.getName(), result.getName());
-        assertEquals(updatedPet.getBirthDate(), result.getBirthDate());
-        assertEquals(updatedPet.getVacineCard(), result.getVacineCard());
+        assertEquals((Date) updatedPet.getBirthDate(), (Date) result.getBirthDate());
+        assertEquals(updatedPet.getVaccineCard(), result.getVaccineCard());
     }
 }

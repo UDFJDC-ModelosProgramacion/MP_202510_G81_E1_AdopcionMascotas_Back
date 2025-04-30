@@ -26,44 +26,28 @@ import lombok.Data;
 @Entity
 public class PetEntity extends BaseEntity {
 
-private String name;
-private Date birthDate;
-private String breed;
-private SizeEnum size;
-private GenderEnum gender;
-private String behaviorProfile;
+    private String name;
+    private Date birthDate;
+    private String breed;
+    private SizeEnum size;
+    private GenderEnum gender;
+    private String behaviorProfile;
 
     @PodamExclude
     @ManyToMany(mappedBy="pets")
     private List<OwnerEntity> owners = new ArrayList<>();
-
-    @PodamExclude
     @OneToMany(mappedBy = "pet")
-    private final List<AdoptionAplicationEntity> adoptionApplications = new ArrayList<>();
-
-    //List events
-    @PodamExclude
+    private List<AdoptionAplicationEntity> adoptionApplications = new ArrayList<>();
     @OneToMany(mappedBy = "pet")
     private List<MedicalEventEntity> medicalEvents = new ArrayList<>();
-
-    @PodamExclude
     @OneToMany(mappedBy = "pet")
     private List<MultimediaEntity> multimedia = new ArrayList<>();
-
-    @PodamExclude
     @OneToOne(mappedBy = "pet")
     private AdoptionEntity adoption;
     @OneToOne(mappedBy = "pet")
     private ShelterArrivalEntity shelterArrival;
-
-    @PodamExclude
     @ManyToOne
     private ShelterEntity shelter;
-
-    @PodamExclude
     @OneToOne
     private VaccineCardEntity vaccineCard;
-    public List<AdoptionAplicationEntity> getAdoptionApplications() {
-        return adoptionApplications;
-    }
 }

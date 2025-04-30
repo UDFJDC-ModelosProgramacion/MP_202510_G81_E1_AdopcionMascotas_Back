@@ -47,10 +47,10 @@ public class PetServices {
         if (pet.getBirthDate() == null) {
             throw new IllegalArgumentException("The birth date of the pet must not be empty");
         }
-        if (pet.getVacineCard() == null) {
+        if (pet.getVaccineCard() == null) {
             throw new IllegalArgumentException("The vacine card of the pet must not be empty");
         }
-        pet.setOwner(null);
+        pet.setOwners(null);
         
         return petRepository.save(pet);
     }
@@ -60,35 +60,105 @@ public class PetServices {
         PetEntity existingPet = petRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pet not found"));
         if (pet.getName() != null && !pet.getName().trim().isEmpty()) {
             existingPet.setName(pet.getName());
+        } else {
+            throw new IllegalArgumentException("The name of the pet must not be empty");
+        }
+        if (pet.getBreed() != null && !pet.getBreed().trim().isEmpty()) {
+            existingPet.setBreed(pet.getBreed());
+        } else {
+            throw new IllegalArgumentException("The breed of the pet must not be empty");
+        }
+        if (pet.getSize() != null) {
+            existingPet.setSize(pet.getSize());
+        } else {
+            throw new IllegalArgumentException("The size of the pet must not be empty");
+        }
+        if (pet.getGender() != null) {
+            existingPet.setGender(pet.getGender());
+        } else {
+            throw new IllegalArgumentException("The gender of the pet must not be empty");
+        }
+        if (pet.getBehaviorProfile() != null && !pet.getBehaviorProfile().trim().isEmpty()) {
+            existingPet.setBehaviorProfile(pet.getBehaviorProfile());
+        } else {
+            throw new IllegalArgumentException("The behavior profile of the pet must not be empty");
         }
         if (pet.getBirthDate() != null) {
             existingPet.setBirthDate(pet.getBirthDate());
+        } else {
+            throw new IllegalArgumentException("The birth date of the pet must not be empty");
         }
-        if (pet.getVacineCard() != null) {
-            existingPet.setVacineCard(pet.getVacineCard());
+        if (pet.getShelter() != null) {
+            existingPet.setShelter(pet.getShelter());
+        } else {
+            throw new IllegalArgumentException("The shelter of the pet must not be empty");
+        }
+        if (pet.getShelterArrival() != null) {
+            existingPet.setShelterArrival(pet.getShelterArrival());
+        } else {
+            throw new IllegalArgumentException("The shelter arrival of the pet must not be empty");
+        }
+        if (pet.getVaccineCard() != null) {
+            existingPet.setVaccineCard(pet.getVaccineCard());
+        } else {
+            throw new IllegalArgumentException("The vaccine card of the pet must not be empty");
         }
         return petRepository.save(existingPet);
     }
     @Transactional
     public PetEntity updatePet(Long id, PetEntity pet, boolean isAdmin) {
+        if (!isAdmin) {
+            throw new SecurityException("You do not have permission to update pet information");
+        }
+
         PetEntity existingPet = petRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pet not found"));
-        if (!isAdmin) {
-            if (pet.getBirthDate() != null && !pet.getBirthDate().equals(existingPet.getBirthDate())) {
-                throw new SecurityException("You do not have permission to change the birth date");
-            }
+
+        if (pet.getName() == null || pet.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("The name of the pet must not be empty");
         }
-        if (pet.getName() != null && !pet.getName().trim().isEmpty()) {
-            existingPet.setName(pet.getName());
+        existingPet.setName(pet.getName());
+
+        if (pet.getBreed() == null || pet.getBreed().trim().isEmpty()) {
+            throw new IllegalArgumentException("The breed of the pet must not be empty");
         }
-        if (isAdmin) {
-            if (pet.getBirthDate() != null) {
-                existingPet.setBirthDate(pet.getBirthDate());
-            }
+        existingPet.setBreed(pet.getBreed());
+
+        if (pet.getSize() == null) {
+            throw new IllegalArgumentException("The size of the pet must not be empty");
         }
-        if (pet.getVacineCard() != null) {
-            existingPet.setVacineCard(pet.getVacineCard());
+        existingPet.setSize(pet.getSize());
+
+        if (pet.getGender() == null) {
+            throw new IllegalArgumentException("The gender of the pet must not be empty");
         }
+        existingPet.setGender(pet.getGender());
+
+        if (pet.getBehaviorProfile() == null || pet.getBehaviorProfile().trim().isEmpty()) {
+            throw new IllegalArgumentException("The behavior profile of the pet must not be empty");
+        }
+        existingPet.setBehaviorProfile(pet.getBehaviorProfile());
+
+        if (pet.getBirthDate() == null) {
+            throw new IllegalArgumentException("The birth date of the pet must not be empty");
+        }
+        existingPet.setBirthDate(pet.getBirthDate());
+
+        if (pet.getShelter() == null) {
+            throw new IllegalArgumentException("The shelter of the pet must not be empty");
+        }
+        existingPet.setShelter(pet.getShelter());
+
+        if (pet.getShelterArrival() == null) {
+            throw new IllegalArgumentException("The shelter arrival of the pet must not be empty");
+        }
+        existingPet.setShelterArrival(pet.getShelterArrival());
+
+        if (pet.getVaccineCard() == null) {
+            throw new IllegalArgumentException("The vaccine card of the pet must not be empty");
+        }
+        existingPet.setVaccineCard(pet.getVaccineCard());
+
         return petRepository.save(existingPet);
     }
 }

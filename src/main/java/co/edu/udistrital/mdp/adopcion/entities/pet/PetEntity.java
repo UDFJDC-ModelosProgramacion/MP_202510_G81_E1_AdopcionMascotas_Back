@@ -22,8 +22,8 @@ import jakarta.persistence.OneToOne;
 import uk.co.jemos.podam.common.PodamExclude;
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 public class PetEntity extends BaseEntity {
 
     private String name;

@@ -1,7 +1,5 @@
 package co.edu.udistrital.mdp.adopcion.services.person;
 
-package co.edu.udistrital.mdp.adopcion.services.person;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

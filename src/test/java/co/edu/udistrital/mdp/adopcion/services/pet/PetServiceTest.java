@@ -1,17 +1,21 @@
 package co.edu.udistrital.mdp.adopcion.services.pet;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
@@ -30,32 +34,31 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 @DataJpaTest
 @Transactional
-@Import(PetServices.class)
-public class PetServicesTest {
+@Import(PetService.class)
+public class PetServiceTest {
     @Autowired
-    private PetServices petService;
+    private PetService petService;
     @Autowired
     private TestEntityManager entityManager;
-    private PodamFactory factory = new PodamFactoryImpl();
-    private List<PetEntity> petList = new ArrayList<>();
-    private List<String> nameList = new ArrayList<>();
-    private List<Date> birthDateList = new ArrayList<>();
-    private List<String> breedList = new ArrayList<>();
-    private List<SizeEnum> sizeList = new ArrayList<>();
-    private List<GenderEnum> genderList = new ArrayList<>();
-    private List<String> behaviorProfileList = new ArrayList<>();
+    private final PodamFactory factory = new PodamFactoryImpl();
+    private final List<PetEntity> petList = new ArrayList<>();
+    private final List<String> nameList = new ArrayList<>();
+    private final List<Date> birthDateList = new ArrayList<>();
+    private final List<String> breedList = new ArrayList<>();
+    private final List<SizeEnum> sizeList = new ArrayList<>();
+    private final List<GenderEnum> genderList = new ArrayList<>();
+    private final List<String> behaviorProfileList = new ArrayList<>();
 
-    private List<OwnerEntity> ownerList = new ArrayList<>();
-    private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
-    private List<MedicalEventEntity> medicalEventList = new ArrayList<>();
-    private List<MultimediaEntity> multimediaList = new ArrayList<>();
-    private List<AdoptionEntity> adoptionList = new ArrayList<>();
-    private List<ShelterArrivalEntity> shelterArrivalList = new ArrayList<>();
-    private List<ShelterEntity> shelterList = new ArrayList<>();
-    private List<VaccineCardEntity> vaccineCardList = new ArrayList<>();
+    private final List<OwnerEntity> ownerList = new ArrayList<>();
+    private final List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
+    private final List<MedicalEventEntity> medicalEventList = new ArrayList<>();
+    private final List<MultimediaEntity> multimediaList = new ArrayList<>();
+    private final List<AdoptionEntity> adoptionList = new ArrayList<>();
+    private final List<ShelterArrivalEntity> shelterArrivalList = new ArrayList<>();
+    private final List<ShelterEntity> shelterList = new ArrayList<>();
+    private final List<VaccineCardEntity> vaccineCardList = new ArrayList<>();
 
     @BeforeEach
-
     void setUp() {
         clearData();
         insertData();

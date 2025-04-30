@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
@@ -15,12 +16,11 @@ import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.DisponibilityRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class PetServices {
+public class PetService {
     @Autowired
     private PetRepository petRepository;
 

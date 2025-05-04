@@ -1,11 +1,13 @@
 package co.edu.udistrital.mdp.adopcion.services.events;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
-
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 
 @DataJpaTest
@@ -32,12 +34,12 @@ public class MedicalEventServiceTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    private PodamFactory factory = new PodamFactoryImpl();
-    private List<MedicalEventEntity> medicalEventList = new ArrayList<>();
-    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
-    private List<PetEntity> petList = new ArrayList<>();
-    private List<Date> dateList = new ArrayList<>();
-    private List<String> descriptionList = new ArrayList<>();
+    private final PodamFactory factory = new PodamFactoryImpl();
+    private final List<MedicalEventEntity> medicalEventList = new ArrayList<>();
+    private final List<VeterinarianEntity> veterinarianList = new ArrayList<>();
+    private final List<PetEntity> petList = new ArrayList<>();
+    private final List<Date> dateList = new ArrayList<>();
+    private final List<String> descriptionList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -58,7 +60,11 @@ public class MedicalEventServiceTest {
             entityManager.persist(veterinarian);
             veterinarianList.add(veterinarian);
     
+            AdoptionEntity adoption = factory.manufacturePojo(AdoptionEntity.class);
+            entityManager.persist(adoption);
+            
             PetEntity pet = factory.manufacturePojo(PetEntity.class);
+            pet.setAdoption(adoption);
             entityManager.persist(pet);
             petList.add(pet);
     

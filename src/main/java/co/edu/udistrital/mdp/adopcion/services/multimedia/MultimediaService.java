@@ -24,12 +24,11 @@ public class MultimediaService {
         return multimediaRepository.findAll();
     }
 
-    public MultimediaEntity getMultimediaById(Long id) {
-        return multimediaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Multimedia not found with id: " + id));
+    public MultimediaEntity getMultimediaById(Long id) throws EntityNotFoundException {
+        return multimediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Multimedia not found with id: " + id));
     }
 
-    public MultimediaEntity updateMultimedia(Long id, MultimediaEntity multimediaDetails) {
+    public MultimediaEntity updateMultimedia(Long id, MultimediaEntity multimediaDetails) throws EntityNotFoundException {
         MultimediaEntity multimedia = getMultimediaById(id);
         multimedia.setUrl(multimediaDetails.getUrl());
         multimedia.setDescription(multimediaDetails.getDescription());
@@ -38,7 +37,7 @@ public class MultimediaService {
         return multimediaRepository.save(multimedia);
     }
 
-    public void deleteMultimedia(Long id) {
+    public void deleteMultimedia(Long id) throws EntityNotFoundException {
         MultimediaEntity multimedia = getMultimediaById(id);
         multimediaRepository.delete(multimedia);
     }

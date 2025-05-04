@@ -1,23 +1,24 @@
 package co.edu.udistrital.mdp.adopcion.services.adoption;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
-import co.edu.udistrital.mdp.adopcion.entities.person.Speciality;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -33,11 +34,11 @@ public class AdoptionServiceTest {
     private TestEntityManager entityManager;
     
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<AdoptionEntity> adoptionList;
-    private List<AdoptionAplicationEntity> adoptionApplicationList;
-    private List<OwnerEntity> ownerList;
-    private List<PetEntity> petList;
-    private List<VeterinarianEntity> veterinarianList;
+    private List<AdoptionEntity> adoptionList = new ArrayList<>();
+    private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
+    private List<OwnerEntity> ownerList = new ArrayList<>();
+    private List<PetEntity> petList = new ArrayList<>();
+    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -45,11 +46,11 @@ public class AdoptionServiceTest {
         insertData();
     }
     private void clearData() {
-        entityManager.getEntityManager().createQuery("delete from AdoptionEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionAplicationEntity");
-        entityManager.getEntityManager().createQuery("delete from OwnerEntity");
-        entityManager.getEntityManager().createQuery("delete from PetEntity");
-        entityManager.getEntityManager().createQuery("delete from VeterinarianEntity");
+        entityManager.getEntityManager().createQuery("DELETE FROM AdoptionEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("DELETE FROM AdoptionAplicationEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("DELETE FROM OwnerEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("DELETE FROM PetEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("DELETE FROM VeterinarianEntity").executeUpdate();
     }
     private void insertData() {
         int n = 5;
@@ -66,13 +67,18 @@ public class AdoptionServiceTest {
             entityManager.persist(veterinarian);
             veterinarianList.add(veterinarian);
 
-            AdoptionEntity adoption = factory.manufacturePojo(AdoptionEntity.class);
-            entityManager.persist(adoption);
-            adoptionList.add(adoption);
-
             AdoptionAplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
             entityManager.persist(adoptionApplication);
             adoptionApplicationList.add(adoptionApplication);
+            
+            AdoptionEntity adoption = factory.manufacturePojo(AdoptionEntity.class);
+            adoption.setOwner(owner);
+            adoption.setPet(pet);
+            adoption.setVeterinarian(veterinarian);
+            adoption.setAdoptionApplication(adoptionApplication);
+            entityManager.persist(adoption);
+            adoptionList.add(adoption);
+
         }
     }
     /**
@@ -80,21 +86,39 @@ public class AdoptionServiceTest {
      */
     @Test
     void testCreateAdoption() {
-        AdoptionEntity adoption= factory.manufacturePojo(AdoptionEntity.class);
-        adoption.setOwner(ownerList.get(0));
-        adoption.setPet(petList.get(0));
-        adoption.setVeterinarian(veterinarianList.get(0));
-        adoption.setAdoptionApplication(adoptionApplicationList.get(0));
-        AdoptionEntity createdAdoption = adoptionService.createAdoption(adoption);
+        
+        
+        PetEntity newPet = factory.manufacturePojo(PetEntity.class);
+        entityManager.persist(newPet);
+        
+        AdoptionEntity newAdoption = factory.manufacturePojo(AdoptionEntity.class);
+        newAdoption.setOwner(ownerList.get(0));
+        newAdoption.setPet(newPet);
+
+        
+        
+        VeterinarianEntity newVeterinarian = factory.manufacturePojo(VeterinarianEntity.class);
+        entityManager.persist(newVeterinarian);
+        newAdoption.setVeterinarian(newVeterinarian);
+        
+    
+        
+        AdoptionAplicationEntity newApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
+        entityManager.persist(newApplication);
+        newAdoption.setAdoptionApplication(newApplication);
+
+        AdoptionEntity createdAdoption = adoptionService.createAdoption(newAdoption);
+
         assertNotNull(createdAdoption);
         assertNotNull(createdAdoption.getId());
-        assertEquals(adoption.getOwner().getId(), createdAdoption.getOwner().getId());
-        assertEquals(adoption.getPet().getId(), createdAdoption.getPet().getId());
-        assertEquals(adoption.getVeterinarian().getId(), createdAdoption.getVeterinarian().getId());
-        assertEquals(adoption.getAdoptionApplication().getId(), createdAdoption.getAdoptionApplication().getId());
+
+        assertEquals(newAdoption.getOwner().getId(), createdAdoption.getOwner().getId());
+        assertEquals(newAdoption.getPet().getId(), createdAdoption.getPet().getId());
+        assertEquals(newAdoption.getVeterinarian().getId(), createdAdoption.getVeterinarian().getId());
+        assertEquals(newAdoption.getAdoptionApplication().getId(), createdAdoption.getAdoptionApplication().getId());
     }
     /**
-     * Test for getAllAdoptions method
+          * Test for getAllAdoptions method
      */
     @Test
     void testGetAllAdoptions() {
@@ -142,6 +166,7 @@ public class AdoptionServiceTest {
     void testDeleteAdoption() {
         AdoptionEntity adoption = adoptionList.get(0);
         adoptionService.deleteAdoption(adoption.getId());
+        entityManager.flush(); 
         AdoptionEntity deletedAdoption = entityManager.find(AdoptionEntity.class, adoption.getId());
         assertNull(deletedAdoption);
     }

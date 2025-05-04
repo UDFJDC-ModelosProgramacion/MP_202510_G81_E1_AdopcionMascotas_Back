@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.adopcion.services.adoption;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
@@ -17,7 +19,6 @@ import co.edu.udistrital.mdp.adopcion.entities.pet.PetConditionEnum;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.FollowUpStatusEnum;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
-import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -33,11 +34,13 @@ public class AdoptionFollowUpServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<AdoptionFollowUpEntity> followUpList;
-    private List<VeterinarianEntity> veterinarianList;
+    private List<AdoptionFollowUpEntity> followUpList = new ArrayList<>();
+    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
+        followUpList = new ArrayList<>();
+        veterinarianList = new ArrayList<>();
         clearData();
         insertData();
     }
@@ -71,7 +74,7 @@ public class AdoptionFollowUpServiceTest {
         AdoptionFollowUpEntity followUp = factory.manufacturePojo(AdoptionFollowUpEntity.class);
         VeterinarianEntity vet = veterinarianList.get(0);
         followUp.setVeterinarian(vet);
-        followUp.setFollowUpStatus(FollowUpStatusEnum.IN_PROGRESS);
+        followUp.setFollowUpStatus(FollowUpStatusEnum.SCHEDULED);
         followUp.setPetCondition(PetConditionEnum.HEALTHY);
         
         AdoptionFollowUpEntity created = adoptionFollowUpService.createFollowUp(followUp);
@@ -115,7 +118,7 @@ public class AdoptionFollowUpServiceTest {
         updated.setId(followUp.getId());
         updated.setVeterinarian(veterinarianList.get(1));
         updated.setFollowUpStatus(FollowUpStatusEnum.COMPLETED);
-        updated.setPetCondition(PetConditionEnum.CRITICAL);
+        updated.setPetCondition(PetConditionEnum.INJURED);
         
         AdoptionFollowUpEntity result = adoptionFollowUpService.updateFollowUp(followUp.getId(), updated);
 

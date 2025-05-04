@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
 import co.edu.udistrital.mdp.adopcion.repositories.ShelterRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.ShelterEventRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -57,6 +57,7 @@ public class ShelterService {
         }
     }
     
+    @Transactional
     public void deleteShelter(Long id) {
         shelterRepository.deleteById(id);
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.DewormingEntity;
 import co.edu.udistrital.mdp.adopcion.repositories.event.medical.DewormingRepository;
+import co.edu.udistrital.mdp.adopcion.repositories.event.medical.VaccineCardRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +19,7 @@ public class DewormingService {
     private  DewormingRepository dewormingRepository;
 
     @Autowired
-    private  VaccineCardService vaccineCardService;
+    private  VaccineCardRepository vaccineCardRepository;
 
     @Transactional
     public DewormingEntity createDeworming(DewormingEntity deworming) {

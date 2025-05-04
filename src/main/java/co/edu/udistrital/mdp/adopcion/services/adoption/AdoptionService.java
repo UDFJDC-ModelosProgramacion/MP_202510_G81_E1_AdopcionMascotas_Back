@@ -71,7 +71,11 @@ public class AdoptionService {
     }
     @Transactional
     public void deleteAdoption(Long id) {
-        deleteAdoption(id);
+        if (adoptionRepository.existsById(id)) {
+            adoptionRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("Adoption with id " + id + " does not exist");
+        }
     }
 
 }

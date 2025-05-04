@@ -1,19 +1,22 @@
 package co.edu.udistrital.mdp.adopcion.services.events.medical;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineEntity;
-import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -29,8 +32,8 @@ public class VaccineServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<VaccineEntity> vaccineList;
-    private List<VaccineCardEntity> vaccineCardList;
+    private List<VaccineEntity> vaccineList = new ArrayList<>();
+    private List<VaccineCardEntity> vaccineCardList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {

@@ -102,6 +102,7 @@ public class PetService {
         }
         return petRepository.save(existingPet);
     }
+
     @Transactional
     public PetEntity updatePet(Long id, PetEntity pet, boolean isAdmin) {
         if (!isAdmin) {

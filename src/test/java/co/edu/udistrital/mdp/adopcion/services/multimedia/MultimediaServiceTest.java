@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.adopcion.services.multimedia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -30,12 +32,13 @@ public class MultimediaServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    // FIXME: List are null
-    private List<MultimediaEntity> multimediaList;
-    private List<PetEntity> petList;
+    private List<MultimediaEntity> multimediaList = new ArrayList<>();
+    private List<PetEntity> petList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
+        multimediaList = new ArrayList<>();
+        petList = new ArrayList<>();
         clearData();
         insertData();
     }
@@ -76,7 +79,7 @@ public class MultimediaServiceTest {
     }
 
     @Test
-    void testGetMultimediaById() {
+    void testGetMultimediaById() throws EntityNotFoundException {
         MultimediaEntity multimedia = multimediaList.get(0);
         MultimediaEntity found = multimediaService.getMultimediaById(multimedia.getId());
         assertNotNull(found);
@@ -84,7 +87,7 @@ public class MultimediaServiceTest {
     }
 
     @Test
-    void testUpdateMultimedia() {
+    void testUpdateMultimedia() throws EntityNotFoundException {
         MultimediaEntity multimedia = multimediaList.get(0);
         MultimediaEntity updated = factory.manufacturePojo(MultimediaEntity.class);
         updated.setId(multimedia.getId());
@@ -97,7 +100,7 @@ public class MultimediaServiceTest {
     }
 
     @Test
-    void testDeleteMultimedia() {
+    void testDeleteMultimedia() throws EntityNotFoundException {
         MultimediaEntity multimedia = multimediaList.get(0);
         multimediaService.deleteMultimedia(multimedia.getId());
         MultimediaEntity deleted = entityManager.find(MultimediaEntity.class, multimedia.getId());

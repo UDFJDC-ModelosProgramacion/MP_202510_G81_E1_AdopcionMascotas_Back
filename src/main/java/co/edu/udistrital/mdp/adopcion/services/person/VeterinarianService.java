@@ -3,7 +3,6 @@ package co.edu.udistrital.mdp.adopcion.services.person;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,7 +56,13 @@ public class VeterinarianService {
     }
 
     @Transactional
-    public VeterinarianEntity updateVeterinarian(Long id, VeterinarianEntity veterinarian) {
+    public VeterinarianEntity updateVeterinarian(Long id, VeterinarianEntity veterinarian) throws Exception {
+        if (veterinarian.getLicenseNumber() == null) {
+            throw new IllegalArgumentException("License number must not be null");
+        }
+        if (veterinarian.getSpeciality() == null) {
+            throw new IllegalArgumentException("Speciality must not be null");
+        }
         if (veterinarianRepository.existsById(id)) {
             veterinarian.setId(id);
             return veterinarianRepository.save(veterinarian);

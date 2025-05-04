@@ -136,6 +136,9 @@ public class PetServiceTest {
     @Test
     void testCreatePet() {
         PetEntity pet = factory.manufacturePojo(PetEntity.class);
+        pet.setShelter(shelterList.get(0));
+        VaccineCardEntity vaccineCard = factory.manufacturePojo(VaccineCardEntity.class);
+        pet.setVaccineCard(vaccineCard);
         PetEntity createdPet = petService.createPet(pet);
         assertNotNull(createdPet.getId());
         assertEquals(pet.getName(), createdPet.getName());
@@ -179,7 +182,19 @@ public class PetServiceTest {
     void testUpdatePet() {
         PetEntity pet = petList.get(0);
         PetEntity updatedPet = factory.manufacturePojo(PetEntity.class);
+        updatedPet.setShelter(shelterList.get(0));
+        updatedPet.setAdoption(adoptionList.get(0));
+        updatedPet.setAdoptionApplications(adoptionApplicationList);
+        updatedPet.setMedicalEvents(medicalEventList);
+        updatedPet.setMultimedia(multimediaList);
+        updatedPet.setOwners(ownerList);
+        updatedPet.setName(nameList.get(0));
+        updatedPet.setBirthDate(birthDateList.get(0));
+        updatedPet.setBreed(breedList.get(0));
+        updatedPet.setSize(sizeList.get(0));
+        updatedPet.setVaccineCard(vaccineCardList.get(0));
         updatedPet.setId(pet.getId());
+        updatedPet.setShelterArrival(shelterArrivalList.get(0));
         PetEntity result = petService.updatePet(pet.getId(), updatedPet);
         assertNotNull(result);
         assertEquals(updatedPet.getName(), result.getName());
@@ -230,7 +245,19 @@ public class PetServiceTest {
         PetEntity pet = petList.get(0);
         PetEntity updatedPet = factory.manufacturePojo(PetEntity.class);
         updatedPet.setId(pet.getId());
-        updatedPet.setBirthDate(factory.manufacturePojo(Date.class));
+        updatedPet.setShelter(shelterList.get(0));
+        updatedPet.setAdoption(adoptionList.get(0));
+        updatedPet.setAdoptionApplications(adoptionApplicationList);
+        updatedPet.setMedicalEvents(medicalEventList);
+        updatedPet.setMultimedia(multimediaList);
+        updatedPet.setOwners(ownerList);
+        updatedPet.setName(nameList.get(0));
+        updatedPet.setBirthDate(birthDateList.get(0));
+        updatedPet.setBreed(breedList.get(0));
+        updatedPet.setSize(sizeList.get(0));
+        updatedPet.setVaccineCard(vaccineCardList.get(0));
+        updatedPet.setId(pet.getId());
+        updatedPet.setShelterArrival(shelterArrivalList.get(0));
         PetEntity result = petService.updatePet(pet.getId(), updatedPet, true);
         assertNotNull(result);
         assertEquals(updatedPet.getName(), result.getName());

@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.adopcion.services.adoption;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,12 +34,13 @@ public class AdoptionFollowUpServiceTest {
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
-    // FIXME: Lists are null
-    private List<AdoptionFollowUpEntity> followUpList;
-    private List<VeterinarianEntity> veterinarianList;
+    private List<AdoptionFollowUpEntity> followUpList = new ArrayList<>();
+    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
+        followUpList = new ArrayList<>();
+        veterinarianList = new ArrayList<>();
         clearData();
         insertData();
     }
@@ -116,7 +118,7 @@ public class AdoptionFollowUpServiceTest {
         updated.setId(followUp.getId());
         updated.setVeterinarian(veterinarianList.get(1));
         updated.setFollowUpStatus(FollowUpStatusEnum.COMPLETED);
-        updated.setPetCondition(PetConditionEnum.CRITICAL);
+        updated.setPetCondition(PetConditionEnum.INJURED);
         
         AdoptionFollowUpEntity result = adoptionFollowUpService.updateFollowUp(followUp.getId(), updated);
 

@@ -1,11 +1,13 @@
 package co.edu.udistrital.mdp.adopcion.services.events;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
+import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
+import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
+import co.edu.udistrital.mdp.adopcion.entities.pet.PetConditionEnum;
+import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
-import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
-import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
-import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
-import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import co.edu.udistrital.mdp.adopcion.entities.pet.PetConditionEnum;
 
 @DataJpaTest
 @Transactional
@@ -86,8 +87,8 @@ public class ShelterArrivalServiceTest {
             shelterArrival.setPet(petList.get(i));
             shelterArrival.setShelter(shelterList.get(i));
             shelterArrival.setVeterinarian(veterinarianList.get(i));
-            shelterArrival.setArrivalDetails(arrivalDetailsList.get(i));
-            shelterArrival.setArrivalDate(dateList.get(i));
+            shelterArrival.setDescription(arrivalDetailsList.get(i));
+            shelterArrival.setDate(dateList.get(i));
             shelterArrival.setPetCondition(petConditionList.get(i));
             entityManager.persist(shelterArrival);
             shelterArrivalList.add(shelterArrival);
@@ -101,8 +102,8 @@ public class ShelterArrivalServiceTest {
         newShelterArrival.setDate(dateList.get(0));
         newShelterArrival.setShelter(shelterList.get(0));
         newShelterArrival.setVeterinarian(veterinarianList.get(0));
-        newShelterArrival.setArrivalDetails(arrivalDetailsList.get(0));
-        newShelterArrival.setArrivalDate(dateList.get(0));
+        newShelterArrival.setDescription(arrivalDetailsList.get(0));
+        newShelterArrival.setDate(dateList.get(0));
         newShelterArrival.setPetCondition(petConditionList.get(0));
 
         ShelterArrivalEntity createdShelterArrival = shelterArrivalService.createShelterArrival(newShelterArrival);
@@ -111,7 +112,7 @@ public class ShelterArrivalServiceTest {
         assertEquals(newShelterArrival.getPet(), createdShelterArrival.getPet());
         assertEquals(newShelterArrival.getShelter(), createdShelterArrival.getShelter());
         assertEquals(newShelterArrival.getVeterinarian(), createdShelterArrival.getVeterinarian());
-        assertEquals(newShelterArrival.getArrivalDetails(), createdShelterArrival.getArrivalDetails());
+        assertEquals(newShelterArrival.getDescription(), createdShelterArrival.getDescription());
         assertEquals(newShelterArrival.getPetCondition(), createdShelterArrival.getPetCondition());
     }
 
@@ -122,8 +123,8 @@ public class ShelterArrivalServiceTest {
         newShelterArrival.setShelter(shelterList.get(0));
         newShelterArrival.setDate(dateList.get(0));
         newShelterArrival.setVeterinarian(veterinarianList.get(0));
-        newShelterArrival.setArrivalDetails(arrivalDetailsList.get(0));
-        newShelterArrival.setArrivalDate(dateList.get(0));
+        newShelterArrival.setDescription(arrivalDetailsList.get(0));
+        newShelterArrival.setDate(dateList.get(0));
         newShelterArrival.setPetCondition(petConditionList.get(0));
 
         ShelterArrivalEntity createdShelterArrival = shelterArrivalService.createShelterArrival(newShelterArrival);
@@ -132,7 +133,7 @@ public class ShelterArrivalServiceTest {
         assertEquals(newShelterArrival.getPet(), createdShelterArrival.getPet());
         assertEquals(newShelterArrival.getShelter(), createdShelterArrival.getShelter());
         assertEquals(newShelterArrival.getVeterinarian(), createdShelterArrival.getVeterinarian());
-        assertEquals(newShelterArrival.getArrivalDetails(), createdShelterArrival.getArrivalDetails());
+        assertEquals(newShelterArrival.getDescription(), createdShelterArrival.getDescription());
         assertEquals(newShelterArrival.getPetCondition(), createdShelterArrival.getPetCondition());
     }
 
@@ -142,8 +143,8 @@ public class ShelterArrivalServiceTest {
         newShelterArrival.setVeterinarian(null);
         newShelterArrival.setPet(petList.get(0));
         newShelterArrival.setShelter(shelterList.get(0));
-        newShelterArrival.setArrivalDetails(arrivalDetailsList.get(0));
-        newShelterArrival.setArrivalDate(dateList.get(0));
+        newShelterArrival.setDescription(arrivalDetailsList.get(0));
+        newShelterArrival.setDate(dateList.get(0));
         newShelterArrival.setPetCondition(petConditionList.get(0));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -174,7 +175,7 @@ public class ShelterArrivalServiceTest {
         updatedShelterArrival.setPet(petList.get(0));
         updatedShelterArrival.setShelter(shelterList.get(0));
         updatedShelterArrival.setVeterinarian(veterinarianList.get(0));
-        updatedShelterArrival.setArrivalDetails(arrivalDetailsList.get(0));
+        updatedShelterArrival.setDescription(arrivalDetailsList.get(0));
         updatedShelterArrival.setPetCondition(petConditionList.get(0));
 
         ShelterArrivalEntity result = shelterArrivalService.updateShelterArrival(updatedShelterArrival);

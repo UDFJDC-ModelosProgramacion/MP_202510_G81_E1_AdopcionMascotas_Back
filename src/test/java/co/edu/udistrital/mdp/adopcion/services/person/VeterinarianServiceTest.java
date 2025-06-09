@@ -172,7 +172,7 @@ public class VeterinarianServiceTest {
     }
     /**
      * Test for updateVeterinarian method with non-existing id
-     * @throws Exception 
+     * @throws Exception
      */
     @Test
     void testUpdateVeterinarianWithNonExistingId() throws Exception {

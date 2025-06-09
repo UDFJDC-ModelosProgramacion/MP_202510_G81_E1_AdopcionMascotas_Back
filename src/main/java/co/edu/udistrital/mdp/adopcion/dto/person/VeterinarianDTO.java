@@ -4,8 +4,10 @@ import co.edu.udistrital.mdp.adopcion.entities.person.Speciality;
 import lombok.Data;
 
 @Data
-public class VeterinarianDTO {
+public class VeterinarianDTO extends PersonDTO {
+
     private Long id;
+
     private String licenseNumber;
     private Speciality speciality;
     

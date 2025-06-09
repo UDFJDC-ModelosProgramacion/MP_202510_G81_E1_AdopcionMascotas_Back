@@ -1,0 +1,71 @@
+package co.edu.udistrital.mdp.adopcion.controllers.events.medical;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import co.edu.udistrital.mdp.adopcion.dto.events.medical.VaccineDTO;
+import co.edu.udistrital.mdp.adopcion.dto.events.medical.VaccineDetailDTO;
+import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineEntity;
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.adopcion.services.events.medical.VaccineService;
+
+@RestController
+@RequestMapping("/vaccines")
+public class VaccineController {
+
+    @Autowired
+    private VaccineService vaccineService;
+    
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @GetMapping
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<VaccineDetailDTO> findAll() {
+        List<VaccineEntity> vaccines = vaccineService.getAllVaccines();
+        return modelMapper.map(vaccines, new TypeToken<List<VaccineDetailDTO>>() {
+        }.getType());
+    }
+
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public VaccineDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        VaccineEntity vaccineEntity = vaccineService.getVaccineById(id);
+        return modelMapper.map(vaccineEntity, VaccineDetailDTO.class);
+    }
+
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public VaccineDTO create(@RequestBody VaccineDTO vaccineDTO) throws IllegalOperationException, EntityNotFoundException {
+        VaccineEntity vaccineEntity = vaccineService.createVaccine(modelMapper.map(vaccineDTO, VaccineEntity.class));
+        return modelMapper.map(vaccineEntity, VaccineDTO.class);
+    }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public VaccineDTO update(@PathVariable Long id, @RequestBody VaccineDTO vaccineDTO) 
+            throws EntityNotFoundException, IllegalOperationException {
+        VaccineEntity vaccineEntity = vaccineService.updateVaccine(id, modelMapper.map(vaccineDTO, VaccineEntity.class));
+        return modelMapper.map(vaccineEntity, VaccineDTO.class);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+        vaccineService.deleteVaccine(id);
+    }
+}

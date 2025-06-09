@@ -53,10 +53,10 @@ public class VaccineService {
     }
 
     @Transactional
-    public VaccineEntity updateVaccine(Long id){
+    public VaccineEntity updateVaccine(Long id, VaccineEntity vaccine) {
         if (vaccineRepository.existsById(id)) {
-            VaccineEntity vaccine = vaccineRepository.findById(id).orElse(null);
-            return vaccine;
+            vaccine.setId(id);
+            return vaccineRepository.save(vaccine);
         } else {
             return null;
         }

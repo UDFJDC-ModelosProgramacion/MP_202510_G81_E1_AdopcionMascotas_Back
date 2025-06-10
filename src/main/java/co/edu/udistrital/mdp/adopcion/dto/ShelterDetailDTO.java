@@ -5,6 +5,7 @@ import java.util.List;
 
 import co.edu.udistrital.mdp.adopcion.dto.events.ShelterArrivalDTO;
 import co.edu.udistrital.mdp.adopcion.dto.events.ShelterEventDTO;
+import co.edu.udistrital.mdp.adopcion.dto.pet.PetDTO;
 import lombok.Data;
 
 @Data

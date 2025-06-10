@@ -3,6 +3,7 @@ package co.edu.udistrital.mdp.adopcion.dto.events.medical;
 import java.util.Date;
 
 import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
+import co.edu.udistrital.mdp.adopcion.dto.pet.PetDTO;
 import lombok.Data;
 
 

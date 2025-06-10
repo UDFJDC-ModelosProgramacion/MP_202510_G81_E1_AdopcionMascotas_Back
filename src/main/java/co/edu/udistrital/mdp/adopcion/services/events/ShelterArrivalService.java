@@ -52,8 +52,8 @@ public class ShelterArrivalService {
     }
 
     @Transactional
-    public ShelterArrivalEntity updateShelterArrival(ShelterArrivalEntity shelterArrival) {
-        if (shelterArrival.getId() == null) {
+    public ShelterArrivalEntity updateShelterArrival(Long id, ShelterArrivalEntity shelterArrival) {
+        if (shelterArrival.getId() == null || id == null) {
             throw new IllegalArgumentException("ShelterArrival ID must not be null");
         }
         return shelterArrivalRepository.save(shelterArrival);

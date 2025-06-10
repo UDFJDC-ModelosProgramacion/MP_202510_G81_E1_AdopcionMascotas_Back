@@ -12,9 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.udistrital.mdp.adopcion.dto.events.ShelterArrivalDTO;
 import co.edu.udistrital.mdp.adopcion.dto.events.ShelterArrivalDetailDTO;
 import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
 import co.edu.udistrital.mdp.adopcion.services.events.ShelterArrivalService;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
+
 
 @RestController
 @RequestMapping("/shelter-arrivals")
@@ -53,6 +61,29 @@ public class ShelterArrivalController {
 
     /**
      * Create a new shelter arrival.
+     *
      * @param shelterArrivalDTO
+     * @return
      */
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public ShelterArrivalDTO create(@RequestBody ShelterArrivalDTO shelterArrivalDTO) throws EntityNotFoundException, IllegalOperationException {
+        ShelterArrivalEntity shelterArrivalEntity = shelterArrivalService.createShelterArrival(modelMapper.map(shelterArrivalDTO, ShelterArrivalEntity.class));
+        return modelMapper.map(shelterArrivalEntity, ShelterArrivalDTO.class);
+    }
+
+    /**
+     * Update an existing shelter arrival.
+     *
+     * @param shelter_arrival_id
+     * @param shelterArrivalDTO
+     * @return
+     */
+    @PostMapping("/{shelter_arrival_id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public ShelterArrivalDTO update(@PathVariable Long shelter_arrival_id, @RequestBody ShelterArrivalDTO shelterArrivalDTO) 
+            throws EntityNotFoundException, IllegalOperationException {
+        ShelterArrivalEntity shelterArrivalEntity = shelterArrivalService.updateShelterArrival(shelter_arrival_id, modelMapper.map(shelterArrivalDTO, ShelterArrivalEntity.class));
+        return modelMapper.map(shelterArrivalEntity, ShelterArrivalDTO.class);
+    }
 }

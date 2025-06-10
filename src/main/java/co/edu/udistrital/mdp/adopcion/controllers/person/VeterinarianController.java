@@ -47,7 +47,7 @@ public class VeterinarianController {
 
     }
 
-        @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public VeterinarianDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
         VeterinarianEntity veterinarianEntity = veterinarianService.getVeterinarianById(id);

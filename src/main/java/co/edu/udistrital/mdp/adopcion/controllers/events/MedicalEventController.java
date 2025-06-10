@@ -54,6 +54,9 @@ public class MedicalEventController {
     @ResponseStatus(code = HttpStatus.OK)
     public MedicalEventDetailDTO findOne(@PathVariable Long medical_event_id) throws EntityNotFoundException {
         MedicalEventEntity medicalEventEntity = medicalEventService.getMedicalEventById(medical_event_id);
+        if (medicalEventEntity == null) {
+            throw new EntityNotFoundException("Medical event not found with ID: " + medical_event_id);
+        }
         return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
     }
 
@@ -65,8 +68,10 @@ public class MedicalEventController {
      */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public MedicalEventDetailDTO create(@RequestBody MedicalEventDTO medicalEventDTO) throws EntityNotFoundException, IllegalOperationException {
-        MedicalEventEntity medicalEventEntity = medicalEventService.createMedicalEvent(modelMapper.map(medicalEventDTO, MedicalEventEntity.class));
+    public MedicalEventDetailDTO create(@RequestBody MedicalEventDTO medicalEventDTO)
+            throws EntityNotFoundException, IllegalOperationException {
+        MedicalEventEntity medicalEventEntity = medicalEventService
+                .createMedicalEvent(modelMapper.map(medicalEventDTO, MedicalEventEntity.class));
         return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
     }
 
@@ -79,8 +84,12 @@ public class MedicalEventController {
      */
     @PutMapping(value = "/{medical_event_id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public MedicalEventDetailDTO update(@PathVariable Long medical_event_id, @RequestBody MedicalEventDTO medicalEventDTO) throws EntityNotFoundException, IllegalOperationException {
-        MedicalEventEntity medicalEventEntity = medicalEventService.updateMedicalEvent(medical_event_id, modelMapper.map(medicalEventDTO, MedicalEventEntity.class));
+    public MedicalEventDetailDTO update(@PathVariable Long medical_event_id,
+            @RequestBody MedicalEventDTO medicalEventDTO) throws EntityNotFoundException, IllegalOperationException {
+        MedicalEventEntity medicalEventEntity = medicalEventService.updateMedicalEvent(medical_event_id,
+                modelMapper.map(medicalEventDTO, MedicalEventEntity.class));
+        if (medicalEventEntity == null)
+            throw new EntityNotFoundException("Medical event not found with ID: " + medical_event_id);
         return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
     }
 
@@ -92,6 +101,8 @@ public class MedicalEventController {
     @DeleteMapping(value = "/{medical_event_id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long medical_event_id) throws EntityNotFoundException, IllegalOperationException {
+        if (medicalEventService.getMedicalEventById(medical_event_id) == null)
+            throw new EntityNotFoundException("Medical event not found with ID: " + medical_event_id);
         medicalEventService.deleteMedicalEvent(medical_event_id);
     }
 }

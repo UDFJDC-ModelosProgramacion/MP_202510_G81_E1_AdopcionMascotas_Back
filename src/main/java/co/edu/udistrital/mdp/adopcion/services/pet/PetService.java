@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionTestRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
+import co.edu.udistrital.mdp.adopcion.repositories.event.medical.VaccineCardRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,8 @@ public class PetService {
     private AdoptionTestRepository adoptionTestRepository;
     @Autowired
     private VeterinarianRepository veterinarianRepository;
+    @Autowired
+    private VaccineCardRepository vaccineCardRepository;
 
     @Transactional
     public PetEntity createPet(PetEntity pet) {
@@ -44,16 +48,19 @@ public class PetService {
             throw new IllegalArgumentException("The birth date of the pet must not be empty");
         }
         if (pet.getVaccineCard() == null) {
-            throw new IllegalArgumentException("The vacine card of the pet must not be empty");
+            VaccineCardEntity vaccineCard = new VaccineCardEntity();
+            vaccineCard = vaccineCardRepository.save(vaccineCard);
+            pet.setVaccineCard(vaccineCard);
         }
         pet.setOwners(null);
-        
+
         return petRepository.save(pet);
     }
 
     @Transactional
     public PetEntity updatePet(Long id, PetEntity pet) {
-        PetEntity existingPet = petRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pet not found"));
+        PetEntity existingPet = petRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pet not found"));
         if (pet.getName() != null && !pet.getName().trim().isEmpty()) {
             existingPet.setName(pet.getName());
         } else {
@@ -117,22 +124,22 @@ public class PetService {
         if (!petRepository.existsById(id)) {
             throw new IllegalArgumentException("The pet with the given ID does not exist");
         }
-        
+
         PetEntity pet = petRepository.findById(id).orElse(null);
         if (pet == null) {
             throw new IllegalArgumentException("Pet not found");
         }
-        
+
         // Verificar si la mascota tiene adopciones activas
         if (pet.getAdoption() != null) {
             throw new IllegalArgumentException("Cannot delete a pet that has an active adoption");
         }
-        
+
         // Verificar si la mascota tiene aplicaciones de adopción pendientes
         if (!pet.getAdoptionApplications().isEmpty()) {
             throw new IllegalArgumentException("Cannot delete a pet that has pending adoption applications");
         }
-        
+
         petRepository.deleteById(id);
     }
 

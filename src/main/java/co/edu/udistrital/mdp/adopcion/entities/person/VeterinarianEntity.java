@@ -9,7 +9,10 @@ import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -25,7 +28,8 @@ public class VeterinarianEntity extends PersonEntity {
     @OneToMany(mappedBy = "veterinarian")
     private List<MedicalEventEntity> medicalEvents;
 
-    @OneToMany(mappedBy = "veterinarian")
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<DisponibilityEnum> disponibilities;
     
     @PodamExclude

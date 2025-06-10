@@ -178,7 +178,7 @@ public class ShelterArrivalServiceTest {
         updatedShelterArrival.setDescription(arrivalDetailsList.get(0));
         updatedShelterArrival.setPetCondition(petConditionList.get(0));
 
-        ShelterArrivalEntity result = shelterArrivalService.updateShelterArrival(updatedShelterArrival);
+        ShelterArrivalEntity result = shelterArrivalService.updateShelterArrival(shelterArrival.getId(), updatedShelterArrival);
 
         assertNotNull(result);
         assertEquals(updatedShelterArrival.getPet(), result.getPet());

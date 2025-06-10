@@ -10,7 +10,6 @@ import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepo
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionTestRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
-import co.edu.udistrital.mdp.adopcion.repositories.person.DisponibilityRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.OwnerRepository;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
@@ -24,8 +23,6 @@ public class OwnerService {
 
     @Autowired
     private MedicalEventRepository medicalEventRepository;
-    @Autowired
-    private DisponibilityRepository disponibilityRepository;
     @Autowired
     private AdoptionAplicationRepository adoptionApplicationRepository;
     @Autowired

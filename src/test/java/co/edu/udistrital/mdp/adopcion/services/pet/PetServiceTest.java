@@ -258,7 +258,7 @@ public class PetServiceTest {
         updatedPet.setVaccineCard(vaccineCardList.get(0));
         updatedPet.setId(pet.getId());
         updatedPet.setShelterArrival(shelterArrivalList.get(0));
-        PetEntity result = petService.updatePet(pet.getId(), updatedPet, true);
+        PetEntity result = petService.updatePet(pet.getId(), updatedPet);
         assertNotNull(result);
         assertEquals(updatedPet.getName(), result.getName());
         assertEquals((Date) updatedPet.getBirthDate(), (Date) result.getBirthDate());

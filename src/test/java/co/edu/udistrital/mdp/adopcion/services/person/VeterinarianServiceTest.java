@@ -1,26 +1,27 @@
 package co.edu.udistrital.mdp.adopcion.services.person;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
-import co.edu.udistrital.mdp.adopcion.entities.person.DisponibilityEntity;
+import co.edu.udistrital.mdp.adopcion.entities.person.DisponibilityEnum;
 import co.edu.udistrital.mdp.adopcion.entities.person.Speciality;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
-
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -36,7 +37,7 @@ public class VeterinarianServiceTest {
     private PodamFactory factory = new PodamFactoryImpl();
     private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
     private List<MedicalEventEntity> medicalEventList = new ArrayList<>();
-    private List<DisponibilityEntity> disponibilityList = new ArrayList<>();
+    private List<DisponibilityEnum> disponibilityList = new ArrayList<>();
     private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
     private List<AdoptionFollowUpEntity> adoptionFollowUpList = new ArrayList<>();
     private List<AdoptionEntity> adoptionList = new ArrayList<>();
@@ -70,7 +71,7 @@ public class VeterinarianServiceTest {
             entityManager.persist(medicalEvent);
             medicalEventList.add(medicalEvent);
 
-            DisponibilityEntity disponibility = factory.manufacturePojo(DisponibilityEntity.class);
+            DisponibilityEnum disponibility = factory.manufacturePojo(DisponibilityEnum.class);
             entityManager.persist(disponibility);
             disponibilityList.add(disponibility);
 

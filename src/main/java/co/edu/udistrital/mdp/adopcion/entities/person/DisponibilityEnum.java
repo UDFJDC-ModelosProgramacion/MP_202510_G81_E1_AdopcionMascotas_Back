@@ -1,6 +1,6 @@
 package co.edu.udistrital.mdp.adopcion.entities.person;
 
-public enum  DisponibilityEntity {
+public enum  DisponibilityEnum {
     MONDAY,
     TUESDAY,
     WEDNESDAY,

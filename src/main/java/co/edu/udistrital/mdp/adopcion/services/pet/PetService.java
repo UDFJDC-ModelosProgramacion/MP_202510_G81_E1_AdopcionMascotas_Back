@@ -14,6 +14,7 @@ import co.edu.udistrital.mdp.adopcion.repositories.person.DisponibilityRepositor
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
 import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -104,59 +105,37 @@ public class PetService {
     }
 
     @Transactional
-    public PetEntity updatePet(Long id, PetEntity pet, boolean isAdmin) {
-        if (!isAdmin) {
-            throw new SecurityException("You do not have permission to update pet information");
-        }
-
-        PetEntity existingPet = petRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Pet not found"));
-
-        if (pet.getName() == null || pet.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("The name of the pet must not be empty");
-        }
-        existingPet.setName(pet.getName());
-
-        if (pet.getBreed() == null || pet.getBreed().trim().isEmpty()) {
-            throw new IllegalArgumentException("The breed of the pet must not be empty");
-        }
-        existingPet.setBreed(pet.getBreed());
-
-        if (pet.getSize() == null) {
-            throw new IllegalArgumentException("The size of the pet must not be empty");
-        }
-        existingPet.setSize(pet.getSize());
-
-        if (pet.getGender() == null) {
-            throw new IllegalArgumentException("The gender of the pet must not be empty");
-        }
-        existingPet.setGender(pet.getGender());
-
-        if (pet.getBehaviorProfile() == null || pet.getBehaviorProfile().trim().isEmpty()) {
-            throw new IllegalArgumentException("The behavior profile of the pet must not be empty");
-        }
-        existingPet.setBehaviorProfile(pet.getBehaviorProfile());
-
-        if (pet.getBirthDate() == null) {
-            throw new IllegalArgumentException("The birth date of the pet must not be empty");
-        }
-        existingPet.setBirthDate(pet.getBirthDate());
-
-        if (pet.getShelter() == null) {
-            throw new IllegalArgumentException("The shelter of the pet must not be empty");
-        }
-        existingPet.setShelter(pet.getShelter());
-
-        if (pet.getShelterArrival() == null) {
-            throw new IllegalArgumentException("The shelter arrival of the pet must not be empty");
-        }
-        existingPet.setShelterArrival(pet.getShelterArrival());
-
-        if (pet.getVaccineCard() == null) {
-            throw new IllegalArgumentException("The vaccine card of the pet must not be empty");
-        }
-        existingPet.setVaccineCard(pet.getVaccineCard());
-
-        return petRepository.save(existingPet);
+    public PetEntity getPet(Long id) {
+        return petRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pet not found"));
     }
+
+    @Transactional
+    public List<PetEntity> getPets() {
+        return petRepository.findAll();
+    }
+
+    @Transactional
+    public void deletePet(Long id) {
+        if (!petRepository.existsById(id)) {
+            throw new IllegalArgumentException("The pet with the given ID does not exist");
+        }
+        
+        PetEntity pet = petRepository.findById(id).orElse(null);
+        if (pet == null) {
+            throw new IllegalArgumentException("Pet not found");
+        }
+        
+        // Verificar si la mascota tiene adopciones activas
+        if (pet.getAdoption() != null) {
+            throw new IllegalArgumentException("Cannot delete a pet that has an active adoption");
+        }
+        
+        // Verificar si la mascota tiene aplicaciones de adopción pendientes
+        if (!pet.getAdoptionApplications().isEmpty()) {
+            throw new IllegalArgumentException("Cannot delete a pet that has pending adoption applications");
+        }
+        
+        petRepository.deleteById(id);
+    }
+
 }

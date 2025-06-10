@@ -13,6 +13,7 @@ import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.DisponibilityRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.OwnerRepository;
 import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 
 @Slf4j
@@ -93,5 +94,14 @@ public class OwnerService {
         }
         
         ownerRepository.deleteById(id);
+    }
+    @Transactional
+    public OwnerEntity getOwner(Long id) {
+        return ownerRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public List<OwnerEntity> getOwners() {
+        return ownerRepository.findAll();
     }
 }

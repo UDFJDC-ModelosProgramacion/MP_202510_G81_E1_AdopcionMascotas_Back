@@ -117,5 +117,35 @@ public class OwnerServiceTest {
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
+    @Test
+    void testgetOwner() {
+        OwnerEntity owner = ownerList.get(0);
+        OwnerEntity foundOwner = ownerService.getOwner(owner.getId());
+        assertNotNull(foundOwner);
+        assertEquals(owner.getFirstName(), foundOwner.getFirstName());
+        assertEquals(owner.getLastName(), foundOwner.getLastName());
+        assertEquals(owner.getPhoneNumber(), foundOwner.getPhoneNumber());
+        assertEquals(owner.getEmail(), foundOwner.getEmail());
+        assertEquals(owner.getAddress(), foundOwner.getAddress());
+        assertEquals(owner.getHouseType(), foundOwner.getHouseType());
+    }
+
+    @Test
+    void testgetOwners() {
+        List<OwnerEntity> foundOwners = ownerService.getOwners();
+        assertNotNull(foundOwners);
+        assertEquals(ownerList.size(), foundOwners.size());
+        for (int i = 0; i < ownerList.size(); i++) {
+            OwnerEntity expectedOwner = ownerList.get(i);
+            OwnerEntity actualOwner = foundOwners.get(i);
+            assertEquals(expectedOwner.getFirstName(), actualOwner.getFirstName());
+            assertEquals(expectedOwner.getLastName(), actualOwner.getLastName());
+            assertEquals(expectedOwner.getPhoneNumber(), actualOwner.getPhoneNumber());
+            assertEquals(expectedOwner.getEmail(), actualOwner.getEmail());
+            assertEquals(expectedOwner.getAddress(), actualOwner.getAddress());
+            assertEquals(expectedOwner.getHouseType(), actualOwner.getHouseType());
+        }
+    }
 }
 

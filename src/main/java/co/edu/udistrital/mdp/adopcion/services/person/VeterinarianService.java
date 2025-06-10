@@ -12,7 +12,6 @@ import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepo
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionTestRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
-import co.edu.udistrital.mdp.adopcion.repositories.person.DisponibilityRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,8 +24,6 @@ public class VeterinarianService {
     @Autowired
     private MedicalEventRepository medicalEventRepository;
     @Autowired
-    private DisponibilityRepository disponibilityRepository;
-    @Autowired
     private AdoptionAplicationRepository adoptionApplicationRepository;
     @Autowired
     private AdoptionFollowUpRepository adoptionFollowUpRepository;
@@ -37,6 +34,9 @@ public class VeterinarianService {
 
     @Transactional
     public VeterinarianEntity createVeterinarian(VeterinarianEntity veterinarian) {
+        if (veterinarian.getDisponibilities() == null || veterinarian.getDisponibilities().isEmpty()) {
+            throw new IllegalArgumentException("Disponibilities must not be empty");
+        }
         if (veterinarian.getLicenseNumber() == null) {
             throw new IllegalArgumentException("License number must not be null");
         }

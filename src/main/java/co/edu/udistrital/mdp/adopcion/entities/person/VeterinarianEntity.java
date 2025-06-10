@@ -26,7 +26,7 @@ public class VeterinarianEntity extends PersonEntity {
     private List<MedicalEventEntity> medicalEvents;
 
     @OneToMany(mappedBy = "veterinarian")
-    private List<DisponibilityEntity> disponibilities;
+    private List<DisponibilityEnum> disponibilities;
     
     @PodamExclude
     @OneToMany(mappedBy="veterinarian")

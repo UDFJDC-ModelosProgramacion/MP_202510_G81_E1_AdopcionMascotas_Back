@@ -101,7 +101,7 @@ public class VaccineServiceTest {
     void testUpdateVaccine() {
         VaccineEntity vaccine = vaccineList.get(0);
         vaccine.setName("Updated Name");
-        VaccineEntity updatedVaccine = vaccineService.updateVaccine(vaccine.getId());
+        VaccineEntity updatedVaccine = vaccineService.updateVaccine(vaccine.getId(), vaccine);
         assertNotNull(updatedVaccine);
         assertEquals(vaccine.getName(), updatedVaccine.getName());
     }

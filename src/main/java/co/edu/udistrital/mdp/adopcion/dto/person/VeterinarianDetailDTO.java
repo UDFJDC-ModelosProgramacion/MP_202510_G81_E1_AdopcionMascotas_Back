@@ -7,7 +7,7 @@ import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
 import co.edu.udistrital.mdp.adopcion.dto.events.ShelterArrivalDTO;
 
 public class VeterinarianDetailDTO extends VeterinarianDTO {
-    
+
     private List<MedicalEventDTO> medicalEvents= new ArrayList<>();
     private List<AdoptionAplicationDTO> adoptionApplications= new ArrayList<>();
     private List<AdoptionFollowUpDTO> followUps= new ArrayList<>();

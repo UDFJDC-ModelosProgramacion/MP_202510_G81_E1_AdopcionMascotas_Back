@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,7 @@ public class ShelterArrivalController {
      * @param shelter_arrival_id
      * @return
      */
-    @GetMapping("/{shelter_arrival_id}")
+    @GetMapping(value = "/{shelter_arrival_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public ShelterArrivalDetailDTO findOne(@PathVariable Long shelter_arrival_id) {
         ShelterArrivalEntity shelterArrivalEntity = shelterArrivalService.getShelterArrivalById(shelter_arrival_id);
@@ -79,11 +80,23 @@ public class ShelterArrivalController {
      * @param shelterArrivalDTO
      * @return
      */
-    @PostMapping("/{shelter_arrival_id}")
+    @PostMapping(value = "/{shelter_arrival_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public ShelterArrivalDTO update(@PathVariable Long shelter_arrival_id, @RequestBody ShelterArrivalDTO shelterArrivalDTO) 
             throws EntityNotFoundException, IllegalOperationException {
         ShelterArrivalEntity shelterArrivalEntity = shelterArrivalService.updateShelterArrival(shelter_arrival_id, modelMapper.map(shelterArrivalDTO, ShelterArrivalEntity.class));
         return modelMapper.map(shelterArrivalEntity, ShelterArrivalDTO.class);
     }
+
+    /**
+     * Delete a shelter arrival by ID.
+     *
+     * @param shelter_arrival_id
+     */
+    @DeleteMapping(value = "/{shelter_arrival_id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long shelter_arrival_id) throws EntityNotFoundException, IllegalOperationException {
+        shelterArrivalService.deleteShelterArrival(shelter_arrival_id);
+    }
+
 }

@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.adopcion.dto.events;
 
+import co.edu.udistrital.mdp.adopcion.dto.ShelterDTO;
 import co.edu.udistrital.mdp.adopcion.dto.person.VeterinarianDTO;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetConditionEnum;
 import lombok.Data;

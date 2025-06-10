@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,14 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
 import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDetailDTO;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
-import co.edu.udistrital.mdp.adopcion.services.events.MedicalEventService;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.adopcion.services.events.MedicalEventService;
 
 @RestController
 @RequestMapping("/medical-events")

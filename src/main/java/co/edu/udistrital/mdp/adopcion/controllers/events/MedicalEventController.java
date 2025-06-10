@@ -54,7 +54,7 @@ public class MedicalEventController {
      */
     @GetMapping(value = "/{medical_event_id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public MedicalEventDetailDTO findOne(@PathVariable Long medical_event_id) {
+    public MedicalEventDetailDTO findOne(@PathVariable Long medical_event_id) throws EntityNotFoundException {
         MedicalEventEntity medicalEventEntity = medicalEventService.getMedicalEventById(medical_event_id);
         return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
     }

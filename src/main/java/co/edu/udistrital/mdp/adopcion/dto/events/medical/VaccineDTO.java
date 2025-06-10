@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.adopcion.dto.events.medical;
 
 import java.sql.Date;
 
+import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
 import lombok.Data;
 
 @Data

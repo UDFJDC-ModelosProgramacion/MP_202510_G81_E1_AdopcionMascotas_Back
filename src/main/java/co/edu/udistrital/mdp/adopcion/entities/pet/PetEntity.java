@@ -13,7 +13,9 @@ import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
 import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -61,6 +63,7 @@ public class PetEntity extends BaseEntity {
     private ShelterEntity shelter;
     
     @PodamExclude
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "vaccine_card_id")
     private VaccineCardEntity vaccineCard;
 }

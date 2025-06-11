@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.adopcion.entities.events;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import co.edu.udistrital.mdp.adopcion.entities.BaseEntity;

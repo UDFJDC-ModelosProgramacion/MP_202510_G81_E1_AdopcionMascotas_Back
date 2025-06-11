@@ -148,26 +148,29 @@ public class VeterinarianMedicalEventController {
         return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
     }
 
-    /**
-     * Delete a medical event by ID for a specific veterinarian.
-     *
-     * @param veterinarianId
-     * @param medicalEventId
-     * @throws EntityNotFoundException
-     */
-    @DeleteMapping("/{veterinarianId}/medical-events/{medicalEventId}")
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long veterinarianId, @PathVariable Long medicalEventId)
-            throws EntityNotFoundException, IllegalOperationException {
-        VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
-        if (veterinarian == null) {
-            throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
-        }
-        MedicalEventEntity medicalEventEntity = medicalEventService.getMedicalEventById(medicalEventId);
-        if (medicalEventEntity == null || !medicalEventEntity.getVeterinarian().getId().equals(veterinarianId)) {
-            throw new IllegalOperationException(
-                    "In this veterinarian, medical event not found with ID: " + medicalEventId);
-        }
-        medicalEventService.deleteMedicalEvent(medicalEventId);
+/**
+ * Delete a medical event by ID for a specific veterinarian.
+ *
+ * @param veterinarianId
+ * @param medicalEventId
+ * @throws EntityNotFoundException
+ */
+@DeleteMapping("/{veterinarianId}/medical-events/{medicalEventId}")
+@ResponseStatus(code = HttpStatus.NO_CONTENT)
+public void delete(@PathVariable Long veterinarianId, @PathVariable Long medicalEventId)
+        throws EntityNotFoundException, IllegalOperationException {
+    VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
+    if (veterinarian == null) {
+        throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
     }
+    MedicalEventEntity medicalEventEntity = medicalEventService.getMedicalEventById(medicalEventId);
+    if (medicalEventEntity == null) {
+        throw new EntityNotFoundException("Medical event not found with ID: " + medicalEventId);
+    }
+    if (!medicalEventEntity.getVeterinarian().getId().equals(veterinarianId)) {
+        throw new EntityNotFoundException(
+                "Medical event with ID " + medicalEventId + " is not associated with veterinarian ID " + veterinarianId);
+    }
+    medicalEventService.deleteMedicalEvent(medicalEventId);
+}
 }

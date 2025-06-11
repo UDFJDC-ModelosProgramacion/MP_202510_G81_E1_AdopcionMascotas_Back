@@ -18,15 +18,6 @@ public class VaccineCardService {
     
     @Transactional
     public VaccineCardEntity createVaccineCard(VaccineCardEntity vaccineCard) {
-        if (vaccineCard.getLastVacineDate() == null) {
-            throw new IllegalArgumentException("Last vaccine date must not be null");
-        }
-        if (vaccineCard.getLastDewormingDate() == null) {
-            throw new IllegalArgumentException("Deworming date must not be null");
-        }
-        if (vaccineCard.getPet() == null ) {
-            throw new IllegalArgumentException("Pet must not be null");
-        }
         return vaccineCardRepository.save(vaccineCard);
     }
 

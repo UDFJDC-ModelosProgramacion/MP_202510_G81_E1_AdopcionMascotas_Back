@@ -47,10 +47,10 @@ public class VaccineController {
     @GetMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public VaccineDetailDTO findOne(@PathVariable Long vaccines_id) throws EntityNotFoundException {
-        if (vaccines_id == null) {
-            throw new EntityNotFoundException("Vaccine ID cannot be null");
-        }
         VaccineEntity vaccineEntity = vaccineService.getVaccineById(vaccines_id);
+        if (vaccineEntity == null) {
+            throw new EntityNotFoundException("Vaccine not found with ID: " + vaccines_id);
+        }
         return modelMapper.map(vaccineEntity, VaccineDetailDTO.class);
     }
 
@@ -60,6 +60,7 @@ public class VaccineController {
         if (vaccineDTO == null) {
             throw new IllegalOperationException("Vaccine data cannot be null");
         }
+
         VaccineEntity vaccineEntity = vaccineService.createVaccine(modelMapper.map(vaccineDTO, VaccineEntity.class));
         return modelMapper.map(vaccineEntity, VaccineDTO.class);
     }
@@ -78,8 +79,8 @@ public class VaccineController {
     @DeleteMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long vaccines_id) throws EntityNotFoundException, IllegalOperationException {
-        if (vaccines_id == null) {
-            throw new EntityNotFoundException("Vaccine ID cannot be null");
+        if(vaccineService.getVaccineById(vaccines_id) == null) {
+            throw new EntityNotFoundException("Vaccine not found with ID: " + vaccines_id);
         }
         vaccineService.deleteVaccine(vaccines_id);
     }

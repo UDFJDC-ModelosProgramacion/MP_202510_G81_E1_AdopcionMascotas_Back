@@ -70,6 +70,7 @@ public class ShelterShelterEventController {
      * @param shelterEventId
      * @return ShelterEventDetailDTO
      * @throws EntityNotFoundException
+     * @throws IllegalOperationException
      */
     @GetMapping("/{shelterId}/events/{shelterEventId}")
     @ResponseStatus(code = HttpStatus.OK)

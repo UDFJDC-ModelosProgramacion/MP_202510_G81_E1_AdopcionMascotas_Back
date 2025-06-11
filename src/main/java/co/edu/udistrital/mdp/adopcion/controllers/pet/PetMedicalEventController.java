@@ -80,8 +80,14 @@ public class PetMedicalEventController {
             throw new EntityNotFoundException("Pet not found with ID: " + petId);
         }
         MedicalEventEntity medicalEvent = medicalEventService.getMedicalEventById(eventId);
-        if (medicalEvent == null || !medicalEvent.getPet().getId().equals(petId)) {
+        if (medicalEvent == null) {
             throw new EntityNotFoundException("Medical event not found with ID: " + eventId);
+        }
+        if (medicalEvent.getPet() == null) {
+            throw new IllegalOperationException("Medical event with ID: " + eventId + " is not associated with any pet.");
+        }
+        if (!medicalEvent.getPet().getId().equals(petId)) {
+            throw new EntityNotFoundException("Medical event not found with ID: " + eventId + " for pet with ID: " + petId);
         }
         return modelMapper.map(medicalEvent, MedicalEventDetailDTO.class);
     }
@@ -95,25 +101,26 @@ public class PetMedicalEventController {
      * @throws EntityNotFoundException
      * @throws IllegalOperationException
      */
-    @PostMapping("/{petId}/medical-events")
+    @PostMapping("/{petId}/medical-events/{medicalEventId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public MedicalEventDetailDTO create(@PathVariable Long petId, @RequestBody MedicalEventDTO medicalEventDTO)
+    public MedicalEventDetailDTO create(@PathVariable Long petId, @PathVariable Long medicalEventId)
             throws EntityNotFoundException, IllegalOperationException {
         PetEntity pet = petService.getPet(petId);
         if (pet == null) {
             throw new EntityNotFoundException("Pet not found with ID: " + petId);
         }
-        MedicalEventEntity medicalEventEntity = medicalEventService.getMedicalEventById(medicalEventDTO.getId());
+        MedicalEventEntity medicalEventEntity = medicalEventService.getMedicalEventById(medicalEventId);
         if (medicalEventEntity == null) {
-            throw new IllegalOperationException(
-                    "Medical event with ID " + medicalEventDTO.getId() + " already exists.");
+            throw new EntityNotFoundException("Medical event not found with ID: " + medicalEventId);
         }
         medicalEventEntity.setPet(pet);
         medicalEventEntity = medicalEventService.updateMedicalEvent(medicalEventEntity.getId(), medicalEventEntity);
         if (medicalEventEntity == null) {
             throw new IllegalOperationException("Failed to create medical event.");
         }
-        return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
+        // Fetch the fully populated entity after update
+        MedicalEventEntity fullMedicalEvent = medicalEventService.getMedicalEventById(medicalEventEntity.getId());
+        return modelMapper.map(fullMedicalEvent, MedicalEventDetailDTO.class);
     }
 
     /**
@@ -125,10 +132,10 @@ public class PetMedicalEventController {
      * @throws EntityNotFoundException
      * @throws IllegalOperationException
      */
-    @PutMapping("/{petId}/medical-events/{medicalEventId}")
+    @PutMapping("/{petId}/medical-events")
     @ResponseStatus(code = HttpStatus.OK)
     public List<MedicalEventDetailDTO> assignMedicalEvents(
-            @PathVariable Long petId, @PathVariable Long medicalEventId,
+            @PathVariable Long petId,
             @RequestBody List<MedicalEventDTO> medicalEventDTOs)
             throws EntityNotFoundException, IllegalOperationException {
         PetEntity pet = petService.getPet(petId);

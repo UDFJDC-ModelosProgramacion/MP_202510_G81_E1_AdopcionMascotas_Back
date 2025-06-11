@@ -12,5 +12,6 @@ public class VaccineCardDTO extends EventDTO {
     private Long id;
     private Date lastVacineDate;
     private Date lastDewormingDate;
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private PetDTO pet;
 }

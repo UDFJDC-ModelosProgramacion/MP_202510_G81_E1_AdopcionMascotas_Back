@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.adopcion.controllers.pet;
 
 import java.util.List;
 
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
-import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
-
 import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
 import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDetailDTO;
-import co.edu.udistrital.mdp.adopcion.services.pet.PetService;
-import co.edu.udistrital.mdp.adopcion.services.events.MedicalEventService;
-import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
+import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.adopcion.services.events.MedicalEventService;
+import co.edu.udistrital.mdp.adopcion.services.pet.PetService;
 
 @RestController
 @RequestMapping("/pets")
@@ -103,7 +103,7 @@ public class PetMedicalEventController {
      */
     @PostMapping("/{petId}/medical-events/{medicalEventId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public MedicalEventDetailDTO create(@PathVariable Long petId, @PathVariable Long medicalEventId)
+    public MedicalEventDTO create(@PathVariable Long petId, @PathVariable Long medicalEventId)
             throws EntityNotFoundException, IllegalOperationException {
         PetEntity pet = petService.getPet(petId);
         if (pet == null) {
@@ -118,9 +118,8 @@ public class PetMedicalEventController {
         if (medicalEventEntity == null) {
             throw new IllegalOperationException("Failed to create medical event.");
         }
-        // Fetch the fully populated entity after update
-        MedicalEventEntity fullMedicalEvent = medicalEventService.getMedicalEventById(medicalEventEntity.getId());
-        return modelMapper.map(fullMedicalEvent, MedicalEventDetailDTO.class);
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        return modelMapper.map(medicalEventEntity, MedicalEventDTO.class);
     }
 
     /**

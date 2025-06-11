@@ -6,6 +6,7 @@ import java.util.List;
 import co.edu.udistrital.mdp.adopcion.entities.events.EventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class VaccineCardEntity extends EventEntity {
 	private List<DewormingEntity> dewormings = new ArrayList<>();
 
     @PodamExclude
-    @OneToOne(mappedBy="vaccineCard")
+    @OneToOne(mappedBy = "vaccineCard", fetch = FetchType.LAZY)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private PetEntity pet;
 }

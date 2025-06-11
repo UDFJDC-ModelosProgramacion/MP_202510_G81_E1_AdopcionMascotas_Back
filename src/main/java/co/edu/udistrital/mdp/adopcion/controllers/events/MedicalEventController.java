@@ -77,13 +77,9 @@ public class MedicalEventController {
         if (medicalEventDTO.getPet() == null) {
             throw new IllegalOperationException("Pet ID is required");
         }
-        
-        MedicalEventEntity medicalEventEntity = medicalEventService.createMedicalEvent(
-                modelMapper.map(medicalEventDTO, MedicalEventEntity.class));
-
-        MedicalEventEntity reloadedEntity = medicalEventService.getMedicalEventById(medicalEventEntity.getId());
-        
-        return modelMapper.map(reloadedEntity, MedicalEventDetailDTO.class);
+        MedicalEventEntity medicalEventEntity = medicalEventService
+                .createMedicalEvent(modelMapper.map(medicalEventDTO, MedicalEventEntity.class));
+        return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
     }
 
     /**

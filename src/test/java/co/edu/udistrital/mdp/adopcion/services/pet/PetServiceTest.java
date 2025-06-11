@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
@@ -50,7 +50,7 @@ public class PetServiceTest {
     private final List<String> behaviorProfileList = new ArrayList<>();
 
     private final List<OwnerEntity> ownerList = new ArrayList<>();
-    private final List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
+    private final List<AdoptionApplicationEntity> adoptionApplicationList = new ArrayList<>();
     private final List<MedicalEventEntity> medicalEventList = new ArrayList<>();
     private final List<MultimediaEntity> multimediaList = new ArrayList<>();
     private final List<AdoptionEntity> adoptionList = new ArrayList<>();
@@ -92,7 +92,7 @@ public class PetServiceTest {
             OwnerEntity owner = factory.manufacturePojo(OwnerEntity.class);
             entityManager.persist(owner);
             ownerList.add(owner);
-            AdoptionAplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
+            AdoptionApplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionApplicationEntity.class);
             entityManager.persist(adoptionApplication);
             adoptionApplicationList.add(adoptionApplication);
             MedicalEventEntity medicalEvent = factory.manufacturePojo(MedicalEventEntity.class);

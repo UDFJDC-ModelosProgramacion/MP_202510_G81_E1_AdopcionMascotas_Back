@@ -14,6 +14,6 @@ public class AdoptionDTO extends EventDTO {
     private OwnerDTO owner;
     private VeterinarianDTO veterinarian;
     private PetDTO pet;
-    private AdoptionApplicationDto adoptionApplication;
+    private AdoptionApplicationDTO adoptionApplication;
 
 }

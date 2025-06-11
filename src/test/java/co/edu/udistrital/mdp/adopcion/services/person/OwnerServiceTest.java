@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
@@ -37,7 +37,7 @@ public class OwnerServiceTest {
     private PodamFactory factory = new PodamFactoryImpl();
     private List<OwnerEntity> ownerList = new ArrayList<>();   
     private List<PetEntity> petList = new ArrayList<>();
-    private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
+    private List<AdoptionApplicationEntity> adoptionApplicationList = new ArrayList<>();
     private List<AdoptionTestEntity> adoptionTestList = new ArrayList<>();
     private List<AdoptionEntity> adoptionList = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class OwnerServiceTest {
             entityManager.persist(adoptionTest);
             adoptionTestList.add(adoptionTest);
 
-            AdoptionAplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
+            AdoptionApplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionApplicationEntity.class);
             entityManager.persist(adoptionApplication);
             adoptionApplicationList.add(adoptionApplication);
 

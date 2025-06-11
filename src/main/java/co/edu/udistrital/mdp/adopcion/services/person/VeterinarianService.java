@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
-import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionApplicationRepository;
+import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionTestRepository;
@@ -24,7 +24,7 @@ public class VeterinarianService {
     @Autowired
     private MedicalEventRepository medicalEventRepository;
     @Autowired
-    private AdoptionApplicationRepository adoptionApplicationRepository;
+    private AdoptionAplicationRepository adoptionApplicationRepository;
     @Autowired
     private AdoptionFollowUpRepository adoptionFollowUpRepository;
     @Autowired

@@ -15,18 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
 
 import co.edu.udistrital.mdp.adopcion.dto.person.OwnerDTO;
 import co.edu.udistrital.mdp.adopcion.dto.person.OwnerDetailDTO;
-import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionDTO;
-import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionTestDTO;
-import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionApplicationDTO;
-import co.edu.udistrital.mdp.adopcion.dto.pet.PetDTO;
 import co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity;
-import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import co.edu.udistrital.mdp.adopcion.services.person.OwnerService;
-import co.edu.udistrital.mdp.adopcion.services.pet.PetService;
 
 @RestController
 @RequestMapping("/owners")
@@ -36,89 +32,119 @@ public class OwnerController {
     private OwnerService ownerService;
 
     @Autowired
-    private PetService petService;
-
-    @Autowired
     private ModelMapper modelMapper;
 
-    // CRUD básico para Owner
+    /**
+     * Get all owners.
+     *
+     * @return List of OwnerDetailDTO
+     * @throws IllegalOperationException
+     * @throws EntityNotFoundException
+     */
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<OwnerDetailDTO> findAll() {
+    public List<OwnerDetailDTO> findAll() throws IllegalOperationException, EntityNotFoundException {
         List<OwnerEntity> owners = ownerService.getOwners();
+        if (owners.isEmpty()) {
+            throw new IllegalOperationException("No owners found.");
+        }
         return modelMapper.map(owners, new TypeToken<List<OwnerDetailDTO>>() {
         }.getType());
     }
 
-    @GetMapping(value = "/{id}")
+    /**
+     * Get owner by ID.
+     *
+     * @param ownerId
+     * @return OwnerDetailDTO
+     * @throws EntityNotFoundException
+     */
+    @GetMapping("/{ownerId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public OwnerDetailDTO findOne(@PathVariable Long id) {
-        OwnerEntity ownerEntity = ownerService.getOwner(id);
+    public OwnerDetailDTO findOne(@PathVariable Long ownerId) 
+            throws EntityNotFoundException, IllegalOperationException {
+        OwnerEntity ownerEntity = ownerService.getOwner(ownerId);
         if (ownerEntity == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found with ID: " + id);
+            throw new EntityNotFoundException("Owner not found with ID: " + ownerId);
         }
         return modelMapper.map(ownerEntity, OwnerDetailDTO.class);
     }
 
+    /**
+     * Create a new owner.
+     * 
+     * @param ownerDTO
+     * @return OwnerDTO
+     * @throws EntityNotFoundException
+     * @throws IllegalOperationException
+     */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public OwnerDTO create(@RequestBody OwnerDTO ownerDTO) {
-        OwnerEntity ownerEntity = ownerService.createOwner(modelMapper.map(ownerDTO, OwnerEntity.class));
-        return modelMapper.map(ownerEntity, OwnerDTO.class);
-    }
-
-    @PutMapping(value = "/{id}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public OwnerDTO update(@PathVariable Long id, @RequestBody OwnerDTO ownerDTO) {
-        OwnerEntity ownerEntity = ownerService.updateOwner(id, modelMapper.map(ownerDTO, OwnerEntity.class), false);
+    public OwnerDTO create(@RequestBody OwnerDTO ownerDTO) 
+            throws EntityNotFoundException, IllegalOperationException {
+        OwnerEntity ownerEntity = modelMapper.map(ownerDTO, OwnerEntity.class);
+        ownerEntity = ownerService.createOwner(ownerEntity);
         if (ownerEntity == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found with ID: " + id);
+            throw new IllegalOperationException("Failed to create owner.");
         }
         return modelMapper.map(ownerEntity, OwnerDTO.class);
     }
 
-    @DeleteMapping(value = "/{id}")
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    /**
+     * Update an owner by ID.
+     *
+     * @param ownerId
+     * @param ownerDTO
+     * @return OwnerDTO
+     * @throws EntityNotFoundException
+     * @throws IllegalOperationException
+     */
+    @PutMapping("/{ownerId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public OwnerDTO update(@PathVariable Long ownerId, @RequestBody OwnerDTO ownerDTO) 
+            throws EntityNotFoundException, IllegalOperationException {
+        OwnerEntity existingOwner = ownerService.getOwner(ownerId);
+        if (existingOwner == null) {
+            throw new EntityNotFoundException("Owner not found with ID: " + ownerId);
+        }
+        
+        OwnerEntity ownerEntity = modelMapper.map(ownerDTO, OwnerEntity.class);
+        ownerEntity.setId(ownerId);
+        
         try {
-            ownerService.deleteOwner(id, true);
+            ownerEntity = ownerService.updateOwner(ownerId, ownerEntity, false);
+            if (ownerEntity == null) {
+                throw new IllegalOperationException("Failed to update owner with ID: " + ownerId);
+            }
         } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found with ID: " + id);
+            throw new EntityNotFoundException("Failed to update, owner not found with ID: " + ownerId);
+        }
+        
+        return modelMapper.map(ownerEntity, OwnerDTO.class);
+    }
+
+    /**
+     * Delete an owner by ID.
+     *
+     * @param ownerId
+     * @throws EntityNotFoundException
+     * @throws IllegalOperationException
+     */
+    @DeleteMapping("/{ownerId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long ownerId) 
+            throws EntityNotFoundException, IllegalOperationException {
+        OwnerEntity owner = ownerService.getOwner(ownerId);
+        if (owner == null) {
+            throw new EntityNotFoundException("Owner not found with ID: " + ownerId);
+        }
+        
+        try {
+            ownerService.deleteOwner(ownerId, true);
+        } catch (IllegalArgumentException e) {
+            throw new EntityNotFoundException("Owner not found with ID: " + ownerId);
         } catch (SecurityException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
+            throw new IllegalOperationException("Cannot delete owner: " + e.getMessage());
         }
-    }
-
-    // Métodos para Adoptions
-    @GetMapping("/{ownerId}/adoptions")
-    @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionDTO> getAdoptions(@PathVariable Long ownerId) {
-        OwnerEntity owner = ownerService.getOwner(ownerId);
-        if (owner == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found with ID: " + ownerId);
-        }
-        return modelMapper.map(owner.getAdoptions(), new TypeToken<List<AdoptionDTO>>() {}.getType());
-    }
-
-    // Métodos para Adoption Tests
-    @GetMapping("/{ownerId}/adoption-tests")
-    @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionTestDTO> getAdoptionTests(@PathVariable Long ownerId) {
-        OwnerEntity owner = ownerService.getOwner(ownerId);
-        if (owner == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found with ID: " + ownerId);
-        }
-        return modelMapper.map(owner.getAdoptionTests(), new TypeToken<List<AdoptionTestDTO>>() {}.getType());
-    }
-
-    // Métodos para Adoption Applications
-    @GetMapping("/{ownerId}/adoption-applications")
-    @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionApplicationDTO> getAdoptionApplications(@PathVariable Long ownerId) {
-        OwnerEntity owner = ownerService.getOwner(ownerId);
-        if (owner == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found with ID: " + ownerId);
-        }
-        return modelMapper.map(owner.getAdoptionApplications(), new TypeToken<List<AdoptionApplicationDTO>>() {}.getType());
     }
 }

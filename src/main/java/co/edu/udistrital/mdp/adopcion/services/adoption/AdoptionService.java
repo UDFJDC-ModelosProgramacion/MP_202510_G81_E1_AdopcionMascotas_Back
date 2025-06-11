@@ -51,6 +51,19 @@ public class AdoptionService {
         if (adoption.getAdoptionStatus() == null) {
             throw new IllegalArgumentException("Adoption status must not be null");
         }
+        // Validar existencia de entidades relacionadas
+        if (!ownerRepository.existsById(adoption.getOwner().getId())) {
+            throw new IllegalArgumentException("Owner with id " + adoption.getOwner().getId() + " does not exist");
+        }
+        if (!veterinarianRepository.existsById(adoption.getVeterinarian().getId())) {
+            throw new IllegalArgumentException("Veterinarian with id " + adoption.getVeterinarian().getId() + " does not exist");
+        }
+        if (!petRepository.existsById(adoption.getPet().getId())) {
+            throw new IllegalArgumentException("Pet with id " + adoption.getPet().getId() + " does not exist");
+        }
+        if (!adoptionAplicationRepository.existsById(adoption.getAdoptionApplication().getId())) {
+            throw new IllegalArgumentException("Adoption application with id " + adoption.getAdoptionApplication().getId() + " does not exist");
+        }
         return adoptionRepository.save(adoption);
     }
     @Transactional

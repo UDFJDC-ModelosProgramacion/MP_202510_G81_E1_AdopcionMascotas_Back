@@ -43,9 +43,32 @@ public class AdoptionApplicationController {
     @ResponseStatus(HttpStatus.CREATED)
     public AdoptionApplicationDTO create(@RequestBody AdoptionApplicationDTO dto)
             throws IllegalOperationException, EntityNotFoundException {
-        AdoptionApplicationEntity entity = applicationService.createApplication(
-                modelMapper.map(dto, AdoptionApplicationEntity.class));
-        return modelMapper.map(entity, AdoptionApplicationDTO.class);
+        // Mapeo manual para evitar recursión y ambigüedad
+        AdoptionApplicationEntity entity = new AdoptionApplicationEntity();
+        entity.setApplicationDate(dto.getApplicationDate());
+        entity.setApplicationEnd(dto.getApplicationEnd());
+        entity.setObservations(dto.getObservations());
+        entity.setApplicationStatus(dto.getApplicationStatus());
+        entity.setResult(dto.getResult());
+        // Asigna solo el id de las entidades relacionadas
+        if (dto.getOwner() != null && dto.getOwner().getId() != null) {
+            var owner = new co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity();
+            owner.setId(dto.getOwner().getId());
+            entity.setOwner(owner);
+        }
+        if (dto.getVeterinarian() != null && dto.getVeterinarian().getId() != null) {
+            var vet = new co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity();
+            vet.setId(dto.getVeterinarian().getId());
+            entity.setVeterinarian(vet);
+        }
+        if (dto.getPet() != null && dto.getPet().getId() != null) {
+            var pet = new co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity();
+            pet.setId(dto.getPet().getId());
+            entity.setPet(pet);
+        }
+        // No se asigna la relación inversa (adoption) para evitar recursión
+        AdoptionApplicationEntity saved = applicationService.createApplication(entity);
+        return modelMapper.map(saved, AdoptionApplicationDTO.class);
     }
 
     @PutMapping("/{id}")

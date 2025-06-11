@@ -54,22 +54,75 @@ public class AdoptionController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public AdoptionDTO create(@RequestBody AdoptionDTO adoptionDTO) throws IllegalOperationException, EntityNotFoundException {
-        AdoptionEntity adoptionEntity = adoptionService.createAdoption(modelMapper.map(adoptionDTO, AdoptionEntity.class));
-        if (adoptionEntity == null) {
-            throw new IllegalOperationException("Failed to create adoption");
+        // Mapeo manual para evitar recursión y ambigüedad
+        AdoptionEntity adoptionEntity = new AdoptionEntity();
+        adoptionEntity.setDescription(adoptionDTO.getDescription());
+        adoptionEntity.setObservations(adoptionDTO.getObservations());
+        adoptionEntity.setAdoptionStatus(adoptionDTO.getAdoptionStatus());
+        if (adoptionDTO.getOwner() != null && adoptionDTO.getOwner().getId() != null) {
+            var owner = new co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity();
+            owner.setId(adoptionDTO.getOwner().getId());
+            adoptionEntity.setOwner(owner);
         }
-        return modelMapper.map(adoptionEntity, AdoptionDTO.class);
+        if (adoptionDTO.getVeterinarian() != null && adoptionDTO.getVeterinarian().getId() != null) {
+            var vet = new co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity();
+            vet.setId(adoptionDTO.getVeterinarian().getId());
+            adoptionEntity.setVeterinarian(vet);
+        }
+        if (adoptionDTO.getPet() != null && adoptionDTO.getPet().getId() != null) {
+            var pet = new co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity();
+            pet.setId(adoptionDTO.getPet().getId());
+            adoptionEntity.setPet(pet);
+        }
+        if (adoptionDTO.getAdoptionApplication() != null && adoptionDTO.getAdoptionApplication().getId() != null) {
+            var app = new co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity();
+            app.setId(adoptionDTO.getAdoptionApplication().getId());
+            adoptionEntity.setAdoptionApplication(app);
+        }
+        AdoptionEntity saved = adoptionService.createAdoption(adoptionEntity);
+        return modelMapper.map(saved, AdoptionDTO.class);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public AdoptionDTO update(@PathVariable Long id, @RequestBody AdoptionDTO adoptionDTO)
             throws EntityNotFoundException, IllegalOperationException {
-        AdoptionEntity adoptionEntity = adoptionService.updateAdoption(id, modelMapper.map(adoptionDTO, AdoptionEntity.class));
-        if (adoptionEntity == null) {
+        // Mapeo manual para evitar recursión y ambigüedad
+        AdoptionEntity adoptionEntity = new AdoptionEntity();
+        adoptionEntity.setId(id);
+        adoptionEntity.setDescription(adoptionDTO.getDescription());
+        adoptionEntity.setObservations(adoptionDTO.getObservations());
+        adoptionEntity.setAdoptionStatus(adoptionDTO.getAdoptionStatus());
+        if (adoptionDTO.getOwner() != null && adoptionDTO.getOwner().getId() != null) {
+            var owner = new co.edu.udistrital.mdp.adopcion.entities.person.OwnerEntity();
+            owner.setId(adoptionDTO.getOwner().getId());
+            adoptionEntity.setOwner(owner);
+        }
+        if (adoptionDTO.getVeterinarian() != null && adoptionDTO.getVeterinarian().getId() != null) {
+            var vet = new co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity();
+            vet.setId(adoptionDTO.getVeterinarian().getId());
+            adoptionEntity.setVeterinarian(vet);
+        }
+        if (adoptionDTO.getPet() != null && adoptionDTO.getPet().getId() != null) {
+            var pet = new co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity();
+            pet.setId(adoptionDTO.getPet().getId());
+            adoptionEntity.setPet(pet);
+        }
+        if (adoptionDTO.getAdoptionApplication() != null && adoptionDTO.getAdoptionApplication().getId() != null) {
+            var app = new co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity();
+            app.setId(adoptionDTO.getAdoptionApplication().getId());
+            adoptionEntity.setAdoptionApplication(app);
+        }
+        AdoptionEntity updated = null;
+        try {
+            updated = adoptionService.updateAdoption(id, adoptionEntity);
+        } catch (IllegalArgumentException e) {
             throw new EntityNotFoundException("The adoption with the given id was not found");
         }
-        return modelMapper.map(adoptionEntity, AdoptionDTO.class);
+        if (updated == null) {
+            throw new EntityNotFoundException("The adoption with the given id was not found");
+        }
+        return modelMapper.map(updated, AdoptionDTO.class);
     }
 
     @DeleteMapping(value = "/{id}")

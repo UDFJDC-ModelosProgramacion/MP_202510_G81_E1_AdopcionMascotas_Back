@@ -93,7 +93,7 @@ public class VeterinarianServiceTest {
             veterinarian.setDisponibilities(disponibilityList);
             veterinarian.setAdoptionApplications(adoptionApplicationList);
             veterinarian.setFollowUps(adoptionFollowUpList);
-            veterinarian.setAdoption(adoptionList.get(i));
+            veterinarian.setAdoption(adoptionList);
             entityManager.persist(veterinarian);
             veterinarianList.add(veterinarian);
         }

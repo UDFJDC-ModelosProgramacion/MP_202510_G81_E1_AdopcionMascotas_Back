@@ -58,10 +58,21 @@ public class VaccineCardController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public VaccineCardDTO create(@RequestBody VaccineCardDTO vaccineCardDTO)
-            throws EntityNotFoundException, IllegalOperationException{
+            throws EntityNotFoundException, IllegalOperationException {
+        
+        // Validar que el DTO no sea null
+        if (vaccineCardDTO == null) {
+            throw new IllegalOperationException("Vaccine card data cannot be null");
+        }
+        
+        // Validar que tenga una mascota asociada
+        if (vaccineCardDTO.getPet() == null || vaccineCardDTO.getPet().getId() == null) {
+            throw new IllegalOperationException("Vaccine card must be associated with a pet");
+        }
+        
         VaccineCardEntity vaccineCardEntity = vaccineCardService
-                .createVaccineCard(modelMapper.map(vaccineCardDTO, VaccineCardEntity.class)); 
-        return modelMapper.map(vaccineCardEntity, VaccineCardDTO.class); 
+                .createVaccineCard(modelMapper.map(vaccineCardDTO, VaccineCardEntity.class));
+        return modelMapper.map(vaccineCardEntity, VaccineCardDTO.class);
     }
     
 

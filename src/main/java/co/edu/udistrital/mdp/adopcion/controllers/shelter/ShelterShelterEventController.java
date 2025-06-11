@@ -96,8 +96,8 @@ public class ShelterShelterEventController {
      * @throws IllegalOperationException
      */
     @PostMapping("/{shelterId}/events/{shelterEventId}")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public ShelterEventDTO create(@PathVariable Long shelterId, @RequestBody Long shelterEventId)
+    @ResponseStatus(code = HttpStatus.OK)
+    public ShelterEventDTO create(@PathVariable Long shelterId, @PathVariable Long shelterEventId)
             throws EntityNotFoundException, IllegalOperationException {
         ShelterEntity shelter = shelterService.getShelterById(shelterId);
         if (shelter == null) {
@@ -125,9 +125,9 @@ public class ShelterShelterEventController {
      * @throws EntityNotFoundException
      * @throws IllegalOperationException
      */
-    @PutMapping("/{shelterId}/events/{shelterEventId}")
+    @PutMapping("/{shelterId}/events")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ShelterEventDetailDTO> update(@PathVariable Long shelterId, @PathVariable Long shelterEventId,
+    public List<ShelterEventDetailDTO> update(@PathVariable Long shelterId,
             @RequestBody List<ShelterEventDTO> listShelterEventDTO)
             throws EntityNotFoundException, IllegalOperationException {
         ShelterEntity shelter = shelterService.getShelterById(shelterId);

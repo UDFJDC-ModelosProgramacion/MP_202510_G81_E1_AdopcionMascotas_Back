@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionTestDTO;
-
+import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionTestDetailDTO;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
@@ -54,7 +54,7 @@ public class VeterinarianAdoptionTestController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        List<AdoptionTestEntity> adoptionTests = adoptionTestService.getAllAdoptionTests();
+        List<AdoptionTestEntity> adoptionTests = adoptionTestService.getAllTests();
         adoptionTests.removeIf(adoptionTest -> !adoptionTest.getVeterinarian().getId().equals(veterinarianId));
         if (adoptionTests.isEmpty()) {
             throw new IllegalOperationException("No adoption tests found for veterinarian with ID: " + veterinarianId);
@@ -65,7 +65,7 @@ public class VeterinarianAdoptionTestController {
 
     /**
      * Get adoption test by ID for a specific veterinarian.
-     * 
+     *
      * @param veterinarianId
      * @param adoptionTestId
      * @return
@@ -80,7 +80,7 @@ public class VeterinarianAdoptionTestController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getAdoptionTestById(adoptionTestId);
+        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getTestById(adoptionTestId);
         if (adoptionTestEntity == null || !adoptionTestEntity.getVeterinarian().getId().equals(veterinarianId)) {
             throw new IllegalOperationException(
                     "For this veterinarian, adoption test not found with ID: " + adoptionTestId);
@@ -90,7 +90,7 @@ public class VeterinarianAdoptionTestController {
 
     /**
      * Update the list of adoption tests for a specific veterinarian.
-     * 
+     *
      * @param veterinarianId
      * @param listAdoptionTestDTO
      * @return
@@ -112,20 +112,20 @@ public class VeterinarianAdoptionTestController {
         adoptionTestEntities.forEach(adoptionTest -> adoptionTest.setVeterinarian(veterinarian));
         for (AdoptionTestEntity adoptionTest : adoptionTestEntities) {
             try {
-                adoptionTest = adoptionTestService.updateAdoptionTest(adoptionTest.getId(), adoptionTest);
+                adoptionTest = adoptionTestService.updateTest(adoptionTest.getId(), adoptionTest);
             } catch (IllegalArgumentException e) {
                 throw new EntityNotFoundException(
                         "Failed to update, not found adoption test with ID: " + adoptionTest.getId());
             }
         }
-        adoptionTestEntities = adoptionTestService.getAllAdoptionTests();
+        adoptionTestEntities = adoptionTestService.getAllTests();
         return modelMapper.map(adoptionTestEntities, new TypeToken<List<AdoptionTestDetailDTO>>() {
         }.getType());
     }
 
     /**
      * Associate an existing adoption test with a specific veterinarian.
-     * 
+     *
      * @param veterinarianId
      * @param adoptionTestId
      * @return
@@ -140,12 +140,12 @@ public class VeterinarianAdoptionTestController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getAdoptionTestById(adoptionTestId);
+        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getTestById(adoptionTestId);
         if (adoptionTestEntity == null || !adoptionTestEntity.getVeterinarian().getId().equals(veterinarianId)) {
             throw new EntityNotFoundException("Adoption test not found with ID: " + adoptionTestId);
         }
         adoptionTestEntity.setVeterinarian(veterinarian);
-        adoptionTestEntity = adoptionTestService.updateAdoptionTest(adoptionTestId, adoptionTestEntity);
+        adoptionTestEntity = adoptionTestService.updateTest(adoptionTestId, adoptionTestEntity);
         if (adoptionTestEntity == null) {
             throw new IllegalOperationException(
                     "Failed to update, not found adoption test with ID: " + adoptionTestId);
@@ -155,7 +155,7 @@ public class VeterinarianAdoptionTestController {
 
     /**
      * Delete an adoption test by ID for a specific veterinarian.
-     * 
+     *
      * @param veterinarianId
      * @param adoptionTestId
      * @throws EntityNotFoundException
@@ -169,11 +169,11 @@ public class VeterinarianAdoptionTestController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getAdoptionTestById(adoptionTestId);
+        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getTestById(adoptionTestId);
         if (adoptionTestEntity == null || !adoptionTestEntity.getVeterinarian().getId().equals(veterinarianId)) {
             throw new IllegalOperationException(
                     "For this veterinarian, adoption test not found with ID: " + adoptionTestId);
         }
-        adoptionTestService.deleteAdoptionTest(adoptionTestId);
+        adoptionTestService.deleteTest(adoptionTestId);
     }
 }

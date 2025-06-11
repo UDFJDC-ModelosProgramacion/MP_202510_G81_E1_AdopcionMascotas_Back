@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
+import co.edu.udistrital.mdp.adopcion.entities.events.EventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -13,7 +13,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class VaccineCardEntity extends MedicalEventEntity {
+public class VaccineCardEntity extends EventEntity {
     private Date lastVacineDate;
     private Date lastDewormingDate;
 

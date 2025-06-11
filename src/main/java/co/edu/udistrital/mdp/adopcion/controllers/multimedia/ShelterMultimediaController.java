@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.adopcion.controllers.shelter;
+package co.edu.udistrital.mdp.adopcion.controllers.multimedia;
 
 import java.util.List;
 
@@ -104,5 +104,6 @@ public class ShelterMultimediaController {
 
         media.setShelter(shelter);
         media = multimediaService.updateMultimedia(mediaId, media);
+        return modelMapper.map(media, MultimediaDetailDTO.class);
     }
 }

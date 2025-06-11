@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.adopcion.controller.multimedia;
+package co.edu.udistrital.mdp.adopcion.controllers.multimedia;
 
 import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;

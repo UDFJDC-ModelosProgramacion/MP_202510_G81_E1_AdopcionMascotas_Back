@@ -104,3 +104,5 @@ public class ShelterMultimediaController {
 
         media.setShelter(shelter);
         media = multimediaService.updateMultimedia(mediaId, media);
+    }
+}

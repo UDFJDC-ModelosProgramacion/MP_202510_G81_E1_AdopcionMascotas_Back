@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionAplicationDTO;
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionAplicationDetailDTO;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
@@ -50,7 +50,7 @@ public class VeterinarianAdoptionAplicationController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        List<AdoptionAplicationEntity> adoptionApplications = adoptionAplicationService.getAllApplications();
+        List<AdoptionApplicationEntity> adoptionApplications = adoptionAplicationService.getAllApplications();
         adoptionApplications.removeIf(application -> !application.getVeterinarian().getId().equals(veterinarianId));
         if (adoptionApplications.isEmpty()) {
             throw new IllegalOperationException("No adoption applications found for veterinarian with ID: " + veterinarianId);
@@ -75,7 +75,7 @@ public class VeterinarianAdoptionAplicationController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionAplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
+        AdoptionApplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
         if (adoptionAplicationEntity == null || !adoptionAplicationEntity.getVeterinarian().getId().equals(veterinarianId)) {
             throw new IllegalOperationException(
                     "In this veterinarian, adoption application not found with ID: " + adoptionAplicationId);
@@ -101,11 +101,11 @@ public class VeterinarianAdoptionAplicationController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        List<AdoptionAplicationEntity> adoptionAplicationEntities = modelMapper.map(listAdoptionAplicationDTO,
-                new TypeToken<List<AdoptionAplicationEntity>>() {
+        List<AdoptionApplicationEntity> adoptionAplicationEntities = modelMapper.map(listAdoptionAplicationDTO,
+                new TypeToken<List<AdoptionApplicationEntity>>() {
                 }.getType());
         adoptionAplicationEntities.forEach(application -> application.setVeterinarian(veterinarian));
-        for (AdoptionAplicationEntity application : adoptionAplicationEntities) {
+        for (AdoptionApplicationEntity application : adoptionAplicationEntities) {
             try {
                 application = adoptionAplicationService.updateApplication(application.getId(), application);
             } catch (IllegalArgumentException e) {
@@ -135,7 +135,7 @@ public class VeterinarianAdoptionAplicationController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionAplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
+        AdoptionApplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
         if (adoptionAplicationEntity == null || !adoptionAplicationEntity.getVeterinarian().getId().equals(veterinarianId)) {
             throw new EntityNotFoundException("Adoption application not found with ID: " + adoptionAplicationId);
         }
@@ -163,7 +163,7 @@ public class VeterinarianAdoptionAplicationController {
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionAplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
+        AdoptionApplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
         if (adoptionAplicationEntity == null || !adoptionAplicationEntity.getVeterinarian().getId().equals(veterinarianId)) {
             throw new IllegalOperationException(
                     "In this veterinarian, adoption application not found with ID: " + adoptionAplicationId);

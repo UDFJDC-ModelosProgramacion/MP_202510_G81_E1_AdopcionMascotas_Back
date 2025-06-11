@@ -37,11 +37,11 @@ public class VeterinarianEntity extends PersonEntity {
     private List<AdoptionApplicationEntity> adoptionApplications = new ArrayList<>();
 
     @OneToMany(mappedBy = "veterinarian")
-    private List<AdoptionFollowUpEntity> followUps;
+    private List<AdoptionFollowUpEntity> followUps = new ArrayList<>();
 
     @PodamExclude
     @OneToMany(mappedBy="veterinarian")
-    private  AdoptionEntity adoption;
+    private List<AdoptionEntity> adoption = new ArrayList<>();
 
     @PodamExclude
     @OneToMany(mappedBy="veterinarian")

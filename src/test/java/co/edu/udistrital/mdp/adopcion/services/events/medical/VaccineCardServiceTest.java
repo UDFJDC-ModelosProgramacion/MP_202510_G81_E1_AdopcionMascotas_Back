@@ -127,6 +127,4 @@ public class VaccineCardServiceTest {
         VaccineCardEntity deletedVaccineCard = vaccineCardService.getVaccineCardById(vaccineCard.getId());
         assert deletedVaccineCard == null;
     }
-
-    
 }

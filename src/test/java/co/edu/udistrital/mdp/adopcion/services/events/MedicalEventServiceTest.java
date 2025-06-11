@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -219,7 +220,10 @@ public class MedicalEventServiceTest {
         medicalEvent.setDate(dateList.get(0));
         medicalEvent.setDescription(descriptionList.get(0));
 
-        MedicalEventEntity result = medicalEventService.updateMedicalEvent(999L, medicalEvent);
-        assertNull(result);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            medicalEventService.updateMedicalEvent(999L, medicalEvent);
+        });
+        assertNotNull(exception.getMessage());
+        assertTrue(exception.getMessage().contains("does not exist"));
     }
 }

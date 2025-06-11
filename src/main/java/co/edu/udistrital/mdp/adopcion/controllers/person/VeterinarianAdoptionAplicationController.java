@@ -22,7 +22,7 @@ import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
-import co.edu.udistrital.mdp.adopcion.services.adoption.AdoptionAplicationService;
+import co.edu.udistrital.mdp.adopcion.services.adoption.AdoptionApplicationService;
 import co.edu.udistrital.mdp.adopcion.services.person.VeterinarianService;
 
 @RestController
@@ -31,7 +31,7 @@ public class VeterinarianAdoptionAplicationController {
     @Autowired
     private VeterinarianService veterinarianService;
     @Autowired
-    private AdoptionAplicationService adoptionAplicationService;
+    private AdoptionApplicationService adoptionAplicationService;
     @Autowired
     private ModelMapper modelMapper;
 

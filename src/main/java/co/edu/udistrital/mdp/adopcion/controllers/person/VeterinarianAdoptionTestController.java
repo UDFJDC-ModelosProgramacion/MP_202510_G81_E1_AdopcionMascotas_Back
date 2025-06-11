@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionTestDTO;
-import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionTestDetailDTO;
+
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
@@ -40,7 +40,7 @@ public class VeterinarianAdoptionTestController {
 
     /**
      * Get all adoption tests for a specific veterinarian.
-     * 
+     *
      * @param veterinarianId
      * @return
      * @throws EntityNotFoundException

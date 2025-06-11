@@ -168,12 +168,17 @@ public class PetMedicalEventController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long petId, @PathVariable Long eventId)
             throws EntityNotFoundException, IllegalOperationException {
-        PetEntity pet = petService.getPet(petId);
+        PetEntity pet;
+        try {
+            pet = petService.getPet(petId);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalOperationException("Pet not found with ID: " + petId);
+        }
         if (pet == null) {
             throw new IllegalOperationException("Pet not found with ID: " + petId);
         }
         MedicalEventEntity medicalEvent = medicalEventService.getMedicalEventById(eventId);
-        if (medicalEvent == null || !medicalEvent.getPet().getId().equals(petId)) {
+        if (medicalEvent == null) {
             throw new EntityNotFoundException("Medical event not found with ID: " + eventId);
         }
         medicalEventService.deleteMedicalEvent(eventId);

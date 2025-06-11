@@ -45,6 +45,9 @@ public class AdoptionController {
     @ResponseStatus(code = HttpStatus.OK)
     public AdoptionDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
         AdoptionEntity adoptionEntity = adoptionService.getAdoptionById(id);
+        if (adoptionEntity == null) {
+            throw new EntityNotFoundException("The adoption with the given id was not found");
+        }
         return modelMapper.map(adoptionEntity, AdoptionDetailDTO.class);
     }
 
@@ -52,6 +55,9 @@ public class AdoptionController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public AdoptionDTO create(@RequestBody AdoptionDTO adoptionDTO) throws IllegalOperationException, EntityNotFoundException {
         AdoptionEntity adoptionEntity = adoptionService.createAdoption(modelMapper.map(adoptionDTO, AdoptionEntity.class));
+        if (adoptionEntity == null) {
+            throw new IllegalOperationException("Failed to create adoption");
+        }
         return modelMapper.map(adoptionEntity, AdoptionDTO.class);
     }
 
@@ -60,12 +66,18 @@ public class AdoptionController {
     public AdoptionDTO update(@PathVariable Long id, @RequestBody AdoptionDTO adoptionDTO)
             throws EntityNotFoundException, IllegalOperationException {
         AdoptionEntity adoptionEntity = adoptionService.updateAdoption(id, modelMapper.map(adoptionDTO, AdoptionEntity.class));
+        if (adoptionEntity == null) {
+            throw new EntityNotFoundException("The adoption with the given id was not found");
+        }
         return modelMapper.map(adoptionEntity, AdoptionDTO.class);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+        if (adoptionService.getAdoptionById(id) == null) {
+            throw new EntityNotFoundException("The adoption with the given id was not found");
+        }
         adoptionService.deleteAdoption(id);
     }
 }

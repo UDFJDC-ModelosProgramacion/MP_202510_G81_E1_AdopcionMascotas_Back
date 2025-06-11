@@ -37,8 +37,11 @@ public class DewormingController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<DewormingDetailDTO> findAll() {
+    public List<DewormingDetailDTO> findAll()  throws IllegalOperationException {
         List<DewormingEntity> dewormings = dewormingService.getAllDewormings();
+        if (dewormings.isEmpty()) {
+            throw new IllegalOperationException("No dewormings found.");
+        }
         return modelMapper.map(dewormings, new TypeToken<List<DewormingDetailDTO>>() {
         }.getType());
     }

@@ -1,61 +1,65 @@
 package co.edu.udistrital.mdp.adopcion.controllers.adoption;
 
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionFollowUpDTO;
+import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionFollowUpDetailDTO;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.adopcion.services.adoption.AdoptionFollowUpService;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/adoption-followups")
+@RequestMapping("/adoption-follow-ups")
 public class AdoptionFollowUpController {
 
-    private final AdoptionFollowUpService followUpService;
-    private final ModelMapper modelMapper;
+    @Autowired
+    private AdoptionFollowUpService followUpService;
 
-    public AdoptionFollowUpController(AdoptionFollowUpService followUpService, ModelMapper modelMapper) {
-        this.followUpService = followUpService;
-        this.modelMapper = modelMapper;
-    }
-
-    @PostMapping
-    public ResponseEntity<AdoptionFollowUpDTO> createFollowUp(@RequestBody AdoptionFollowUpDTO dto) throws IllegalOperationException {
-        AdoptionFollowUpEntity entity = modelMapper.map(dto, AdoptionFollowUpEntity.class);
-        AdoptionFollowUpEntity created = followUpService.createFollowUp(entity);
-        return new ResponseEntity<>(modelMapper.map(created, AdoptionFollowUpDTO.class), HttpStatus.CREATED);
-    }
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<AdoptionFollowUpDTO>> getAllFollowUps() {
-        List<AdoptionFollowUpDTO> followUps = followUpService.getAllFollowUps().stream()
-                .map(fu -> modelMapper.map(fu, AdoptionFollowUpDTO.class))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(followUps);
+    @ResponseStatus(HttpStatus.OK)
+    public List<AdoptionFollowUpDetailDTO> findAll() {
+        List<AdoptionFollowUpEntity> entities = followUpService.getAllFollowUps();
+        return modelMapper.map(entities, new TypeToken<List<AdoptionFollowUpDetailDTO>>() {}.getType());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdoptionFollowUpDTO> getFollowUpById(@PathVariable Long id) throws EntityNotFoundException {
-        AdoptionFollowUpEntity followUp = followUpService.getFollowUpById(id);
-        return ResponseEntity.ok(modelMapper.map(followUp, AdoptionFollowUpDTO.class));
+    @ResponseStatus(HttpStatus.OK)
+    public AdoptionFollowUpDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        AdoptionFollowUpEntity entity = followUpService.getFollowUpById(id);
+        return modelMapper.map(entity, AdoptionFollowUpDetailDTO.class);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AdoptionFollowUpDTO create(@RequestBody AdoptionFollowUpDTO dto)
+            throws IllegalOperationException, EntityNotFoundException {
+        AdoptionFollowUpEntity entity = followUpService.createFollowUp(
+                modelMapper.map(dto, AdoptionFollowUpEntity.class));
+        return modelMapper.map(entity, AdoptionFollowUpDTO.class);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdoptionFollowUpDTO> updateFollowUp(@PathVariable Long id, @RequestBody AdoptionFollowUpDTO dto) throws EntityNotFoundException {
-        AdoptionFollowUpEntity entity = modelMapper.map(dto, AdoptionFollowUpEntity.class);
-        AdoptionFollowUpEntity updated = followUpService.updateFollowUp(id, entity);
-        return ResponseEntity.ok(modelMapper.map(updated, AdoptionFollowUpDTO.class));
+    @ResponseStatus(HttpStatus.OK)
+    public AdoptionFollowUpDTO update(@PathVariable Long id, @RequestBody AdoptionFollowUpDTO dto)
+            throws EntityNotFoundException, IllegalOperationException {
+        AdoptionFollowUpEntity entity = followUpService.updateFollowUp(id,
+                modelMapper.map(dto, AdoptionFollowUpEntity.class));
+        return modelMapper.map(entity, AdoptionFollowUpDTO.class);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFollowUp(@PathVariable Long id) throws EntityNotFoundException {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
         followUpService.deleteFollowUp(id);
-        return ResponseEntity.noContent().build();
     }
 }

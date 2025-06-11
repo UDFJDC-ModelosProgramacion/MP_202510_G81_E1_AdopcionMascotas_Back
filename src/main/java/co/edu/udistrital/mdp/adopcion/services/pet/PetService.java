@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.adopcion.services.pet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,11 @@ public class PetService {
             vaccineCard = vaccineCardRepository.save(vaccineCard);
             pet.setVaccineCard(vaccineCard);
         }
+
         pet.setOwners(null);
+        if (pet.getMedicalEvents() == null) {
+            pet.setMedicalEvents(new ArrayList<>());
+        }
 
         return petRepository.save(pet);
     }

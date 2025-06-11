@@ -54,7 +54,7 @@ public class OwnerAdoptionTestController {
         if (owner == null) {
             throw new EntityNotFoundException("Owner not found with ID: " + ownerId);
         }
-        List<AdoptionTestEntity> adoptionTests = adoptionTestService.getAllAdoptionTests();
+        List<AdoptionTestEntity> adoptionTests = adoptionTestService.getAllTests();
         adoptionTests.removeIf(test -> !test.getOwner().getId().equals(ownerId));
         if (adoptionTests.isEmpty()) {
             throw new IllegalOperationException("No adoption tests found.");
@@ -78,7 +78,7 @@ public class OwnerAdoptionTestController {
         if (owner == null) {
             throw new IllegalOperationException("Owner not found with ID: " + ownerId);
         }
-        AdoptionTestEntity adoptionTest = adoptionTestService.getAdoptionTestById(adoptionTestId);
+        AdoptionTestEntity adoptionTest = adoptionTestService.getTestById(adoptionTestId);
         if (adoptionTest == null || !adoptionTest.getOwner().getId().equals(ownerId)) {
             throw new EntityNotFoundException("Adoption test not found with ID: " + adoptionTestId);
         }
@@ -101,12 +101,12 @@ public class OwnerAdoptionTestController {
         if (owner == null) {
             throw new IllegalOperationException("Owner not found with ID: " + ownerId);
         }
-        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getAdoptionTestById(adoptionTestId);
+        AdoptionTestEntity adoptionTestEntity = adoptionTestService.getTestById(adoptionTestId);
         if (adoptionTestEntity == null) {
             throw new EntityNotFoundException("Adoption test not found with ID: " + adoptionTestId);
         }
         adoptionTestEntity.setOwner(owner);
-        adoptionTestEntity = adoptionTestService.updateAdoptionTest(adoptionTestId, adoptionTestEntity);
+        adoptionTestEntity = adoptionTestService.updateTest(adoptionTestId, adoptionTestEntity);
         if (adoptionTestEntity == null) {
             throw new IllegalOperationException("Failed to assign adoption test to owner.");
         }
@@ -132,7 +132,7 @@ public class OwnerAdoptionTestController {
         
         AdoptionTestEntity adoptionTestEntity = modelMapper.map(adoptionTestDTO, AdoptionTestEntity.class);
         adoptionTestEntity.setOwner(owner);
-        adoptionTestEntity = adoptionTestService.createAdoptionTest(adoptionTestEntity);
+        adoptionTestEntity = adoptionTestService.createTest(adoptionTestEntity);
         if (adoptionTestEntity == null) {
             throw new IllegalOperationException("Failed to create adoption test.");
         }
@@ -163,7 +163,7 @@ public class OwnerAdoptionTestController {
         adoptionTestEntities.forEach(test -> test.setOwner(owner));
         for (AdoptionTestEntity test : adoptionTestEntities) {
             try {
-                test = adoptionTestService.updateAdoptionTest(test.getId(), test);
+                test = adoptionTestService.updateTest(test.getId(), test);
             } catch (IllegalArgumentException e) {
                 throw new EntityNotFoundException(
                         "Failed to update, not found adoption test with ID: " + test.getId());
@@ -187,10 +187,10 @@ public class OwnerAdoptionTestController {
         if (owner == null) {
             throw new IllegalOperationException("Owner not found with ID: " + ownerId);
         }
-        AdoptionTestEntity adoptionTest = adoptionTestService.getAdoptionTestById(adoptionTestId);
+        AdoptionTestEntity adoptionTest = adoptionTestService.getTestById(adoptionTestId);
         if (adoptionTest == null || !adoptionTest.getOwner().getId().equals(ownerId)) {
             throw new EntityNotFoundException("Adoption test not found with ID: " + adoptionTestId);
         }
-        adoptionTestService.deleteAdoptionTest(adoptionTestId);
+        adoptionTestService.deleteTest(adoptionTestId);
     }
 }

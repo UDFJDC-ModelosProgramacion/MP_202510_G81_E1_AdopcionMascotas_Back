@@ -55,7 +55,7 @@ public class OwnerAdoptionApplicationController {
         if (owner == null) {
             throw new EntityNotFoundException("Owner not found with ID: " + ownerId);
         }
-        List<AdoptionApplicationEntity> adoptionApplications = adoptionApplicationService.getAllAdoptionApplications();
+        List<AdoptionApplicationEntity> adoptionApplications = adoptionApplicationService.getAllApplications();
         adoptionApplications.removeIf(app -> !app.getOwner().getId().equals(ownerId));
         if (adoptionApplications.isEmpty()) {
             throw new IllegalOperationException("No adoption applications found.");
@@ -80,7 +80,7 @@ public class OwnerAdoptionApplicationController {
         if (owner == null) {
             throw new IllegalOperationException("Owner not found with ID: " + ownerId);
         }
-        AdoptionApplicationEntity adoptionApplication = adoptionApplicationService.getAdoptionApplicationById(adoptionApplicationId);
+        AdoptionApplicationEntity adoptionApplication = adoptionApplicationService.getApplicationById(adoptionApplicationId);
         if (adoptionApplication == null || !adoptionApplication.getOwner().getId().equals(ownerId)) {
             throw new EntityNotFoundException("Adoption application not found with ID: " + adoptionApplicationId);
         }
@@ -104,12 +104,12 @@ public class OwnerAdoptionApplicationController {
         if (owner == null) {
             throw new IllegalOperationException("Owner not found with ID: " + ownerId);
         }
-        AdoptionApplicationEntity adoptionApplicationEntity = adoptionApplicationService.getAdoptionApplicationById(adoptionApplicationId);
+        AdoptionApplicationEntity adoptionApplicationEntity = adoptionApplicationService.getApplicationById(adoptionApplicationId);
         if (adoptionApplicationEntity == null) {
             throw new EntityNotFoundException("Adoption application not found with ID: " + adoptionApplicationId);
         }
         adoptionApplicationEntity.setOwner(owner);
-        adoptionApplicationEntity = adoptionApplicationService.updateAdoptionApplication(adoptionApplicationId, adoptionApplicationEntity);
+        adoptionApplicationEntity = adoptionApplicationService.updateApplication(adoptionApplicationId, adoptionApplicationEntity);
         if (adoptionApplicationEntity == null) {
             throw new IllegalOperationException("Failed to assign adoption application to owner.");
         }
@@ -136,7 +136,7 @@ public class OwnerAdoptionApplicationController {
         
         AdoptionApplicationEntity adoptionApplicationEntity = modelMapper.map(adoptionApplicationDTO, AdoptionApplicationEntity.class);
         adoptionApplicationEntity.setOwner(owner);
-        adoptionApplicationEntity = adoptionApplicationService.createAdoptionApplication(adoptionApplicationEntity);
+        adoptionApplicationEntity = adoptionApplicationService.createApplication(adoptionApplicationEntity);
         if (adoptionApplicationEntity == null) {
             throw new IllegalOperationException("Failed to create adoption application.");
         }
@@ -167,7 +167,7 @@ public class OwnerAdoptionApplicationController {
         adoptionApplicationEntities.forEach(app -> app.setOwner(owner));
         for (AdoptionApplicationEntity app : adoptionApplicationEntities) {
             try {
-                app = adoptionApplicationService.updateAdoptionApplication(app.getId(), app);
+                app = adoptionApplicationService.updateApplication(app.getId(), app);
             } catch (IllegalArgumentException e) {
                 throw new EntityNotFoundException(
                         "Failed to update, not found adoption application with ID: " + app.getId());
@@ -191,10 +191,10 @@ public class OwnerAdoptionApplicationController {
         if (owner == null) {
             throw new IllegalOperationException("Owner not found with ID: " + ownerId);
         }
-        AdoptionApplicationEntity adoptionApplication = adoptionApplicationService.getAdoptionApplicationById(adoptionApplicationId);
+        AdoptionApplicationEntity adoptionApplication = adoptionApplicationService.getApplicationById(adoptionApplicationId);
         if (adoptionApplication == null || !adoptionApplication.getOwner().getId().equals(ownerId)) {
             throw new EntityNotFoundException("Adoption application not found with ID: " + adoptionApplicationId);
         }
-        adoptionApplicationService.deleteAdoptionApplication(adoptionApplicationId);
+        adoptionApplicationService.deleteApplication(adoptionApplicationId);
     }
 }

@@ -97,34 +97,16 @@ public class ShelterArrivalServiceTest {
 
     @Test
     public void testCreateShelterArrival() {
+        // Busca un Pet que no tenga ShelterArrival asociado
+        PetEntity petSinLlegada = factory.manufacturePojo(PetEntity.class);
+        entityManager.persist(petSinLlegada);
+
         ShelterArrivalEntity newShelterArrival = factory.manufacturePojo(ShelterArrivalEntity.class);
-        newShelterArrival.setPet(petList.get(0));
+        newShelterArrival.setPet(petSinLlegada);
         newShelterArrival.setDate(dateList.get(0));
         newShelterArrival.setShelter(shelterList.get(0));
         newShelterArrival.setVeterinarian(veterinarianList.get(0));
         newShelterArrival.setDescription(arrivalDetailsList.get(0));
-        newShelterArrival.setDate(dateList.get(0));
-        newShelterArrival.setPetCondition(petConditionList.get(0));
-
-        ShelterArrivalEntity createdShelterArrival = shelterArrivalService.createShelterArrival(newShelterArrival);
-
-        assertNotNull(createdShelterArrival);
-        assertEquals(newShelterArrival.getPet(), createdShelterArrival.getPet());
-        assertEquals(newShelterArrival.getShelter(), createdShelterArrival.getShelter());
-        assertEquals(newShelterArrival.getVeterinarian(), createdShelterArrival.getVeterinarian());
-        assertEquals(newShelterArrival.getDescription(), createdShelterArrival.getDescription());
-        assertEquals(newShelterArrival.getPetCondition(), createdShelterArrival.getPetCondition());
-    }
-
-    @Test
-    public void testCreateShelterArrivalWithMultiplePets() {
-        ShelterArrivalEntity newShelterArrival = factory.manufacturePojo(ShelterArrivalEntity.class);
-        newShelterArrival.setPet(petList.get(0));
-        newShelterArrival.setShelter(shelterList.get(0));
-        newShelterArrival.setDate(dateList.get(0));
-        newShelterArrival.setVeterinarian(veterinarianList.get(0));
-        newShelterArrival.setDescription(arrivalDetailsList.get(0));
-        newShelterArrival.setDate(dateList.get(0));
         newShelterArrival.setPetCondition(petConditionList.get(0));
 
         ShelterArrivalEntity createdShelterArrival = shelterArrivalService.createShelterArrival(newShelterArrival);

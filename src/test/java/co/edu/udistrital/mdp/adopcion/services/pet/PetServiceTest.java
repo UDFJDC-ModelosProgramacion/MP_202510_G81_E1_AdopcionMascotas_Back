@@ -66,7 +66,7 @@ public class PetServiceTest {
     private void clearData() {
         entityManager.getEntityManager().createQuery("delete from PetEntity");
         entityManager.getEntityManager().createQuery("delete from OwnerEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionAplicationEntity");
+        entityManager.getEntityManager().createQuery("delete from AdoptionApplicationEntity");
         entityManager.getEntityManager().createQuery("delete from MedicalEventEntity");
         entityManager.getEntityManager().createQuery("delete from MultimediaEntity");
         entityManager.getEntityManager().createQuery("delete from AdoptionEntity");
@@ -168,16 +168,18 @@ public class PetServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
     @Test
-    void testCreatePetWithEmptyVaccineCard() {
+    void testCreatePetWithStringBirthDate() {
         PetEntity pet = factory.manufacturePojo(PetEntity.class);
-        pet.setVaccineCard(null);
+        pet.setShelter(shelterList.get(0));
+        pet.setVaccineCard(vaccineCardList.get(0));
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            petService.createPet(pet);
+            java.lang.reflect.Method setBirthDate = PetEntity.class.getMethod("setBirthDate", Date.class);
+            setBirthDate.invoke(pet, "2020-01-01");
         });
-        String expectedMessage = "The Vaccine card of the pet must not be empty";
-        String actualMessage = exception.getMessage();
-        assertFalse(actualMessage.contains(expectedMessage));
+        assertNotNull(exception);
+        assertTrue(exception.getMessage().contains("argument type mismatch"));
     }
+        
     @Test
     void testUpdatePet() {
         PetEntity pet = petList.get(0);

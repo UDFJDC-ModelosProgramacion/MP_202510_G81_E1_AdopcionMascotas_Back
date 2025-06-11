@@ -40,8 +40,11 @@ public class ShelterArrivalController {
      */
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ShelterArrivalDetailDTO> findAll() {
+    public List<ShelterArrivalDetailDTO> findAll() throws IllegalOperationException {
         List<ShelterArrivalEntity> shelterArrivals = shelterArrivalService.getAllShelterArrivals();
+        if (shelterArrivals.isEmpty()) {
+            throw new IllegalOperationException("No shelter arrivals found.");
+        }
         return modelMapper.map(shelterArrivals, new TypeToken<List<ShelterArrivalDetailDTO>>() {
         }.getType());
     }

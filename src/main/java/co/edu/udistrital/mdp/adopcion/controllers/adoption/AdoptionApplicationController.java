@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +26,14 @@ public class AdoptionApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<AdoptionApplicationDTO> createApplication(@RequestBody AdoptionApplicationDTO dto) {
+    public ResponseEntity<AdoptionApplicationDTO> createApplication(@RequestBody AdoptionApplicationDTO dto) throws EntityNotFoundException {
         AdoptionAplicationEntity entity = modelMapper.map(dto, AdoptionAplicationEntity.class);
-        AdoptionAplicationEntity created = service.createApplication(entity);
-        return new ResponseEntity<>(modelMapper.map(created, AdoptionApplicationDTO.class), HttpStatus.CREATED);
+        try {
+            AdoptionAplicationEntity created = service.createApplication(entity);
+            return new ResponseEntity<>(modelMapper.map(created, AdoptionApplicationDTO.class), HttpStatus.CREATED);
+        } catch (IllegalOperationException e) {
+            throw new EntityNotFoundException("Error creating adoption application: " + e.getMessage());
+        }
     }
 
     @GetMapping

@@ -56,6 +56,9 @@ public class ShelterArrivalService {
         if (shelterArrival.getId() == null || id == null) {
             throw new IllegalArgumentException("ShelterArrival ID must not be null");
         }
+        if (!shelterArrivalRepository.existsById(id)) {
+            throw new IllegalArgumentException("ShelterArrival with ID " + id + " does not exist");
+        }
         return shelterArrivalRepository.save(shelterArrival);
     }
 

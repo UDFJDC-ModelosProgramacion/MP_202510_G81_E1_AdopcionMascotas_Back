@@ -50,13 +50,20 @@ public class VeterinarianController {
     @GetMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public VeterinarianDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        
         VeterinarianEntity veterinarianEntity = veterinarianService.getVeterinarianById(id);
+        if (veterinarianEntity == null) {
+            throw new EntityNotFoundException("The veterinarian with the given id was not found");
+        }
         return modelMapper.map(veterinarianEntity, VeterinarianDetailDTO.class);
     }
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public VeterinarianDTO create(@RequestBody VeterinarianDTO veterinarianDTO)throws IllegalOperationException, EntityNotFoundException {
         VeterinarianEntity veterinarianEntity = veterinarianService.createVeterinarian(modelMapper.map(veterinarianDTO, VeterinarianEntity.class));
+        if (veterinarianEntity == null) {
+            throw new IllegalOperationException("The veterinarian with the given id was not found");
+        }
         return modelMapper.map(veterinarianEntity, VeterinarianDTO.class);
     }
 
@@ -64,16 +71,24 @@ public class VeterinarianController {
     @ResponseStatus(code = HttpStatus.OK)
     public VeterinarianDTO update(@PathVariable Long id, @RequestBody VeterinarianDTO veterinarianDTO) throws Exception, EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarianEntity = veterinarianService.updateVeterinarian(id, modelMapper.map(veterinarianDTO, VeterinarianEntity.class));
+        if (veterinarianEntity == null) {
+            throw new EntityNotFoundException("The veterinarian with the given id was not found");
+        }
         return modelMapper.map(veterinarianEntity, VeterinarianDTO.class);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id)throws EntityNotFoundException, IllegalOperationException {
+    if (veterinarianService.getVeterinarianById(id) == null) {
+        throw new EntityNotFoundException("The veterinarian with the given id was not found");
+    }
         veterinarianService.deleteVeterinarian(id);
+        
+        }
     }
 
 
-}
+
 
 

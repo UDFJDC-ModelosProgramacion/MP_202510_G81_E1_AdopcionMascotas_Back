@@ -1,7 +1,5 @@
 package co.edu.udistrital.mdp.adopcion.dto.person;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 

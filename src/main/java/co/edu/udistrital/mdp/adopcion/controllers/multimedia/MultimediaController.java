@@ -1,45 +1,63 @@
-package co.edu.udistrital.mdp.adopcion.controller.multimedia;
-
-import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
-import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
-import co.edu.udistrital.mdp.adopcion.services.multimedia.MultimediaService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+package co.edu.udistrital.mdp.adopcion.controllers.multimedia;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import co.edu.udistrital.mdp.adopcion.dto.multimedia.MultimediaDTO;
+import co.edu.udistrital.mdp.adopcion.dto.multimedia.MultimediaDetailDTO;
+import co.edu.udistrital.mdp.adopcion.entities.multimedia.MultimediaEntity;
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.adopcion.services.multimedia.MultimediaService;
+
 @RestController
-@RequestMapping("/api/multimedia")
-@RequiredArgsConstructor
+@RequestMapping("/multimedia")
 public class MultimediaController {
 
-    private final MultimediaService multimediaService;
+    @Autowired
+    private MultimediaService multimediaService;
 
-    @PostMapping
-    public ResponseEntity<MultimediaEntity> createMultimedia(@RequestBody MultimediaEntity multimedia) {
-        return ResponseEntity.ok(multimediaService.createMultimedia(multimedia));
-    }
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<MultimediaEntity>> getAllMultimedia() {
-        return ResponseEntity.ok(multimediaService.getAllMultimedia());
+    @ResponseStatus(HttpStatus.OK)
+    public List<MultimediaDetailDTO> findAll() {
+        List<MultimediaEntity> entities = multimediaService.getAllMultimedia();
+        return modelMapper.map(entities, new TypeToken<List<MultimediaDetailDTO>>() {}.getType());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MultimediaEntity> getMultimediaById(@PathVariable Long id) throws EntityNotFoundException {
-        return ResponseEntity.ok(multimediaService.getMultimediaById(id));
+    @ResponseStatus(HttpStatus.OK)
+    public MultimediaDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        MultimediaEntity entity = multimediaService.getMultimediaById(id);
+        return modelMapper.map(entity, MultimediaDetailDTO.class);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public MultimediaDTO create(@RequestBody MultimediaDTO dto) {
+        MultimediaEntity entity = multimediaService.createMultimedia(
+                modelMapper.map(dto, MultimediaEntity.class));
+        return modelMapper.map(entity, MultimediaDTO.class);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MultimediaEntity> updateMultimedia(@PathVariable Long id, @RequestBody MultimediaEntity multimediaDetails) throws EntityNotFoundException {
-        return ResponseEntity.ok(multimediaService.updateMultimedia(id, multimediaDetails));
+    @ResponseStatus(HttpStatus.OK)
+    public MultimediaDTO update(@PathVariable Long id, @RequestBody MultimediaDTO dto)
+            throws EntityNotFoundException {
+        MultimediaEntity entity = multimediaService.updateMultimedia(id,
+                modelMapper.map(dto, MultimediaEntity.class));
+        return modelMapper.map(entity, MultimediaDTO.class);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMultimedia(@PathVariable Long id) throws EntityNotFoundException {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) throws EntityNotFoundException {
         multimediaService.deleteMultimedia(id);
-        return ResponseEntity.noContent().build();
     }
 }
-

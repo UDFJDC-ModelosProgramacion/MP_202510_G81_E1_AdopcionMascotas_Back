@@ -3,9 +3,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
+import co.edu.udistrital.mdp.adopcion.entities.events.EventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -13,7 +14,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class VaccineCardEntity extends MedicalEventEntity {
+public class VaccineCardEntity extends EventEntity {
     private Date lastVacineDate;
     private Date lastDewormingDate;
 
@@ -26,6 +27,7 @@ public class VaccineCardEntity extends MedicalEventEntity {
 	private List<DewormingEntity> dewormings = new ArrayList<>();
 
     @PodamExclude
-    @OneToOne(mappedBy="vaccineCard")
+    @OneToOne(mappedBy = "vaccineCard", fetch = FetchType.LAZY)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private PetEntity pet;
 }

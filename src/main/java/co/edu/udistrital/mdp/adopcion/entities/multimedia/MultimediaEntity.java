@@ -1,11 +1,12 @@
 package co.edu.udistrital.mdp.adopcion.entities.multimedia;
 
 import co.edu.udistrital.mdp.adopcion.entities.BaseEntity;
+import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import uk.co.jemos.podam.common.PodamExclude;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
@@ -17,4 +18,8 @@ public class MultimediaEntity extends BaseEntity {
     @PodamExclude
     @ManyToOne
     private PetEntity pet;
+
+    @PodamExclude
+    @ManyToOne
+    private ShelterEntity shelter;
 }

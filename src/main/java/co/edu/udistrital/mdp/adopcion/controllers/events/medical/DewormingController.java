@@ -37,19 +37,22 @@ public class DewormingController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<DewormingDetailDTO> findAll() {
+    public List<DewormingDetailDTO> findAll()  throws IllegalOperationException {
         List<DewormingEntity> dewormings = dewormingService.getAllDewormings();
+        if (dewormings==null || dewormings.isEmpty()) {
+            throw new IllegalOperationException("No dewormings found.");
+        }
         return modelMapper.map(dewormings, new TypeToken<List<DewormingDetailDTO>>() {
         }.getType());
     }
 
     @GetMapping(value = "/{dewormings_id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public DewormingDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
-        if (id == null) {
-            throw new EntityNotFoundException("Deworming ID cannot be null");
+    public DewormingDetailDTO findOne(@PathVariable Long dewormings_id) throws EntityNotFoundException {
+        DewormingEntity dewormingEntity = dewormingService.getDewormingById(dewormings_id);
+        if (dewormingEntity == null) {
+            throw new EntityNotFoundException("Deworming not found with ID: " + dewormings_id);
         }
-        DewormingEntity dewormingEntity = dewormingService.getDewormingById(id);
         return modelMapper.map(dewormingEntity, DewormingDetailDTO.class);
     }
 
@@ -65,22 +68,22 @@ public class DewormingController {
 
     @PutMapping(value = "/{dewormings_id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public DewormingDTO update(@PathVariable Long id, @RequestBody DewormingDTO dewormingDTO) 
+    public DewormingDTO update(@PathVariable Long dewormings_id, @RequestBody DewormingDTO dewormingDTO) 
             throws EntityNotFoundException, IllegalOperationException {
-        DewormingEntity dewormingEntity = dewormingService.updateDeworming(id, modelMapper.map(dewormingDTO, DewormingEntity.class));
+        DewormingEntity dewormingEntity = dewormingService.updateDeworming(dewormings_id, modelMapper.map(dewormingDTO, DewormingEntity.class));
         if (dewormingEntity == null) {
-            throw new EntityNotFoundException("Deworming not found with ID: " + id);
+            throw new EntityNotFoundException("Deworming not found with ID: " + dewormings_id);
         }
         return modelMapper.map(dewormingEntity, DewormingDTO.class);
     }
 
     @DeleteMapping(value = "/{dewormings_id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
-        if (id == null) {
-            throw new EntityNotFoundException("Deworming ID cannot be null");
+    public void delete(@PathVariable Long dewormings_id) throws EntityNotFoundException, IllegalOperationException {
+        if (dewormingService.getDewormingById(dewormings_id) == null) {
+            throw new EntityNotFoundException("Deworming not found with ID: " + dewormings_id);
         }
-        dewormingService.deleteDeworming(id);
+        dewormingService.deleteDeworming(dewormings_id);
     }
 
 

@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import co.edu.udistrital.mdp.adopcion.dto.person.VeterinarianDTO;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.FollowUpStatusEnum;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.PetConditionEnum;
+import co.edu.udistrital.mdp.adopcion.entities.pet.PetConditionEnum;
 import lombok.Data;
 
 @Data

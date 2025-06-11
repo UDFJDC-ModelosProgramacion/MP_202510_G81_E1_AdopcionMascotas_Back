@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
-import co.edu.udistrital.mdp.adopcion.repositories.event.medical.DewormingRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.medical.VaccineCardRepository;
-import co.edu.udistrital.mdp.adopcion.repositories.event.medical.VaccineRepository;
-import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,21 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 public class VaccineCardService {
     @Autowired
     private VaccineCardRepository vaccineCardRepository;
-
-    @Autowired
-    private VaccineRepository vaccineRepository;
-
-    @Autowired
-    private DewormingRepository dewormingRepository;
-
-    @Autowired
-    private PetRepository petRepository;
-
+    
     @Transactional
     public VaccineCardEntity createVaccineCard(VaccineCardEntity vaccineCard) {
-        if (vaccineCard.getPet() == null) {
-            throw new IllegalArgumentException("Pet must not be null");
-        }
         return vaccineCardRepository.save(vaccineCard);
     }
 

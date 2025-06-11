@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
-import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionApplicationRepository;
+import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdoptionApplicationService {
 
     @Autowired
-    private AdoptionApplicationRepository adoptionApplicationRepository;
+    private AdoptionAplicationRepository adoptionApplicationRepository;
 
     @Transactional
     public AdoptionApplicationEntity createApplication(AdoptionApplicationEntity application) throws IllegalOperationException {

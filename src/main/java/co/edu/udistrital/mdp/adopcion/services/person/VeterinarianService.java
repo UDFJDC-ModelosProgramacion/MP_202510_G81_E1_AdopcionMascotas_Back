@@ -75,4 +75,8 @@ public class VeterinarianService {
     public void deleteVeterinarian(Long id) {
         veterinarianRepository.deleteById(id);
         }
+    public boolean existsById(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'existsById'");
+    }
     }

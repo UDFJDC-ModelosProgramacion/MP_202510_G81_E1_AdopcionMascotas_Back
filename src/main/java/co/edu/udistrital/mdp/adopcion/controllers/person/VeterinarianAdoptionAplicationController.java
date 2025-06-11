@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionAplicationDTO;
-import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionAplicationDetailDTO;
+import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionApplicationDTO;
+import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionApplicationDetailDTO;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.person.VeterinarianEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
@@ -44,7 +44,7 @@ public class VeterinarianAdoptionAplicationController {
      */
     @GetMapping("/{veterinarianId}/adoption-applications")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionAplicationDetailDTO> findAll(@PathVariable Long veterinarianId)
+    public List<AdoptionApplicationDetailDTO> findAll(@PathVariable Long veterinarianId)
             throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
         if (veterinarian == null) {
@@ -55,7 +55,7 @@ public class VeterinarianAdoptionAplicationController {
         if (adoptionApplications.isEmpty()) {
             throw new IllegalOperationException("No adoption applications found for veterinarian with ID: " + veterinarianId);
         }
-        return modelMapper.map(adoptionApplications, new TypeToken<List<AdoptionAplicationDetailDTO>>() {
+        return modelMapper.map(adoptionApplications, new TypeToken<List<AdoptionApplicationDetailDTO>>() {
         }.getType());
     }
 
@@ -69,18 +69,18 @@ public class VeterinarianAdoptionAplicationController {
      */
     @GetMapping("/{veterinarianId}/adoption-applications/{adoptionAplicationId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AdoptionAplicationDetailDTO findOne(@PathVariable Long veterinarianId, @PathVariable Long adoptionAplicationId)
+    public AdoptionApplicationDetailDTO findOne(@PathVariable Long veterinarianId, @PathVariable Long adoptionApplicationId)
             throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionApplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
-        if (adoptionAplicationEntity == null || !adoptionAplicationEntity.getVeterinarian().getId().equals(veterinarianId)) {
+        AdoptionApplicationEntity adoptionApplicationEntity = adoptionAplicationService.getApplicationById(adoptionApplicationId);
+        if (adoptionApplicationEntity == null || !adoptionApplicationEntity.getVeterinarian().getId().equals(veterinarianId)) {
             throw new IllegalOperationException(
-                    "In this veterinarian, adoption application not found with ID: " + adoptionAplicationId);
+                    "In this veterinarian, adoption application not found with ID: " + adoptionApplicationId);
         }
-        return modelMapper.map(adoptionAplicationEntity, AdoptionAplicationDetailDTO.class);
+        return modelMapper.map(adoptionApplicationEntity, AdoptionApplicationDetailDTO.class);
     }
 
     /**
@@ -94,18 +94,18 @@ public class VeterinarianAdoptionAplicationController {
      */
     @PutMapping("/{veterinarianId}/adoption-applications")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionAplicationDetailDTO> replaceApplications(@RequestBody List<AdoptionAplicationDTO> listAdoptionAplicationDTO,
+    public List<AdoptionApplicationDetailDTO> replaceApplications(@RequestBody List<AdoptionApplicationDTO> listAdoptionApplicationDTO,
             @PathVariable Long veterinarianId)
             throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        List<AdoptionApplicationEntity> adoptionAplicationEntities = modelMapper.map(listAdoptionAplicationDTO,
+        List<AdoptionApplicationEntity> adoptionApplicationEntities = modelMapper.map(listAdoptionApplicationDTO,
                 new TypeToken<List<AdoptionApplicationEntity>>() {
                 }.getType());
-        adoptionAplicationEntities.forEach(application -> application.setVeterinarian(veterinarian));
-        for (AdoptionApplicationEntity application : adoptionAplicationEntities) {
+        adoptionApplicationEntities.forEach(application -> application.setVeterinarian(veterinarian));
+        for (AdoptionApplicationEntity application : adoptionApplicationEntities) {
             try {
                 application = adoptionAplicationService.updateApplication(application.getId(), application);
             } catch (IllegalArgumentException e) {
@@ -113,8 +113,8 @@ public class VeterinarianAdoptionAplicationController {
                         "Failed to update, not found adoption application with ID: " + application.getId());
             }
         }
-        adoptionAplicationEntities = adoptionAplicationService.getAllApplications();
-        return modelMapper.map(adoptionAplicationEntities, new TypeToken<List<AdoptionAplicationDetailDTO>>() {
+        adoptionApplicationEntities = adoptionAplicationService.getAllApplications();
+        return modelMapper.map(adoptionApplicationEntities, new TypeToken<List<AdoptionApplicationDetailDTO>>() {
         }.getType());
     }
 
@@ -129,23 +129,23 @@ public class VeterinarianAdoptionAplicationController {
      */
     @PostMapping("/{veterinarianId}/adoption-applications/{adoptionAplicationId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AdoptionAplicationDetailDTO addApplication(@PathVariable Long veterinarianId, @PathVariable Long adoptionAplicationId)
+    public AdoptionApplicationDetailDTO addApplication(@PathVariable Long veterinarianId, @PathVariable Long adoptionApplicationId)
             throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
         if (veterinarian == null) {
             throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
         }
-        AdoptionApplicationEntity adoptionAplicationEntity = adoptionAplicationService.getApplicationById(adoptionAplicationId);
-        if (adoptionAplicationEntity == null || !adoptionAplicationEntity.getVeterinarian().getId().equals(veterinarianId)) {
-            throw new EntityNotFoundException("Adoption application not found with ID: " + adoptionAplicationId);
+        AdoptionApplicationEntity adoptionApplicationEntity = adoptionAplicationService.getApplicationById(adoptionApplicationId);
+        if (adoptionApplicationEntity == null || !adoptionApplicationEntity.getVeterinarian().getId().equals(veterinarianId)) {
+            throw new EntityNotFoundException("Adoption application not found with ID: " + adoptionApplicationId);
         }
-        adoptionAplicationEntity.setVeterinarian(veterinarian);
-        adoptionAplicationEntity = adoptionAplicationService.updateApplication(adoptionAplicationId, adoptionAplicationEntity);
-        if (adoptionAplicationEntity == null) {
+        adoptionApplicationEntity.setVeterinarian(veterinarian);
+        adoptionApplicationEntity = adoptionAplicationService.updateApplication(adoptionApplicationId, adoptionApplicationEntity);
+        if (adoptionApplicationEntity == null) {
             throw new IllegalOperationException(
-                    "Failed to update, not found adoption application with ID: " + adoptionAplicationId);
+                    "Failed to update, not found adoption application with ID: " + adoptionApplicationId);
         }
-        return modelMapper.map(adoptionAplicationEntity, AdoptionAplicationDetailDTO.class);
+        return modelMapper.map(adoptionApplicationEntity, AdoptionApplicationDetailDTO.class);
     }
 
     /**

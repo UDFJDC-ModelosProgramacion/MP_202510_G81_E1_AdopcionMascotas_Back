@@ -1,46 +1,65 @@
 package co.edu.udistrital.mdp.adopcion.controllers.adoption;
 
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionTestDTO;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.adopcion.services.adoption.AdoptionTestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/adoption-tests")
+@RequestMapping("/adoption-tests")
 public class AdoptionTestController {
 
     @Autowired
     private AdoptionTestService adoptionTestService;
 
-    @PostMapping
-    public ResponseEntity<AdoptionTestEntity> create(@RequestBody AdoptionTestEntity test) throws IllegalOperationException {
-        return ResponseEntity.ok(adoptionTestService.createTest(test));
-    }
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<AdoptionTestEntity>> getAll() {
-        return ResponseEntity.ok(adoptionTestService.getAllTests());
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<AdoptionTestDTO> findAll() {
+        List<AdoptionTestEntity> tests = adoptionTestService.getAllTests();
+        return modelMapper.map(tests, new TypeToken<List<AdoptionTestDTO>>() {}.getType());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AdoptionTestEntity> getById(@PathVariable Long id) throws EntityNotFoundException {
-        return ResponseEntity.ok(adoptionTestService.getTestById(id));
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AdoptionTestDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        AdoptionTestEntity testEntity = adoptionTestService.getTestById(id);
+        return modelMapper.map(testEntity, AdoptionTestDTO.class);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AdoptionTestEntity> update(@PathVariable Long id, @RequestBody AdoptionTestEntity test) throws EntityNotFoundException {
-        return ResponseEntity.ok(adoptionTestService.updateTest(id, test));
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public AdoptionTestDTO create(@RequestBody AdoptionTestDTO testDTO) throws IllegalOperationException {
+        AdoptionTestEntity testEntity = modelMapper.map(testDTO, AdoptionTestEntity.class);
+        AdoptionTestEntity created = adoptionTestService.createTest(testEntity);
+        return modelMapper.map(created, AdoptionTestDTO.class);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws EntityNotFoundException {
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AdoptionTestDTO update(@PathVariable Long id, @RequestBody AdoptionTestDTO testDTO)
+            throws EntityNotFoundException {
+        AdoptionTestEntity testEntity = modelMapper.map(testDTO, AdoptionTestEntity.class);
+        AdoptionTestEntity updated = adoptionTestService.updateTest(id, testEntity);
+        return modelMapper.map(updated, AdoptionTestDTO.class);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) throws EntityNotFoundException {
         adoptionTestService.deleteTest(id);
-        return ResponseEntity.noContent().build();
     }
 }
+
 

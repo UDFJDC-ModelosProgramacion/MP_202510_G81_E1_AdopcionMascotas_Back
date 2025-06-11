@@ -70,6 +70,13 @@ public class MedicalEventController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public MedicalEventDetailDTO create(@RequestBody MedicalEventDTO medicalEventDTO)
             throws EntityNotFoundException, IllegalOperationException {
+        
+        if (medicalEventDTO.getVeterinarian() == null) {
+            throw new IllegalOperationException("Veterinarian ID is required");
+        }
+        if (medicalEventDTO.getPet() == null) {
+            throw new IllegalOperationException("Pet ID is required");
+        }
         MedicalEventEntity medicalEventEntity = medicalEventService
                 .createMedicalEvent(modelMapper.map(medicalEventDTO, MedicalEventEntity.class));
         return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);

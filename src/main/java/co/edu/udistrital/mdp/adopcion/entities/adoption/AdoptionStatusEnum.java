@@ -4,6 +4,7 @@ public enum AdoptionStatusEnum {
     DONE,
     RETURN,
     DECEASED,
-    CANCELED
+    CANCELED,
+    PENDING
 
 }

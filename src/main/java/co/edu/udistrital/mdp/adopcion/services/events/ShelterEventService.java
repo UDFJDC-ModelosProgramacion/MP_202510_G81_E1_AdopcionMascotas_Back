@@ -49,7 +49,7 @@ public class ShelterEventService {
             shelterEvent.setId(id);
             return shelterEventRepository.save(shelterEvent);
         } else {
-            return null;
+            throw new IllegalArgumentException("Shelter event not found");
         }
     }
 

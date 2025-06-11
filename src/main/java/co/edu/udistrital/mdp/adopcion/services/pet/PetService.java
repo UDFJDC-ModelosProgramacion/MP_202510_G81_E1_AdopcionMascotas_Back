@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
-import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
+import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionApplicationRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionTestRepository;
@@ -27,7 +27,7 @@ public class PetService {
     @Autowired
     private MedicalEventRepository medicalEventRepository;
     @Autowired
-    private AdoptionAplicationRepository adoptionApplicationRepository;
+    private AdoptionApplicationRepository adoptionApplicationRepository;
     @Autowired
     private AdoptionFollowUpRepository adoptionFollowUpRepository;
     @Autowired

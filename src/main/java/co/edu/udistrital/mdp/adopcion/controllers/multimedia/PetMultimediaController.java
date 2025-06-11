@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.adopcion.controllers.pet;
+package co.edu.udistrital.mdp.adopcion.controllers.multimedia;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class PetMultimediaController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<MultimediaDetailDTO> findAll(@PathVariable Long petId)
             throws EntityNotFoundException, IllegalOperationException {
-        PetEntity pet = petService.getPetById(petId);
+        PetEntity pet = petService.getPet(petId);
         if (pet == null) {
             throw new EntityNotFoundException("Pet not found with ID: " + petId);
         }
@@ -50,7 +50,7 @@ public class PetMultimediaController {
     @ResponseStatus(code = HttpStatus.OK)
     public MultimediaDetailDTO findOne(@PathVariable Long petId, @PathVariable Long mediaId)
             throws EntityNotFoundException, IllegalOperationException {
-        PetEntity pet = petService.getPetById(petId);
+        PetEntity pet = petService.getPet(petId);
         if (pet == null) {
             throw new EntityNotFoundException("Pet not found with ID: " + petId);
         }
@@ -66,7 +66,7 @@ public class PetMultimediaController {
     public List<MultimediaDetailDTO> replaceAll(@PathVariable Long petId,
                                                 @RequestBody List<MultimediaDTO> multimediaDTOs)
             throws EntityNotFoundException, IllegalOperationException {
-        PetEntity pet = petService.getPetById(petId);
+        PetEntity pet = petService.getPet(petId);
         if (pet == null) {
             throw new EntityNotFoundException("Pet not found with ID: " + petId);
         }
@@ -92,7 +92,7 @@ public class PetMultimediaController {
     @ResponseStatus(code = HttpStatus.OK)
     public MultimediaDetailDTO associateMultimedia(@PathVariable Long petId, @PathVariable Long mediaId)
             throws EntityNotFoundException, IllegalOperationException {
-        PetEntity pet = petService.getPetById(petId);
+        PetEntity pet = petService.getPet(petId);
         if (pet == null) {
             throw new EntityNotFoundException("Pet not found with ID: " + petId);
         }
@@ -112,7 +112,7 @@ public class PetMultimediaController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long petId, @PathVariable Long mediaId)
             throws EntityNotFoundException, IllegalOperationException {
-        PetEntity pet = petService.getPetById(petId);
+        PetEntity pet = petService.getPet(petId);
         if (pet == null) {
             throw new EntityNotFoundException("Pet not found with ID: " + petId);
         }

@@ -5,10 +5,11 @@ import co.edu.udistrital.mdp.adopcion.dto.person.OwnerDTO;
 import co.edu.udistrital.mdp.adopcion.dto.person.VeterinarianDTO;
 import co.edu.udistrital.mdp.adopcion.dto.pet.PetDTO;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionStatusEnum;
+import lombok.Data;
 
+@Data
 public class AdoptionDTO extends EventDTO {
     private Long id;
-    private String description;
     private String observations;
     private AdoptionStatusEnum adoptionStatus;
     private OwnerDTO owner;

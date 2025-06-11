@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
@@ -38,7 +38,7 @@ public class VeterinarianServiceTest {
     private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
     private List<MedicalEventEntity> medicalEventList = new ArrayList<>();
     private List<DisponibilityEnum> disponibilityList = new ArrayList<>();
-    private List<AdoptionAplicationEntity> adoptionApplicationList = new ArrayList<>();
+    private List<AdoptionApplicationEntity> adoptionApplicationList = new ArrayList<>();
     private List<AdoptionFollowUpEntity> adoptionFollowUpList = new ArrayList<>();
     private List<AdoptionEntity> adoptionList = new ArrayList<>();
     
@@ -75,7 +75,7 @@ public class VeterinarianServiceTest {
             entityManager.persist(disponibility);
             disponibilityList.add(disponibility);
 
-            AdoptionAplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionAplicationEntity.class);
+            AdoptionApplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionApplicationEntity.class);
             entityManager.persist(adoptionApplication);
             adoptionApplicationList.add(adoptionApplication);
 

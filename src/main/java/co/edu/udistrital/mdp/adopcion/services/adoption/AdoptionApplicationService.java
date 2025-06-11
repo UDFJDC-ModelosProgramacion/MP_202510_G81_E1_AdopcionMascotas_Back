@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionApplicationRepository;
@@ -21,7 +21,7 @@ public class AdoptionApplicationService {
     private AdoptionApplicationRepository adoptionApplicationRepository;
 
     @Transactional
-    public AdoptionAplicationEntity createApplication(AdoptionAplicationEntity application) throws IllegalOperationException {
+    public AdoptionApplicationEntity createApplication(AdoptionApplicationEntity application) throws IllegalOperationException {
         if (application.getApplicationDate() == null) {
             throw new IllegalOperationException("Application date must not be null");
         }
@@ -47,13 +47,13 @@ public class AdoptionApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public List<AdoptionAplicationEntity> getAllApplications() {
+    public List<AdoptionApplicationEntity> getAllApplications() {
         return adoptionApplicationRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public AdoptionAplicationEntity getApplicationById(Long id) throws EntityNotFoundException {
-        Optional<AdoptionAplicationEntity> application = adoptionApplicationRepository.findById(id);
+    public AdoptionApplicationEntity getApplicationById(Long id) throws EntityNotFoundException {
+        Optional<AdoptionApplicationEntity> application = adoptionApplicationRepository.findById(id);
         if (application.isEmpty()) {
             throw new EntityNotFoundException("Adoption Application with id " + id + " not found");
         }
@@ -61,7 +61,7 @@ public class AdoptionApplicationService {
     }
 
     @Transactional
-    public AdoptionAplicationEntity updateApplication(Long id, AdoptionAplicationEntity application) throws EntityNotFoundException {
+    public AdoptionApplicationEntity updateApplication(Long id, AdoptionApplicationEntity application) throws EntityNotFoundException {
         if (!adoptionApplicationRepository.existsById(id)) {
             throw new EntityNotFoundException("Adoption Application with id " + id + " not found");
         }

@@ -41,9 +41,12 @@ public class VaccineController {
         }.getType());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public VaccineDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        if (id == null) {
+            throw new EntityNotFoundException("Vaccine ID cannot be null");
+        }
         VaccineEntity vaccineEntity = vaccineService.getVaccineById(id);
         return modelMapper.map(vaccineEntity, VaccineDetailDTO.class);
     }
@@ -51,21 +54,30 @@ public class VaccineController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public VaccineDTO create(@RequestBody VaccineDTO vaccineDTO) throws IllegalOperationException, EntityNotFoundException {
+        if (vaccineDTO == null) {
+            throw new IllegalOperationException("Vaccine data cannot be null");
+        }
         VaccineEntity vaccineEntity = vaccineService.createVaccine(modelMapper.map(vaccineDTO, VaccineEntity.class));
         return modelMapper.map(vaccineEntity, VaccineDTO.class);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public VaccineDTO update(@PathVariable Long id, @RequestBody VaccineDTO vaccineDTO) 
             throws EntityNotFoundException, IllegalOperationException {
         VaccineEntity vaccineEntity = vaccineService.updateVaccine(id, modelMapper.map(vaccineDTO, VaccineEntity.class));
+        if (vaccineEntity == null) {
+            throw new EntityNotFoundException("Vaccine not found with ID: " + id);
+        }
         return modelMapper.map(vaccineEntity, VaccineDTO.class);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+        if (id == null) {
+            throw new EntityNotFoundException("Vaccine ID cannot be null");
+        }
         vaccineService.deleteVaccine(id);
     }
 }

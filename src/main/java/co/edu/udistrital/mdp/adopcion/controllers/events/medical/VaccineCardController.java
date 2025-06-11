@@ -41,9 +41,12 @@ public class VaccineCardController {
         }.getType());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{vaccineCards_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public VaccineCardDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        if (id == null) {
+            throw new EntityNotFoundException("Vaccine card ID cannot be null");
+        }
         VaccineCardEntity vaccineCardEntity = vaccineCardService.getVaccineCardById(id);
         return modelMapper.map(vaccineCardEntity, VaccineCardDetailDTO.class);
     }
@@ -52,25 +55,31 @@ public class VaccineCardController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public VaccineCardDTO create(@RequestBody VaccineCardDTO vaccineCardDTO) throws IllegalOperationException, EntityNotFoundException {
+        if (vaccineCardDTO == null) {
+            throw new IllegalOperationException("Vaccine card data cannot be null");
+        }
         VaccineCardEntity vaccineCardEntity = vaccineCardService.createVaccineCard(modelMapper.map(vaccineCardDTO, VaccineCardEntity.class));
         return modelMapper.map(vaccineCardEntity, VaccineCardDTO.class);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{vaccineCards_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public VaccineCardDTO update(@PathVariable Long id, @RequestBody VaccineCardDTO vaccineCardDTO) 
             throws EntityNotFoundException, IllegalOperationException {
         VaccineCardEntity vaccineCardEntity = vaccineCardService.updateVaccineCard(id, modelMapper.map(vaccineCardDTO, VaccineCardEntity.class));
+        if (vaccineCardEntity == null) {
+            throw new EntityNotFoundException("Vaccine card not found with ID: " + id);
+        }
         return modelMapper.map(vaccineCardEntity, VaccineCardDTO.class);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{vaccineCards_id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+        if (id == null) {
+            throw new EntityNotFoundException("Vaccine card ID cannot be null");
+        }
         vaccineCardService.deleteVaccineCard(id);
     }
-
-
-
 
 }

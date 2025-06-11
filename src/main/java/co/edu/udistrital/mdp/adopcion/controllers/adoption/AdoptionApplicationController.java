@@ -1,14 +1,13 @@
 package co.edu.udistrital.mdp.adopcion.controllers.adoption;
 
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionApplicationDTO;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.services.adoption.AdoptionApplicationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import co.edu.udistrital.mdp.adopcion.exceptions.IllegalOperationException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,14 +25,10 @@ public class AdoptionApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<AdoptionApplicationDTO> createApplication(@RequestBody AdoptionApplicationDTO dto) throws EntityNotFoundException {
-        AdoptionAplicationEntity entity = modelMapper.map(dto, AdoptionAplicationEntity.class);
-        try {
-            AdoptionAplicationEntity created = service.createApplication(entity);
-            return new ResponseEntity<>(modelMapper.map(created, AdoptionApplicationDTO.class), HttpStatus.CREATED);
-        } catch (IllegalOperationException e) {
-            throw new EntityNotFoundException("Error creating adoption application: " + e.getMessage());
-        }
+    public ResponseEntity<AdoptionApplicationDTO> createApplication(@RequestBody AdoptionApplicationDTO dto) {
+        AdoptionApplicationEntity entity = modelMapper.map(dto, AdoptionApplicationEntity.class);
+        AdoptionApplicationEntity created = service.createApplication(entity);
+        return new ResponseEntity<>(modelMapper.map(created, AdoptionApplicationDTO.class), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -46,14 +41,14 @@ public class AdoptionApplicationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AdoptionApplicationDTO> getApplicationById(@PathVariable Long id) throws EntityNotFoundException {
-        AdoptionAplicationEntity entity = service.getApplicationById(id);
+        AdoptionApplicationEntity entity = service.getApplicationById(id);
         return ResponseEntity.ok(modelMapper.map(entity, AdoptionApplicationDTO.class));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AdoptionApplicationDTO> updateApplication(@PathVariable Long id, @RequestBody AdoptionApplicationDTO dto) throws EntityNotFoundException {
-        AdoptionAplicationEntity entity = modelMapper.map(dto, AdoptionAplicationEntity.class);
-        AdoptionAplicationEntity updated = service.updateApplication(id, entity);
+        AdoptionApplicationEntity entity = modelMapper.map(dto, AdoptionApplicationEntity.class);
+        AdoptionApplicationEntity updated = service.updateApplication(id, entity);
         return ResponseEntity.ok(modelMapper.map(updated, AdoptionApplicationDTO.class));
     }
 

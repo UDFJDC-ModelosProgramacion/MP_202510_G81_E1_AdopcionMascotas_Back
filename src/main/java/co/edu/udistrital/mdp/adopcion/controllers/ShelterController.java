@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.adopcion.controllers.shelter;
+package co.edu.udistrital.mdp.adopcion.controllers;
 
 import java.util.List;
 

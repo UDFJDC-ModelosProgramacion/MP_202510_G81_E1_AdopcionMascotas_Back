@@ -43,9 +43,12 @@ public class DewormingController {
         }.getType());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{dewormings_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public DewormingDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+        if (id == null) {
+            throw new EntityNotFoundException("Deworming ID cannot be null");
+        }
         DewormingEntity dewormingEntity = dewormingService.getDewormingById(id);
         return modelMapper.map(dewormingEntity, DewormingDetailDTO.class);
     }
@@ -53,21 +56,30 @@ public class DewormingController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public DewormingDTO create(@RequestBody DewormingDTO dewormingDTO) throws IllegalOperationException, EntityNotFoundException {
+        if (dewormingDTO == null) {
+            throw new IllegalOperationException("Deworming data cannot be null");
+        }
         DewormingEntity dewormingEntity = dewormingService.createDeworming(modelMapper.map(dewormingDTO, DewormingEntity.class));
         return modelMapper.map(dewormingEntity, DewormingDTO.class);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{dewormings_id}")
     @ResponseStatus(code = HttpStatus.OK)
     public DewormingDTO update(@PathVariable Long id, @RequestBody DewormingDTO dewormingDTO) 
             throws EntityNotFoundException, IllegalOperationException {
         DewormingEntity dewormingEntity = dewormingService.updateDeworming(id, modelMapper.map(dewormingDTO, DewormingEntity.class));
+        if (dewormingEntity == null) {
+            throw new EntityNotFoundException("Deworming not found with ID: " + id);
+        }
         return modelMapper.map(dewormingEntity, DewormingDTO.class);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{dewormings_id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+        if (id == null) {
+            throw new EntityNotFoundException("Deworming ID cannot be null");
+        }
         dewormingService.deleteDeworming(id);
     }
 

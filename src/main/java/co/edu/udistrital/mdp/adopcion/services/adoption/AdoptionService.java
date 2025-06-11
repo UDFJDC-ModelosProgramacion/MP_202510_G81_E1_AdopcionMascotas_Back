@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
-import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionApplicationRepository;
+import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.OwnerRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
@@ -20,7 +20,7 @@ public class AdoptionService {
     @Autowired
     private AdoptionRepository adoptionRepository;
     @Autowired
-    private AdoptionApplicationRepository adoptionAplicationRepository;
+    private AdoptionAplicationRepository adoptionAplicationRepository;
     @Autowired
     private OwnerRepository ownerRepository;
     @Autowired

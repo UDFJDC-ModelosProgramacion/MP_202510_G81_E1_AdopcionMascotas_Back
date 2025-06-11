@@ -3,7 +3,7 @@ package co.edu.udistrital.mdp.adopcion.entities.person;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionFollowUpEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionTestEntity;
@@ -34,7 +34,7 @@ public class VeterinarianEntity extends PersonEntity {
     
     @PodamExclude
     @OneToMany(mappedBy="veterinarian")
-    private List<AdoptionAplicationEntity> adoptionApplications = new ArrayList<>();
+    private List<AdoptionApplicationEntity> adoptionApplications = new ArrayList<>();
 
     @OneToMany(mappedBy = "veterinarian")
     private List<AdoptionFollowUpEntity> followUps;

@@ -6,7 +6,7 @@ import java.util.List;
 
 import co.edu.udistrital.mdp.adopcion.entities.BaseEntity;
 import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
-import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionAplicationEntity;
+import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionApplicationEntity;
 import co.edu.udistrital.mdp.adopcion.entities.adoption.AdoptionEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.MedicalEventEntity;
 import co.edu.udistrital.mdp.adopcion.entities.events.ShelterArrivalEntity;
@@ -38,7 +38,7 @@ public class PetEntity extends BaseEntity {
 
     @PodamExclude
     @OneToMany(mappedBy = "pet")
-    private List<AdoptionAplicationEntity> adoptionApplications = new ArrayList<>();
+    private List<AdoptionApplicationEntity> adoptionApplications = new ArrayList<>();
     
     @PodamExclude
     @OneToMany(mappedBy = "pet")

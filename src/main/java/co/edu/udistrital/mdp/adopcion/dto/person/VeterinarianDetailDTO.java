@@ -3,10 +3,10 @@ package co.edu.udistrital.mdp.adopcion.dto.person;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
-import co.edu.udistrital.mdp.adopcion.dto.events.ShelterArrivalDTO;
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionApplicationDTO;
 import co.edu.udistrital.mdp.adopcion.dto.adoption.AdoptionFollowUpDTO;
+import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
+import co.edu.udistrital.mdp.adopcion.dto.events.ShelterArrivalDTO;
 
 public class VeterinarianDetailDTO extends VeterinarianDTO {
 

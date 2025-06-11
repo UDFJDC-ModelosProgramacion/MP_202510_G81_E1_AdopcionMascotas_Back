@@ -48,12 +48,12 @@ public class VeterinarianMedicalEventController {
             throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
         if (veterinarian == null) {
-            throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
+            throw new IllegalOperationException("Veterinarian not found with ID: " + veterinarianId);
         }
         List<MedicalEventEntity> medicalEvents = medicalEventService.getAllMedicalEvents();
         medicalEvents.removeIf(medicalEvent -> !medicalEvent.getVeterinarian().getId().equals(veterinarianId));
         if (medicalEvents.isEmpty()) {
-            throw new IllegalOperationException("No medical events found for veterinarian with ID: " + veterinarianId);
+            throw new EntityNotFoundException("No medical events found for veterinarian with ID: " + veterinarianId);
         }
         return modelMapper.map(medicalEvents, new TypeToken<List<MedicalEventDetailDTO>>() {
         }.getType());
@@ -73,11 +73,11 @@ public class VeterinarianMedicalEventController {
             throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
         if (veterinarian == null) {
-            throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
+            throw new IllegalOperationException("Veterinarian not found with ID: " + veterinarianId);
         }
         MedicalEventEntity medicalEventEntity = medicalEventService.getMedicalEventById(medicalEventId);
         if (medicalEventEntity == null || !medicalEventEntity.getVeterinarian().getId().equals(veterinarianId)) {
-            throw new IllegalOperationException(
+            throw new EntityNotFoundException(
                     "In this veterinarian, medical event not found with ID: " + medicalEventId);
         }
         return modelMapper.map(medicalEventEntity, MedicalEventDetailDTO.class);
@@ -99,7 +99,7 @@ public class VeterinarianMedicalEventController {
             throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity veterinarian = veterinarianService.getVeterinarianById(veterinarianId);
         if (veterinarian == null) {
-            throw new EntityNotFoundException("Veterinarian not found with ID: " + veterinarianId);
+            throw new IllegalOperationException("Veterinarian not found with ID: " + veterinarianId);
         }
         List<MedicalEventEntity> medicalEventEntities = modelMapper.map(listMedicalEventDTO,
                 new TypeToken<List<MedicalEventEntity>>() {

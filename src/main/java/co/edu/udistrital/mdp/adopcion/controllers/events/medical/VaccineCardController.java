@@ -37,7 +37,7 @@ public class VaccineCardController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<VaccineCardDetailDTO> findAll() throws IllegalOperationException {
         List<VaccineCardEntity> vaccineCards = vaccineCardService.getAllVaccineCards();
-        if (vaccineCards.isEmpty()) {
+        if (vaccineCards == null || vaccineCards.isEmpty()) {
             throw new IllegalOperationException("No vaccine cards found.");
         }
         return modelMapper.map(vaccineCards, new TypeToken<List<VaccineCardDTO>>() {

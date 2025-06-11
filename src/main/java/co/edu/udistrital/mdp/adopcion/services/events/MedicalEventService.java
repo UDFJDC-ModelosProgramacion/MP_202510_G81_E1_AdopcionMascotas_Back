@@ -26,16 +26,16 @@ public class MedicalEventService {
 
     @Transactional
     public MedicalEventEntity createMedicalEvent(MedicalEventEntity medicalEvent) {
-        if(medicalEvent.getVeterinarian() == null) {
+        if (medicalEvent.getVeterinarian() == null) {
             throw new IllegalArgumentException("Veterinarian must not be null");
         }
-        if(medicalEvent.getPet() == null) {
+        if (medicalEvent.getPet() == null) {
             throw new IllegalArgumentException("Pet must not be null");
         }
-        if(medicalEvent.getDate() == null) {
+        if (medicalEvent.getDate() == null) {
             throw new IllegalArgumentException("Date must not be null");
         }
-        if(medicalEvent.getDescription() == null) {
+        if (medicalEvent.getDescription() == null) {
             throw new IllegalArgumentException("Description must not be null");
         }
         return medicalEventRepository.save(medicalEvent);
@@ -52,12 +52,13 @@ public class MedicalEventService {
     }
 
     @Transactional
-    public MedicalEventEntity updateMedicalEvent(Long id, MedicalEventEntity medicalEvent) {
+    public MedicalEventEntity updateMedicalEvent(Long id, MedicalEventEntity medicalEvent)
+            throws IllegalArgumentException {
         if (medicalEventRepository.existsById(id)) {
             medicalEvent.setId(id);
             return medicalEventRepository.save(medicalEvent);
         } else {
-            return null;
+            throw new IllegalArgumentException("Medical event with ID " + id + " does not exist");
         }
     }
 

@@ -94,7 +94,7 @@ public class ShelterShelterArrivalController {
      */
     @PutMapping("/{shelterId}/arrivals")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ShelterArrivalDetailDTO> setArrivals(@RequestBody List<ShelterArrivalDetailDTO> listShelterArrivalDTO,
+    public List<ShelterArrivalDetailDTO> replaceArrivals(@RequestBody List<ShelterArrivalDTO> listShelterArrivalDTO,
             @PathVariable Long shelterId)
             throws EntityNotFoundException, IllegalOperationException {
         ShelterEntity shelter = shelterService.getShelterById(shelterId);

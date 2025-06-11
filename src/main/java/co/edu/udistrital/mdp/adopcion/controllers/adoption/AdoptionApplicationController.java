@@ -28,14 +28,14 @@ public class AdoptionApplicationController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<AdoptionApplicationDetailDTO> findAll() {
-        List<AdoptionApplicationEntity> apps = applicationService.getAllAdoptionApplications();
+        List<AdoptionApplicationEntity> apps = applicationService.getAllApplications();
         return modelMapper.map(apps, new TypeToken<List<AdoptionApplicationDetailDTO>>() {}.getType());
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AdoptionApplicationDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
-        AdoptionApplicationEntity entity = applicationService.getAdoptionApplicationById(id);
+        AdoptionApplicationEntity entity = applicationService.getApplicationById(id);
         return modelMapper.map(entity, AdoptionApplicationDetailDTO.class);
     }
 
@@ -43,7 +43,7 @@ public class AdoptionApplicationController {
     @ResponseStatus(HttpStatus.CREATED)
     public AdoptionApplicationDTO create(@RequestBody AdoptionApplicationDTO dto)
             throws IllegalOperationException, EntityNotFoundException {
-        AdoptionApplicationEntity entity = applicationService.createAdoptionApplication(
+        AdoptionApplicationEntity entity = applicationService.createApplication(
                 modelMapper.map(dto, AdoptionApplicationEntity.class));
         return modelMapper.map(entity, AdoptionApplicationDTO.class);
     }
@@ -52,7 +52,7 @@ public class AdoptionApplicationController {
     @ResponseStatus(HttpStatus.OK)
     public AdoptionApplicationDTO update(@PathVariable Long id, @RequestBody AdoptionApplicationDTO dto)
             throws EntityNotFoundException, IllegalOperationException {
-        AdoptionApplicationEntity entity = applicationService.updateAdoptionApplication(id,
+        AdoptionApplicationEntity entity = applicationService.updateApplication(id,
                 modelMapper.map(dto, AdoptionApplicationEntity.class));
         return modelMapper.map(entity, AdoptionApplicationDTO.class);
     }
@@ -60,6 +60,6 @@ public class AdoptionApplicationController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
-        applicationService.deleteAdoptionApplication(id);
+        applicationService.deleteApplication(id);
     }
 }

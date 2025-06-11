@@ -55,9 +55,6 @@ public class PetService {
         }
 
         pet.setOwners(null);
-        if (pet.getMedicalEvents() == null) {
-            pet.setMedicalEvents(new ArrayList<>());
-        }
 
         return petRepository.save(pet);
     }

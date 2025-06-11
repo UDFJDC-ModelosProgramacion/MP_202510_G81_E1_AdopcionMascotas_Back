@@ -96,7 +96,7 @@ public class PetMedicalEventController {
      * @throws IllegalOperationException
      */
     @PostMapping("/{petId}/medical-events")
-    @ResponseStatus(code = HttpStatus.CREATED)
+    @ResponseStatus(code = HttpStatus.OK)
     public MedicalEventDetailDTO create(@PathVariable Long petId, @RequestBody MedicalEventDTO medicalEventDTO)
             throws EntityNotFoundException, IllegalOperationException {
         PetEntity pet = petService.getPet(petId);

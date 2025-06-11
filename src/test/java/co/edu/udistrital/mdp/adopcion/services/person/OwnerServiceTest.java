@@ -32,7 +32,7 @@ public class OwnerServiceTest {
     @Autowired
     private TestEntityManager entityManager;
     private PodamFactory factory = new PodamFactoryImpl();
-    private List<OwnerEntity> ownerList = new ArrayList<>();   
+    private List<OwnerEntity> ownerList = new ArrayList<>();
     private List<PetEntity> petList = new ArrayList<>();
     private List<AdoptionApplicationEntity> adoptionApplicationList = new ArrayList<>();
     private List<AdoptionTestEntity> adoptionTestList = new ArrayList<>();

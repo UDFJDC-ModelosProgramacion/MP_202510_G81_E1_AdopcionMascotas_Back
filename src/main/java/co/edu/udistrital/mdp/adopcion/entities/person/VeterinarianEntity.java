@@ -40,7 +40,7 @@ public class VeterinarianEntity extends PersonEntity {
     private List<AdoptionFollowUpEntity> followUps;
 
     @PodamExclude
-    @OneToOne(mappedBy="veterinarian")
+    @OneToMany(mappedBy="veterinarian")
     private  AdoptionEntity adoption;
 
     @PodamExclude

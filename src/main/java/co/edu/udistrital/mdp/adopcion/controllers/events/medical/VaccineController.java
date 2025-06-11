@@ -60,6 +60,11 @@ public class VaccineController {
         if (vaccineDTO == null) {
             throw new IllegalOperationException("Vaccine data cannot be null");
         }
+        
+        // Validar que tenga una vaccine card asociada
+        if (vaccineDTO.getVaccineCard() == null || vaccineDTO.getVaccineCard().getId() == null) {
+            throw new IllegalOperationException("Vaccine must be associated with a vaccine card");
+        }
 
         VaccineEntity vaccineEntity = vaccineService.createVaccine(modelMapper.map(vaccineDTO, VaccineEntity.class));
         return modelMapper.map(vaccineEntity, VaccineDTO.class);

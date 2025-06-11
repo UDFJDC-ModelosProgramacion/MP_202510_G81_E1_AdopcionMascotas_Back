@@ -46,11 +46,11 @@ public class VaccineController {
 
     @GetMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public VaccineDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
-        if (id == null) {
+    public VaccineDetailDTO findOne(@PathVariable Long vaccines_id) throws EntityNotFoundException {
+        if (vaccines_id == null) {
             throw new EntityNotFoundException("Vaccine ID cannot be null");
         }
-        VaccineEntity vaccineEntity = vaccineService.getVaccineById(id);
+        VaccineEntity vaccineEntity = vaccineService.getVaccineById(vaccines_id);
         return modelMapper.map(vaccineEntity, VaccineDetailDTO.class);
     }
 
@@ -66,21 +66,21 @@ public class VaccineController {
 
     @PutMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public VaccineDTO update(@PathVariable Long id, @RequestBody VaccineDTO vaccineDTO) 
+    public VaccineDTO update(@PathVariable Long vaccines_id, @RequestBody VaccineDTO vaccineDTO) 
             throws EntityNotFoundException, IllegalOperationException {
-        VaccineEntity vaccineEntity = vaccineService.updateVaccine(id, modelMapper.map(vaccineDTO, VaccineEntity.class));
+        VaccineEntity vaccineEntity = vaccineService.updateVaccine(vaccines_id, modelMapper.map(vaccineDTO, VaccineEntity.class));
         if (vaccineEntity == null) {
-            throw new EntityNotFoundException("Vaccine not found with ID: " + id);
+            throw new EntityNotFoundException("Vaccine not found with ID: " + vaccines_id);
         }
         return modelMapper.map(vaccineEntity, VaccineDTO.class);
     }
 
     @DeleteMapping(value = "/{vaccines_id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
-        if (id == null) {
+    public void delete(@PathVariable Long vaccines_id) throws EntityNotFoundException, IllegalOperationException {
+        if (vaccines_id == null) {
             throw new EntityNotFoundException("Vaccine ID cannot be null");
         }
-        vaccineService.deleteVaccine(id);
+        vaccineService.deleteVaccine(vaccines_id);
     }
 }

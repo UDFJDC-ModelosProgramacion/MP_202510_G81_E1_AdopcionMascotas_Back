@@ -17,4 +17,5 @@ public class MultimediaEntity extends BaseEntity {
     @PodamExclude
     @ManyToOne
     private PetEntity pet;
+    private ShelterEntity shelter;
 }

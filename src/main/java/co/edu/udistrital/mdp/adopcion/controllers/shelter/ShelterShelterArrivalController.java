@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.adopcion.controllers.events;
+package co.edu.udistrital.mdp.adopcion.controllers.shelter;
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public class ShelterShelterArrivalController {
             throws EntityNotFoundException, IllegalOperationException {
         ShelterEntity shelter = shelterService.getShelterById(shelterId);
         if (shelter == null) {
-            throw new EntityNotFoundException("Shelter not found with ID: " + shelterId);
+            throw new IllegalOperationException("Shelter not found with ID: " + shelterId);
         }
         ShelterArrivalEntity shelterArrivalEntity = shelterArrivalService.getShelterArrivalById(shelterArrivalId);
         if (shelterArrivalEntity == null || !shelterArrivalEntity.getShelter().getId().equals(shelterId)) {
@@ -83,10 +83,12 @@ public class ShelterShelterArrivalController {
         return modelMapper.map(shelterArrivalEntity, ShelterArrivalDetailDTO.class);
     }
 
+    
     /**
-     * Create a new shelter arrival for a specific shelter.
+     * Update an existing shelter arrival for a specific shelter.
      * 
      * @param shelterId
+     * @param shelterArrivalId
      * @param shelterArrivalDTO
      * @return
      * @throws EntityNotFoundException
@@ -113,17 +115,14 @@ public class ShelterShelterArrivalController {
                         "Failed to update, not found shelter arrival with ID: " + arrival.getId());
             }
         }
-        shelterArrivalEntities = shelterArrivalService.getAllShelterArrivals();
-        return modelMapper.map(shelterArrivalEntities, new TypeToken<List<ShelterArrivalDetailDTO>>() {
-        }.getType());
+        return findAll(shelterId);
     }
 
     /**
-     * Update an existing shelter arrival for a specific shelter.
+     * Create a new shelter arrival for a specific shelter.
      * 
      * @param shelterId
      * @param shelterArrivalId
-     * @param shelterArrivalDTO
      * @return
      * @throws EntityNotFoundException
      * @throws IllegalOperationException

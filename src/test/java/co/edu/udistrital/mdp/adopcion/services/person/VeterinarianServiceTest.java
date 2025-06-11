@@ -48,18 +48,21 @@ public class VeterinarianServiceTest {
         clearData();
         insertData();
     }
+    
     private void clearData() {
-        entityManager.getEntityManager().createQuery("delete from VeterinarianEntity");
-        entityManager.getEntityManager().createQuery("delete from MedicalEventEntity");
-        entityManager.getEntityManager().createQuery("delete from DisponibilityEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionAplicationEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionFollowUpEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionTestEntity");
-        entityManager.getEntityManager().createQuery("delete from AdoptionEntity");
+        entityManager.getEntityManager().createQuery("delete from VeterinarianEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from MedicalEventEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from AdoptionApplicationEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from AdoptionFollowUpEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from AdoptionTestEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from AdoptionEntity").executeUpdate();
     }
     
     private void insertData() {
         int n = 5;
+        
+
+        
         for (int i = 0; i < n; i++) {
             MedicalEventEntity medicalEvent = factory.manufacturePojo(MedicalEventEntity.class);
 
@@ -70,10 +73,6 @@ public class VeterinarianServiceTest {
 
             entityManager.persist(medicalEvent);
             medicalEventList.add(medicalEvent);
-
-            DisponibilityEnum disponibility = factory.manufacturePojo(DisponibilityEnum.class);
-            entityManager.persist(disponibility);
-            disponibilityList.add(disponibility);
 
             AdoptionApplicationEntity adoptionApplication = factory.manufacturePojo(AdoptionApplicationEntity.class);
             entityManager.persist(adoptionApplication);
@@ -87,10 +86,11 @@ public class VeterinarianServiceTest {
             entityManager.persist(adoption);
             adoptionList.add(adoption);
         }
+        
         for (int i = 0; i < n; i++) {
             VeterinarianEntity veterinarian = factory.manufacturePojo(VeterinarianEntity.class);
             veterinarian.setMedicalEvents(medicalEventList);
-            veterinarian.setDisponibilities(disponibilityList);
+            veterinarian.setDisponibilities(disponibilityList); // Now using enum list
             veterinarian.setAdoptionApplications(adoptionApplicationList);
             veterinarian.setFollowUps(adoptionFollowUpList);
             veterinarian.setAdoption(adoptionList);
@@ -112,6 +112,7 @@ public class VeterinarianServiceTest {
         assertEquals(veterinarian.getLicenseNumber(), createdVeterinarian.getLicenseNumber());
         assertEquals(veterinarian.getSpeciality(), createdVeterinarian.getSpeciality());
     }
+    
     /**
      * Test for getAllVeterinarians method
      */
@@ -124,6 +125,7 @@ public class VeterinarianServiceTest {
             assertEquals(veterinarianList.get(i).getId(), veterinarians.get(i).getId());
         }
     }
+    
     /**
      * Test for getVeterinarianById method
      */
@@ -134,9 +136,9 @@ public class VeterinarianServiceTest {
         assertNotNull(foundVeterinarian);
         assertEquals(veterinarian.getId(), foundVeterinarian.getId());
     }
+    
     /**
      * Test for updateVeterinarian method
-     *
      */
     @Test
     void testUpdateVeterinarian() throws Exception {
@@ -150,6 +152,7 @@ public class VeterinarianServiceTest {
         assertEquals(updatedVeterinarian.getLicenseNumber(), result.getLicenseNumber());
         assertEquals(updatedVeterinarian.getSpeciality(), result.getSpeciality());
     }
+    
     /**
      * Test for deleteVeterinarian method
      */
@@ -160,6 +163,7 @@ public class VeterinarianServiceTest {
         VeterinarianEntity deletedVeterinarian = entityManager.find(VeterinarianEntity.class, veterinarian.getId());
         assertNull(deletedVeterinarian);
     }
+    
     /**
      * Test for deleteVeterinarian method with non-existing id
      */
@@ -171,9 +175,9 @@ public class VeterinarianServiceTest {
         VeterinarianEntity deletedVeterinarian = entityManager.find(VeterinarianEntity.class, veterinarian.getId());
         assertNull(deletedVeterinarian);
     }
+    
     /**
      * Test for updateVeterinarian method with non-existing id
-     * @throws Exception
      */
     @Test
     void testUpdateVeterinarianWithNonExistingId() throws Exception {
@@ -186,6 +190,7 @@ public class VeterinarianServiceTest {
         VeterinarianEntity result = veterinarianService.updateVeterinarian(veterinarian.getId(), updatedVeterinarian);
         assertNull(result);
     }
+    
     /**
      * Test for createVeterinarian method with null license number
      */
@@ -199,6 +204,7 @@ public class VeterinarianServiceTest {
         });
         assertNotNull(exception);
     }
+    
     /**
      * Test for createVeterinarian method with null speciality
      */
@@ -218,9 +224,7 @@ public class VeterinarianServiceTest {
      */
     @Test
     void testGetVeterinarianByIdWithNonExistingId() {
-        VeterinarianEntity veterinarian = veterinarianList.get(0);
         VeterinarianEntity foundVeterinarian = veterinarianService.getVeterinarianById(999L);
         assertNull(foundVeterinarian);
     }
-
 }

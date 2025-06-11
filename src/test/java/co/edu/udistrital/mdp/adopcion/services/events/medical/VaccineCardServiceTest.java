@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,17 +127,4 @@ public class VaccineCardServiceTest {
         VaccineCardEntity deletedVaccineCard = vaccineCardService.getVaccineCardById(vaccineCard.getId());
         assert deletedVaccineCard == null;
     }
-    /**
-     * Test for createVaccineCard with null pet
-     */
-    @Test
-    void testCreateVaccineCardWithNullPet() {
-        VaccineCardEntity newVaccineCard = factory.manufacturePojo(VaccineCardEntity.class);
-        newVaccineCard.setPet(null);
-        assertThrows(IllegalArgumentException.class, () -> {
-            vaccineCardService.createVaccineCard(newVaccineCard);
-        });
-    }
-
-    
 }

@@ -18,6 +18,9 @@ public class VaccineCardService {
     
     @Transactional
     public VaccineCardEntity createVaccineCard(VaccineCardEntity vaccineCard) {
+        if (vaccineCard.getPet() == null) {
+            throw new IllegalArgumentException("The pet of the vaccine card must not be null");
+        }
         return vaccineCardRepository.save(vaccineCard);
     }
 

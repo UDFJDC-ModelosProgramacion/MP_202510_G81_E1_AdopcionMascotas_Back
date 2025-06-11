@@ -16,8 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDTO;
+import co.edu.udistrital.mdp.adopcion.dto.events.MedicalEventDetailDTO;
+
 @RestController
 @RequestMapping("/pets")
 public class PetMedicalEventController {
+    @Autowired
+    private PetService petService;
 
+    @Autowired
+    private MedicalEventService medicalEventService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 }

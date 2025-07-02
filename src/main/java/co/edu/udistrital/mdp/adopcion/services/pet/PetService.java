@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.events.medical.VaccineCardEntity;
 import co.edu.udistrital.mdp.adopcion.entities.pet.PetEntity;
+import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionAplicationRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionFollowUpRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.adoption.AdoptionRepository;
@@ -17,6 +19,7 @@ import co.edu.udistrital.mdp.adopcion.repositories.event.MedicalEventRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.medical.VaccineCardRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.person.VeterinarianRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
+import co.edu.udistrital.mdp.adopcion.repositories.ShelterRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,6 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 public class PetService {
     @Autowired
     private PetRepository petRepository;
+
+    @Autowired
+    private ShelterRepository shelterRepository;
 
     @Autowired
     private MedicalEventRepository medicalEventRepository;
@@ -48,6 +54,20 @@ public class PetService {
         if (pet.getBirthDate() == null) {
             throw new IllegalArgumentException("The birth date of the pet must not be empty");
         }
+
+        // Handle shelter association - if only ID is provided, fetch the full entity
+        if (pet.getShelter() != null && pet.getShelter().getId() != null) {
+            try {
+                ShelterEntity existingShelter = shelterRepository.findById(pet.getShelter().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Shelter with ID " + pet.getShelter().getId() + " not found"));
+                pet.setShelter(existingShelter);
+            } catch (EntityNotFoundException e) {
+                throw new IllegalArgumentException(e.getMessage());
+            }
+        } else if (pet.getShelter() == null) {
+            throw new IllegalArgumentException("The shelter of the pet must not be empty");
+        }
+
         if (pet.getVaccineCard() == null) {
             VaccineCardEntity vaccineCard = new VaccineCardEntity();
             vaccineCard = vaccineCardRepository.save(vaccineCard);
@@ -94,7 +114,18 @@ public class PetService {
             throw new IllegalArgumentException("The birth date of the pet must not be empty");
         }
         if (pet.getShelter() != null) {
-            existingPet.setShelter(pet.getShelter());
+            // Handle shelter association - if only ID is provided, fetch the full entity
+            if (pet.getShelter().getId() != null) {
+                try {
+                    ShelterEntity existingShelter = shelterRepository.findById(pet.getShelter().getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Shelter with ID " + pet.getShelter().getId() + " not found"));
+                    existingPet.setShelter(existingShelter);
+                } catch (EntityNotFoundException e) {
+                    throw new IllegalArgumentException(e.getMessage());
+                }
+            } else {
+                existingPet.setShelter(pet.getShelter());
+            }
         } else {
             throw new IllegalArgumentException("The shelter of the pet must not be empty");
         }

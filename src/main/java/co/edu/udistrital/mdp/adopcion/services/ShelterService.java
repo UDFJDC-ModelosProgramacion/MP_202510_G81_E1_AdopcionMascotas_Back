@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.adopcion.entities.ShelterEntity;
+import co.edu.udistrital.mdp.adopcion.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.adopcion.repositories.ShelterRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.event.ShelterEventRepository;
 import co.edu.udistrital.mdp.adopcion.repositories.pet.PetRepository;
@@ -44,8 +45,9 @@ public class ShelterService {
         return shelterRepository.findAll();
     }
     @Transactional
-    public ShelterEntity getShelterById(Long id) {
-        return shelterRepository.findById(id).orElse(null);
+    public ShelterEntity getShelterById(Long id) throws EntityNotFoundException {
+        return shelterRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Shelter with ID " + id + " not found"));
     }
     @Transactional
     public ShelterEntity updateShelter(Long id, ShelterEntity shelter) {

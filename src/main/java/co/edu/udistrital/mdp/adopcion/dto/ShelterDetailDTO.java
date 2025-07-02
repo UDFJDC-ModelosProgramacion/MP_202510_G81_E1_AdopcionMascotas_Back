@@ -9,7 +9,7 @@ import co.edu.udistrital.mdp.adopcion.dto.pet.PetDTO;
 import lombok.Data;
 
 @Data
-public class ShelterDetailDTO {
+public class ShelterDetailDTO extends ShelterDTO {
     private List<ShelterEventDTO> shelterEvents = new ArrayList<>();
     private List<PetDTO> pets = new ArrayList<>();
     private List<ShelterArrivalDTO> shelterArrivals = new ArrayList<>();
